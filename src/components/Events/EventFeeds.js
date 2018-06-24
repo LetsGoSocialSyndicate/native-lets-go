@@ -1,4 +1,7 @@
-import React from 'react'
+/*
+ * Copyright 2018, Socializing Syndicate Corp.
+ */
+ import React from 'react'
 import { View, Text } from 'react-native'
 
 const EventFeeds = () => {
