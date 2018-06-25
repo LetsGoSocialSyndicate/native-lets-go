@@ -1,29 +1,41 @@
-/*
- * Copyright 2018, Socializing Syndicate Corp.
- */
-
+/* Copyright 2018, Socializing Syndicate Corp. */
 import React from 'react'
+import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import EmailComponent from '../Basic/EmailComponent'
-import PasswordComponent from '../Basic/PasswordComponent'
+import { Card, CardSection, Error, InputFormField, LoadingButton } from '../common'
 
-const EMAIL_FIELD = "email"
-const PASSWORD_FIELD = "password"
+const EMAIL_FIELD = 'email'
+const PASSWORD_FIELD = 'password'
 
-const LoginForm = ({ handleSubmit }) => {
+const LoginForm = ({ handleSubmit, auth }) => {
   return (
-    <form className="login-form container"
-          onSubmit={handleSubmit}
-    >
-      <EmailComponent labelTitle="Email:" fieldName={EMAIL_FIELD}
-        placeholder="" required={true}/>
-      <PasswordComponent labelTitle="Password:" fieldName={PASSWORD_FIELD}
-        placeholder="" required={true}/>
-      <div className="row form-group">
-        <button type="submit" className="row btn btn-md submit">Submit</button>
-      </div>
-    </form>
+    <Card>
+      <CardSection>
+        <InputFormField
+          name={EMAIL_FIELD}
+          label="Email"
+          placeholder="email@gmail.com"
+        />
+      </CardSection>
+      <CardSection>
+        <InputFormField
+          name={PASSWORD_FIELD}
+          secureTextEntry
+          label="Password"
+          placeholder="password"
+        />
+      </CardSection>
+      <Error error={auth.error} />
+      <CardSection>
+        <LoadingButton loading={auth.loading} onPress={handleSubmit}>
+          Login
+        </LoadingButton>
+      </CardSection>
+    </Card>
   )
 }
 
-export default reduxForm({form: 'login'})(LoginForm)
+const mapStateToProps = (state) => {
+  return { auth: state.auth }
+}
+export default connect(mapStateToProps)(reduxForm({ form: 'login' })(LoginForm))

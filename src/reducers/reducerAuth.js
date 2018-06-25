@@ -7,24 +7,24 @@ import {
   LOGOUT,
   SIGNUP_FAILED,
   SIGNUP_SUCCESS,
-  VERIFICATION_STARTED
+  AUTH_STARTED
 } from '../actions/types'
 
-const initialState = {
+const INITIAL_STATE = {
   token: null,
   isUserLoggedIn: false,
   error: null,
   email: null,  // signup is using it
-  verified: false
+  loading: false
 }
 
-function authenticate(state = initialState, action) {
+export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case VERIFICATION_STARTED:
+  case AUTH_STARTED:
     console.log('authenticate reducer:', action, state)
     return {
       ...state,
-      verified: false
+      loading: true
     }
   case LOGIN_SUCCESS:
     console.log('authenticate reducer action:', action)
@@ -34,7 +34,7 @@ function authenticate(state = initialState, action) {
       ...state,
       isUserLoggedIn: true,
       token: action.token,
-      verified: true,
+      loading: false,
       error: null
     }
   case SIGNUP_SUCCESS:
@@ -43,7 +43,7 @@ function authenticate(state = initialState, action) {
       ...state,
       error: null,
       email: action.email,
-      verified: true
+      loading: false
     }
   case LOGIN_FAILED:
   case SIGNUP_FAILED:
@@ -53,7 +53,7 @@ function authenticate(state = initialState, action) {
       isUserLoggedIn: false,
       token: null,
       error: action.error,
-      verified: true
+      loading: false
     }
   case LOGOUT:
   console.log('authenticate reducer:', action, state)
@@ -66,5 +66,3 @@ function authenticate(state = initialState, action) {
     return state
   }
 }
-
-export default authenticate

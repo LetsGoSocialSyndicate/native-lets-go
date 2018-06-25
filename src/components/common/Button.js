@@ -1,17 +1,26 @@
 import React from 'react'
 import { Text, TouchableOpacity } from 'react-native'
+import { Spinner } from './Spinner'
 
 const Button = ({ onPress, children }) => {
   const { buttonStyle, textStyle } = styles
   return (
     <TouchableOpacity
-      style={ buttonStyle }
-      onPress={ onPress }>
-      <Text style={ textStyle }>
+      style={buttonStyle}
+      onPress={onPress}
+    >
+      <Text style={textStyle}>
         { children }
       </Text>
     </TouchableOpacity>
   )
+}
+
+const LoadingButton = ({ loading, onPress, children }) => {
+  if (loading) {
+    return <Spinner size="large" />
+  }
+  return <Button onPress={onPress}>{children}</Button>
 }
 
 const styles = {
@@ -33,4 +42,4 @@ const styles = {
   }
 }
 
-export { Button }
+export { Button, LoadingButton }

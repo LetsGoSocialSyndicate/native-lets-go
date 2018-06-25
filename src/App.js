@@ -10,11 +10,11 @@ import reducers from './reducers'
 import Router from './Router'
 
 // TODO: Maybe move inside render if does not work from here.
-const store = createStore(reducers, {}, applyMiddleware(ReduxThunk))
 
 
 class App extends Component {
   render() {
+    const store = createStore(reducers, {}, applyMiddleware(ReduxThunk))
     return (
       <Provider store={store}>
         <Router />
