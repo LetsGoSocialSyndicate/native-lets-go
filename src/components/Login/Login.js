@@ -1,6 +1,4 @@
-/*
- * Copyright 2018, Socializing Syndicate Corp.
- */
+/* Copyright 2018, Socializing Syndicate Corp. */
 import React from 'react'
 import { View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
@@ -19,29 +17,19 @@ const Login = ({ loginAction }) => {
   const action = (fields) => onSubmit(loginAction, fields)
   return (
     <View>
-      <LoginForm onSubmit={action} />
       <Card>
-        <CardSection
-          // style={{
-          //   flex: 1,
-            // flexDirection: 'column',
-            // justifyContent: 'space-between'
-          // }}
-        >
-
-        <Button
-          onPress={Actions.signup}
-          // style={{ height: 50, backgroundColor: 'powderblue' }}
-        >
-          Signup
-        </Button>
-
-        <Button
-          onPress={Actions.forgotPassword}
-          // style={{ height: 50, backgroundColor: 'steelblue' }}
-        >
-          Forgot password
-        </Button>
+        <LoginForm onSubmit={action} />
+      </Card>
+      <Card>
+        <CardSection>
+          <Button onPress={Actions.signup}>
+            Signup
+          </Button>
+        </CardSection>
+        <CardSection>
+          <Button onPress={Actions.forgotPassword}>
+            Forgot password
+          </Button>
         </CardSection>
       </Card>
     </View>
