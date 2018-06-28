@@ -1,3 +1,6 @@
+/*
+ * Copyright 2018, Socializing Syndicate Corp.
+ */
 import React from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 import { Spinner } from './Spinner'

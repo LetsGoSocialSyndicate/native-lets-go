@@ -10,7 +10,8 @@ import {
   LOGOUT,
   SIGNUP_SUCCESS,
   SIGNUP_FAILED,
-  AUTH_STARTED
+  AUTH_STARTED,
+  RESET_ERROR
 } from './types'
 
 const loginSubmit = (fields) => {
@@ -50,7 +51,7 @@ const signupSubmit = (fields) => {
       console.log('signupSubmit response:', response.status, responseJSON)
       if (response.status === 200) {
         dispatch({ type: SIGNUP_SUCCESS, email: fields.email })
-        Actions.verifySignupCode()
+        Actions.verifySignup()
       } else {
         dispatch({ type: SIGNUP_FAILED, error: responseJSON.message })
       }
@@ -133,8 +134,20 @@ const sendCodeForPassword = (email, history) => {
 }
 
 const logout = () => {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({ type: LOGOUT })
+  }
+}
+
+const setSignupError = (error) => {
+  return (dispatch) => {
+    dispatch({ type: SIGNUP_FAILED, error })
+  }
+}
+
+const resetAuthError = () => {
+  return (dispatch) => {
+    dispatch({ type: RESET_ERROR })
   }
 }
 
@@ -144,5 +157,7 @@ export {
   verifyAccount,
   verifyCode,
   sendCodeForPassword,
-  logout
+  logout,
+  setSignupError,
+  resetAuthError
 }

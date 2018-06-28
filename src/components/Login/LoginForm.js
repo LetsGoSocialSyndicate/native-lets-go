@@ -2,7 +2,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import { Card, CardSection, Error, InputFormField, LoadingButton } from '../common'
+import { Card, CardSection, Error, TextInputFormField, LoadingButton } from '../common'
 
 const EMAIL_FIELD = 'email'
 const PASSWORD_FIELD = 'password'
@@ -11,18 +11,18 @@ const LoginForm = ({ handleSubmit, auth }) => {
   return (
     <Card>
       <CardSection>
-        <InputFormField
+        <TextInputFormField
           name={EMAIL_FIELD}
-          label="Email"
-          placeholder="email@gmail.com"
+          label='Email'
+          placeholder='email@gmail.com'
         />
       </CardSection>
       <CardSection>
-        <InputFormField
+        <TextInputFormField
           name={PASSWORD_FIELD}
           secureTextEntry
-          label="Password"
-          placeholder="password"
+          label='Password'
+          placeholder='password'
         />
       </CardSection>
       <Error error={auth.error} />

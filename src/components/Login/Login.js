@@ -6,14 +6,19 @@ import { connect } from 'react-redux'
 
 import { Button, Card, CardSection } from '../common'
 import LoginForm from './LoginForm'
-import { loginSubmit } from '../../actions/authAction'
+import { loginSubmit, resetAuthError } from '../../actions/authAction'
 
 const onSubmit = (action, fields) => {
   console.log('Login ON SUBMIT:', fields)
   action(fields)
 }
 
-const Login = ({ loginAction }) => {
+const navigate = (destination, resetError) => {
+  resetError()
+  Actions[destination].call()
+}
+
+const Login = ({ loginAction, resetError }) => {
   const action = (fields) => onSubmit(loginAction, fields)
   return (
     <View>
@@ -22,12 +27,12 @@ const Login = ({ loginAction }) => {
       </Card>
       <Card>
         <CardSection>
-          <Button onPress={Actions.signup}>
+          <Button onPress={() => navigate('signup', resetError)}>
             Signup
           </Button>
         </CardSection>
         <CardSection>
-          <Button onPress={Actions.forgotPassword}>
+          <Button onPress={() => navigate('forgotPassword', resetError)}>
             Forgot password
           </Button>
         </CardSection>
@@ -37,6 +42,7 @@ const Login = ({ loginAction }) => {
 }
 
 const actions = {
-  loginAction: loginSubmit
+  loginAction: loginSubmit,
+  resetError: resetAuthError
 }
 export default connect(null, actions)(Login)

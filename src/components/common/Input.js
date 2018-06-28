@@ -2,7 +2,7 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import React from 'react'
-import { TextInput, View, Text } from 'react-native'
+import { Picker, Text, TextInput, View } from 'react-native'
 import { Field } from 'redux-form'
 
 //If we want to use simple Input (without Redux form)
@@ -34,8 +34,19 @@ const renderTextInput = (props) => {
   return <TextInput onChangeText={input.onChange} {...rest} />
 }
 
+const renderPickerInput = (props) => {
+  //input is what we get from Field,
+  //...rest - all props from PickerInputFormField and parent components
+  const { input, chidlren, ...rest } = props
+  return (
+    <Picker onValueChange={input.onChange} {...rest}>
+      {chidlren}
+    </Picker>
+  )
+}
+
 //if we want to use Input with ReduxForm, we must use this one:
-const InputFormField = ({ name, label, placeholder, secureTextEntry }) => {
+const TextInputFormField = ({ name, label, placeholder, secureTextEntry }) => {
   const { inputStyle, labelStyle, containerStyle } = styles
   return (
     <View style={containerStyle}>
@@ -53,6 +64,20 @@ const InputFormField = ({ name, label, placeholder, secureTextEntry }) => {
   )
 }
 
+const PickerInputFormField = ({ name, label, defaultValue }) => {
+  const { pickerInputStyle, labelStyle, containerStyle } = styles
+  return (
+    <View style={containerStyle}>
+      <Text style={labelStyle}>{label}</Text>
+      <Field
+        component={renderPickerInput}
+        selectedValue={defaultValue}
+        name={name}
+        style={pickerInputStyle}
+      />
+    </View>
+  )
+}
 const styles = {
   inputStyle: {
     color: '#000',
@@ -61,6 +86,10 @@ const styles = {
     fontSize: 18,
     lineHeight: 23,
     flex: 2
+  },
+  pickerInputStyle: {
+    height: 50,
+    width: 100
   },
   labelStyle: {
     fontSize: 18,
@@ -75,4 +104,4 @@ const styles = {
   }
 }
 
-export { Input, InputFormField }
+export { Input, TextInputFormField, PickerInputFormField }
