@@ -10,11 +10,11 @@ const LandingScene = (props) => {
   const { LandingComponent, requiredLoginState, auth, ...rest } = props
   console.log('requiredLoginState', auth.isUserLoggedIn, requiredLoginState)
   if (auth.isUserLoggedIn && !requiredLoginState) {
-    Actions.eventFeeds()
+    Actions.eventFeeds({ type: 'reset' })
     return null
   }
   if (!auth.isUserLoggedIn && requiredLoginState) {
-    Actions.login()
+    Actions.login({ type: 'reset' })
     return null
   }
   return <LandingComponent {...rest} />

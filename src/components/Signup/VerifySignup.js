@@ -8,7 +8,7 @@
  import { Card, CardSection } from '../common'
  import VerifySignupForm, { VERIFICATION_CODE } from './VerifySignupForm'
 
- const VerifySignup = ({ auth }) => {
+ const VerifySignup = ({ auth, verifyCodeAction }) => {
    if (!auth.email) {
      return (
        <Card>
@@ -18,7 +18,7 @@
        </Card>
      )
    }
-   const action = (fields) => verifyCode(fields[VERIFICATION_CODE], auth.email)
+   const action = (fields) => verifyCodeAction(fields[VERIFICATION_CODE], auth.email)
    return (
      <Card>
        <CardSection>
@@ -34,4 +34,7 @@
      auth: state.auth
    }
  }
- export default connect(mapStateToProps)(VerifySignup)
+ const actions = {
+   verifyCodeAction: verifyCode,
+ }
+ export default connect(mapStateToProps, actions)(VerifySignup)

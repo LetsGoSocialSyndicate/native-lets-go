@@ -18,6 +18,7 @@ const validate = (fields) => {
 }
 
 const onSubmit = (action, errorAction, fields) => {
+  console.log('onSubmit:', fields)
   const error = validate(fields)
   if (error) {
     errorAction(error)

@@ -34,9 +34,7 @@ export default (state = INITIAL_STATE, action) => {
       error: null
     }
   case LOGIN_SUCCESS:
-    console.log('authenticate reducer action:', action)
-    console.log('authenticate reducer state:', state)
-
+    console.log('authenticate reducer:', action, state)
     return {
       ...state,
       isUserLoggedIn: true,

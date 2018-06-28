@@ -102,7 +102,6 @@ const verifyCode = (code, email, password = null) => {
         })
         dispatch({ type: LOGIN_SUCCESS, token: responseJSON.token })
       } else {
-        console.log(responseJSON.message)
         dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
       }
     } catch (error) {
@@ -111,22 +110,22 @@ const verifyCode = (code, email, password = null) => {
   }
 }
 
-const sendCodeForPassword = (email, history) => {
+const sendCodeForPassword = (email) => {
   return async (dispatch) => {
     dispatch({ type: AUTH_STARTED })
     const url = `${REACT_APP_API_URL}/login/code_for_pswd`
     const opts = getRequestOptions('POST', null, { email })
     try {
-    const response = await fetch(url, opts)
-    const responseJSON = await response.json()
-    console.log('sendCodeForPassword:response:', response.status, responseJSON)
-    // SIGNUP_SUCCESS/SIGNUP_FAILED actions can be reused in this case too.
-    if (response.status === 200) {
-      dispatch({ type: SIGNUP_SUCCESS, email })
-      history.push('/login/new_password')
-    } else {
-      dispatch({ type: SIGNUP_FAILED, error: responseJSON.message })
-    }
+      const response = await fetch(url, opts)
+      const responseJSON = await response.json()
+      console.log('sendCodeForPassword:response:', response.status, responseJSON)
+      // SIGNUP_SUCCESS/SIGNUP_FAILED actions can be reused in this case too.
+      if (response.status === 200) {
+        dispatch({ type: SIGNUP_SUCCESS, email })
+        Actions.newPassword()
+      } else {
+        dispatch({ type: SIGNUP_FAILED, error: responseJSON.message })
+      }
     } catch (error) {
       dispatch({ type: SIGNUP_FAILED, error: error.message })
     }

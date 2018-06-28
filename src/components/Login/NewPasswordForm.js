@@ -7,14 +7,30 @@ import { connect } from 'react-redux'
 import { Card, CardSection, Error, TextInputFormField, LoadingButton } from '../common'
 
 export const VERIFICATION_CODE = 'VERIFICATION_CODE'
+export const PASSWORD_FIELD = 'password'
+export const PASSWORD2_FIELD = 'confirmPassword'
 
-const VerifySignupForm = ({ handleSubmit, auth }) => {
+const NewPasswordForm = ({ handleSubmit, auth }) => {
    return (
      <Card>
        <CardSection>
           <TextInputFormField
             name={VERIFICATION_CODE}
             label='Verification Code'
+          />
+       </CardSection>
+       <CardSection>
+          <TextInputFormField
+            name={PASSWORD_FIELD}
+            secureTextEntry
+            label='Password'
+          />
+       </CardSection>
+       <CardSection>
+          <TextInputFormField
+            name={PASSWORD2_FIELD}
+            secureTextEntry
+            label='Confirm password'
           />
        </CardSection>
        <Error error={auth.error} />
@@ -30,4 +46,4 @@ const VerifySignupForm = ({ handleSubmit, auth }) => {
   const mapStateToProps = (state) => {
     return { auth: state.auth }
   }
-  export default connect(mapStateToProps)(reduxForm({ form: 'verifySignup' })(VerifySignupForm))
+  export default connect(mapStateToProps)(reduxForm({ form: 'newPassword' })(NewPasswordForm))
