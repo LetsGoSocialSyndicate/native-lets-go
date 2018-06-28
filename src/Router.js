@@ -46,7 +46,7 @@ const RouterComponent = ({ resetError }) => {
           title='Signup'
           // Have to override onLeft in order for onBack to work.
           onLeft={() => {}}
-           onBack={() => backButton(resetError)}
+          onBack={() => backButton(resetError)}
         />
         <Scene
           key='verifySignup'
