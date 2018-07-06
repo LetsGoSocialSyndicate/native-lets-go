@@ -5,10 +5,10 @@ import moment from 'moment'
 import React from 'react'
 import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
+import { DATE_FORMAT } from '../common/Constants'
 import {
   Card,
   CardSection,
-  DATE_FORMAT,
   DatePickerInputFormField,
   Error,
   LoadingButton,
@@ -77,7 +77,10 @@ import {
            label='Confirm password'
          />
       </CardSection>
-      <Error error={auth.error} />
+      <Error
+        style={styles.errorTextStyle}
+        error={auth.error}
+      />
       <CardSection>
         <LoadingButton loading={auth.loading} onPress={handleSubmit}>
           Signup
@@ -85,6 +88,14 @@ import {
       </CardSection>
     </Card>
    )
+ }
+
+ const styles = {
+   errorTextStyle: {
+     fontSize: 20,
+     alignSelf: 'center',
+     color: 'red'
+   }
  }
 
  const mapStateToProps = (state) => {

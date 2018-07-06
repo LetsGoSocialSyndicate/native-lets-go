@@ -2,16 +2,30 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
  import React from 'react'
-import { View, Text } from 'react-native'
+ import { Actions } from 'react-native-router-flux'
+ import { connect } from 'react-redux'
 
-const EventFeeds = () => {
+ import { Button, Card, CardSection } from '../common'
+ import { logout } from '../../actions/authAction'
+
+const EventFeeds = ({ logoutAction }) => {
   return (
-    <View>
-    <Text>
-      Placeholder for EventFeeds
-    </Text>
-    </View>
+    <Card>
+      <CardSection>
+        <Button onPress={() => Actions.profile({ forOtherUser: false })}>
+          Profile
+        </Button>
+      </CardSection>
+      <CardSection>
+        <Button onPress={logoutAction}>
+          Logout
+        </Button>
+      </CardSection>
+    </Card>
   )
 }
 
-export { EventFeeds }
+const actions = {
+  logoutAction: logout,
+}
+export default connect(null, actions)(EventFeeds)

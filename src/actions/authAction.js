@@ -1,18 +1,23 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
-import { REACT_APP_API_URL } from 'react-native-dotenv'
+// import { REACT_APP_API_URL } from 'react-native-dotenv'
 import { Actions } from 'react-native-router-flux'
+
 import { getRequestOptions } from './actionUtils'
 
 import {
   FETCH_USER,
+  RESET_USER,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   LOGOUT,
   SIGNUP_SUCCESS,
   SIGNUP_FAILED,
   AUTH_STARTED,
-  RESET_ERROR
+  RESET_AUTH_ERROR
 } from './types'
+
+// TODO: Temporary, instead react-native-dotenv
+const REACT_APP_API_URL = 'http://localhost:8000'
 
 const loginSubmit = (fields) => {
   return async (dispatch) => {
@@ -31,6 +36,7 @@ const loginSubmit = (fields) => {
           isOtherUser: false
         })
         dispatch({ type: LOGIN_SUCCESS, token: responseJSON.token })
+        Actions.eventFeeds({ type: 'reset' })
       } else {
         dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
       }
@@ -76,6 +82,7 @@ const verifyAccount = (token, route) => {
         isOtherUser: false
       })
       dispatch({ type: LOGIN_SUCCESS, token: responseJSON.token })
+      Actions.eventFeeds({ type: 'reset' })
     } else {
       dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
     }
@@ -101,6 +108,7 @@ const verifyCode = (code, email, password = null) => {
           isOtherUser: false
         })
         dispatch({ type: LOGIN_SUCCESS, token: responseJSON.token })
+        Actions.eventFeeds({ type: 'reset' })
       } else {
         dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
       }
@@ -135,6 +143,8 @@ const sendCodeForPassword = (email) => {
 const logout = () => {
   return (dispatch) => {
     dispatch({ type: LOGOUT })
+    dispatch({ type: RESET_USER })
+    Actions.login({ type: 'reset' })
   }
 }
 
@@ -146,7 +156,7 @@ const setSignupError = (error) => {
 
 const resetAuthError = () => {
   return (dispatch) => {
-    dispatch({ type: RESET_ERROR })
+    dispatch({ type: RESET_AUTH_ERROR })
   }
 }
 

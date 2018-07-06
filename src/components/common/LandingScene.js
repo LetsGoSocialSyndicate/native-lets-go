@@ -2,20 +2,20 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import React from 'react'
-import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
+
+import EventFeeds from '../Events/EventFeeds'
+import Login from '../Login/Login'
 
 const LandingScene = (props) => {
   // This is weird, but LandingComponent has to be capitalized!!!
   const { LandingComponent, requiredLoginState, auth, ...rest } = props
   console.log('requiredLoginState', auth.isUserLoggedIn, requiredLoginState)
   if (auth.isUserLoggedIn && !requiredLoginState) {
-    Actions.eventFeeds({ type: 'reset' })
-    return null
+    return <EventFeeds {...rest} />
   }
   if (!auth.isUserLoggedIn && requiredLoginState) {
-    Actions.login({ type: 'reset' })
-    return null
+    return <Login {...rest} />
   }
   return <LandingComponent {...rest} />
 }

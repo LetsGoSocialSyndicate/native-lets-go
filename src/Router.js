@@ -9,10 +9,11 @@ import {
   LoggedInLandingScene,
   LoggedOutLandingScene
 } from './components/common/LandingScene'
-import { EventFeeds } from './components/Events/EventFeeds'
+import EventFeeds from './components/Events/EventFeeds'
 import ForgotPassword from './components/Login/ForgotPassword'
 import NewPassword from './components/Login/NewPassword'
 import Login from './components/Login/Login'
+import Profile from './components/Profile/Profile'
 import Signup from './components/Signup/Signup'
 import VerifySignup from './components/Signup/VerifySignup'
 
@@ -26,18 +27,17 @@ const RouterComponent = ({ resetError }) => {
     <Router>
       <Scene key='root'>
         <Scene
-          key='eventFeeds'
-          component={LoggedInLandingScene}
-          LandingComponent={EventFeeds}
-          title='Feeds'
-          initial
-        />
-        <Scene
           key='login'
           component={LoggedOutLandingScene}
           LandingComponent={Login}
           title='Please Login'
           initial
+        />
+        <Scene
+          key='eventFeeds'
+          component={LoggedInLandingScene}
+          LandingComponent={EventFeeds}
+          title='Feeds'
         />
         <Scene
           key='signup'
@@ -71,6 +71,12 @@ const RouterComponent = ({ resetError }) => {
           title='New Password'
           onLeft={() => {}}
           onBack={() => backButton(resetError)}
+        />
+        <Scene
+          key='profile'
+          component={LoggedInLandingScene}
+          LandingComponent={Profile}
+          title='Profile'
         />
       </Scene>
     </Router>

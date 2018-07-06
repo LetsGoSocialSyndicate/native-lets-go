@@ -8,7 +8,7 @@ import {
   SIGNUP_FAILED,
   SIGNUP_SUCCESS,
   AUTH_STARTED,
-  RESET_ERROR
+  RESET_AUTH_ERROR
 } from '../actions/types'
 
 const INITIAL_STATE = {
@@ -25,9 +25,10 @@ export default (state = INITIAL_STATE, action) => {
     console.log('authenticate reducer:', action, state)
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
-  case RESET_ERROR:
+  case RESET_AUTH_ERROR:
     console.log('authenticate reducer:', action, state)
     return {
       ...state,
