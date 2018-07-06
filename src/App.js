@@ -9,9 +9,6 @@ import ReduxThunk from 'redux-thunk'
 import reducers from './reducers'
 import Router from './Router'
 
-// TODO: Maybe move inside render if does not work from here.
-
-
 class App extends Component {
   render() {
     const store = createStore(reducers, {}, applyMiddleware(ReduxThunk))

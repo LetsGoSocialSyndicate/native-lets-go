@@ -1,12 +1,14 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
 import React from 'react'
-import { View } from 'react-native'
+import { View, ImageBackground } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 
 import { Button, Card, CardSection } from '../common'
 import LoginForm from './LoginForm'
 import { loginSubmit, resetAuthError } from '../../actions/authAction'
+
+const bg = require('./bg.png')
 
 const onSubmit = (action, fields) => {
   console.log('Login ON SUBMIT:', fields)
@@ -22,6 +24,10 @@ const Login = ({ loginAction, resetError }) => {
   const action = (fields) => onSubmit(loginAction, fields)
   return (
     <View>
+      <ImageBackground
+        source={bg}
+        style={{ width: '100%', height: '100%' }}
+      >
       <Card>
         <LoginForm onSubmit={action} />
       </Card>
@@ -37,6 +43,7 @@ const Login = ({ loginAction, resetError }) => {
           </Button>
         </CardSection>
       </Card>
+      </ImageBackground>
     </View>
   )
 }

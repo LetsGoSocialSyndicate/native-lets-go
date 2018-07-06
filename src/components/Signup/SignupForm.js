@@ -78,7 +78,6 @@ import {
          />
       </CardSection>
       <Error
-        style={styles.errorTextStyle}
         error={auth.error}
       />
       <CardSection>
@@ -88,14 +87,6 @@ import {
       </CardSection>
     </Card>
    )
- }
-
- const styles = {
-   errorTextStyle: {
-     fontSize: 20,
-     alignSelf: 'center',
-     color: 'red'
-   }
  }
 
  const mapStateToProps = (state) => {
