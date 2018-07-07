@@ -6,7 +6,7 @@ const getRequestOptions = (method, token, body = null) => {
     method,
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      Accept: 'application/json',
     }
   }
   if (body) {

@@ -26,7 +26,7 @@ const loginSubmit = (fields) => {
     const url = `${REACT_APP_API_URL}/login`
     const opts = getRequestOptions('POST', null, fields)
     try {
-      const response = await fetch(url, opts)
+      const response = await fetch(url, opts) // eslint-disable-line no-undef
       const responseJSON = await response.json()
       console.log('loginSubmit response:', response.status, responseJSON)
       if (response.status === 200) {
@@ -52,7 +52,7 @@ const signupSubmit = (fields) => {
     const url = `${REACT_APP_API_URL}/signup`
     const opts = getRequestOptions('POST', null, fields)
     try {
-      const response = await fetch(url, opts)
+      const response = await fetch(url, opts) // eslint-disable-line no-undef
       const responseJSON = await response.json()
       console.log('signupSubmit response:', response.status, responseJSON)
       if (response.status === 200) {
@@ -72,7 +72,7 @@ const verifyAccount = (token, route) => {
     dispatch({ type: AUTH_STARTED })
     const url = `${REACT_APP_API_URL}${route}/${token}`
     try {
-    const response = await fetch(url)
+    const response = await fetch(url) // eslint-disable-line no-undef
     const responseJSON = await response.json()
     console.log('verifyAccount response:', response.status, responseJSON)
     if (response.status === 200) {
@@ -98,7 +98,7 @@ const verifyCode = (code, email, password = null) => {
     const url = `${REACT_APP_API_URL}/signup/${code}`
     const opts = getRequestOptions('PATCH', null, { email, password })
     try {
-      const response = await fetch(url, opts)
+      const response = await fetch(url, opts) // eslint-disable-line no-undef
       const responseJSON = await response.json()
       console.log('verifyCode response:', response.status, responseJSON)
       if (response.status === 200) {
@@ -124,7 +124,7 @@ const sendCodeForPassword = (email) => {
     const url = `${REACT_APP_API_URL}/login/code_for_pswd`
     const opts = getRequestOptions('POST', null, { email })
     try {
-      const response = await fetch(url, opts)
+      const response = await fetch(url, opts) // eslint-disable-line no-undef
       const responseJSON = await response.json()
       console.log('sendCodeForPassword:response:', response.status, responseJSON)
       // SIGNUP_SUCCESS/SIGNUP_FAILED actions can be reused in this case too.
