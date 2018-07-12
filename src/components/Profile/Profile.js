@@ -6,6 +6,7 @@ import { showImagePicker } from 'react-native-image-picker'
 import { connect } from 'react-redux'
 
 import { Button, Card, CardSection, LoadingButton } from '../common'
+import { IMAGE_OP_NONE, IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
 import {
   cancelEditing,
   startEditing,
@@ -22,6 +23,18 @@ const isReadOnly = (props) => {
   return props.forOtherUser || props.user.isReadOnly
 }
 
+const getUserpic = (user) => {
+  return user && 'images' in user && user.images.length > 0
+    ? user.images[0].image_url
+    : ''
+}
+
+const getUserpicId = (user) => {
+  return user && 'images' in user && user.images.length > 0
+    ? user.images[0].id
+    : null
+}
+
 const LoadingImageButton = ({ loading, readOnly, onPress, imageUrl }) => {
   if (loading) {
     return (
@@ -31,10 +44,11 @@ const LoadingImageButton = ({ loading, readOnly, onPress, imageUrl }) => {
     )
   }
   const imageStyle = readOnly ? styles.imageReadOnly : styles.image
+  const source = imageUrl ? { uri: imageUrl } : null
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.layoutView}>
-        <Image style={imageStyle} source={{ uri: imageUrl }} />
+        <Image style={imageStyle} source={source} />
       </View>
     </TouchableOpacity>
   )
@@ -42,14 +56,20 @@ const LoadingImageButton = ({ loading, readOnly, onPress, imageUrl }) => {
 
 class Profile extends Component {
   state = {
+    // Currently shown (possibly modified) profile details in UI.
     user: {},
+    // Currently shown profile userpic in UI.
     currentImageUrl: '',
-    imageLoading: false
+    // Transient state of loading image to UI.
+    imageLoading: false,
+    // Inidicates if profile userpic need to be deleted/added/updated on server
+    profileImageOp: IMAGE_OP_NONE
   }
 
   componentDidMount() {
+    console.log('Profile.componentDidMount', this.state)
     const user = getUser(this.props)
-    this.setState({ user, currentImageUrl: user.image_url })
+    this.setState({ user, currentImageUrl: getUserpic(user) })
   }
 
   constructEditButton() {
@@ -62,21 +82,45 @@ class Profile extends Component {
     )
   }
 
-  constructSaveCancelButtons(user) {
+  buildImageRequest() {
+    // For now returning array of 1 - we allow only 1 profile userpic
+    return [{
+       op: this.state.profileImageOp,
+       id: getUserpicId(this.state.user),
+       image_url: this.state.currentImageUrl
+    }]
+  }
+
+  constructSaveCancelButtons() {
+    const originalUser = getUser(this.props)
     const onSave = () => {
-      // TODO: Need to get here url from cloudinary.
-      //       Maybe first to upload image to cloudinary and then patch
-      //       this.state.user with the url
-      const updatedUser = {
-        ...this.state.user,
-        image_url: this.state.currentImageUrl
+      let imageRequest = []
+      if (this.state.profileImageOp !== IMAGE_OP_NONE) {
+        imageRequest = this.buildImageRequest()
       }
       this.props.updateProfileAction(
-        updatedUser, user, this.props.auth.token)
+        this.state.user, originalUser.id, this.props.auth.token, imageRequest)
+      .then(() => {
+        // After the server update completes we need to update
+        // internal state with fetched user data.
+        const updatedUser = getUser(this.props)
+        this.setState({
+          ...this.state,
+          user: updatedUser,
+          currentImageUrl: getUserpic(updatedUser),
+          profileImageOp: IMAGE_OP_NONE
+        })
+      })
     }
     const onCancel = () => {
       this.props.cancelEditingAction()
-      this.setState({ ...this.state, user, currentImageUrl: user.image_url })
+      // Revert state back to original settings.
+      this.setState({
+        ...this.state,
+        user: originalUser,
+        currentImageUrl: getUserpic(originalUser),
+        profileImageOp: IMAGE_OP_NONE
+      })
     }
     return (
       <CardSection>
@@ -93,10 +137,13 @@ class Profile extends Component {
   selectImage() {
     this.setState({ ...this.state, imageLoading: true })
     showImagePicker({}, (response) => {
+      // Profile userpic was modified - added or updated.
+      const op = getUserpicId(this.state.user) ? IMAGE_OP_UPDATE : IMAGE_OP_ADD
       this.setState({
         ...this.state,
         imageLoading: false,
-        currentImageUrl: response.uri
+        currentImageUrl: response.uri,
+        profileImageOp: op
       })
     })
   }
@@ -107,7 +154,10 @@ class Profile extends Component {
 
   render() {
     console.log('Profile.render', this.state)
-    const user = getUser(this.props)
+    if (Object.keys(this.state.user).length === 0) {
+      return <Card />
+    }
+    const user = this.state.user
     const readOnly = isReadOnly(this.props)
     const lastName = user.last_name.charAt(0)
     const age = moment.duration(moment().diff(user.birthday)).years()
@@ -118,14 +168,9 @@ class Profile extends Component {
       if (readOnly) {
         buttons = this.constructEditButton()
       } else {
-        buttons = this.constructSaveCancelButtons(user)
+        buttons = this.constructSaveCancelButtons()
       }
     }
-
-    // TODO: Instead patching, verify it is https.
-    const imageUrl = this.state.currentImageUrl
-      ? this.state.currentImageUrl.replace('http:', 'https:')
-      : ''
 
     return (
       <Card>
@@ -133,7 +178,7 @@ class Profile extends Component {
           loading={this.state.imageLoading}
           readOnly={readOnly}
           onPress={onImagePress}
-          imageUrl={imageUrl}
+          imageUrl={this.state.currentImageUrl}
         />
         <View style={styles.layoutView}>
           <Text>{user.first_name} {lastName}, {age}</Text>
@@ -141,7 +186,7 @@ class Profile extends Component {
         <View style={styles.layoutView}>
           <TextInput
             style={styles.textInputStyle}
-            value={this.state.user.about}
+            value={user.about}
             editable={!readOnly}
             multiline
             numberOfLines={5}
@@ -187,6 +232,6 @@ const actions = {
   cancelEditingAction: cancelEditing,
   // fetchOtherUserAction: fetchOtherUser,
   startEditingAction: startEditing,
-  updateProfileAction: updateProfile
+  updateProfileAction: updateProfile,
 }
 export default connect(mapStateToProps, actions)(Profile)
