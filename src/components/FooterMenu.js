@@ -2,16 +2,22 @@ import React, { Component } from 'react'
 import { Footer, FooterTab } from 'native-base'
 import IconMenu from './common/IconMenu'
 
+const homeImage = require('../assets/menus/Home_Icon.png')
+const addEventImage = require('../assets/menus/Add_Event_Icon.png')
+const myEventsImage = require('../assets/menus/My_Events_Icon.png')
+const myMessagesImage = require('../assets/menus/My_Messages_Icon.png')
+const myProfileImage = require('../assets/menus/My_Profile_Icon.png')
+
 class FooterMenu extends Component {
   render() {
     return (
       <Footer style={{ height: 70, backgroundColor: 'transparent' }}>
         <FooterTab>
-          <IconMenu imageSource='https://res.cloudinary.com/drf6ttx34/image/upload/v1530996064/App%20Icons/Home_Icon.png' />
-          <IconMenu imageSource='https://res.cloudinary.com/drf6ttx34/image/upload/v1530996065/App%20Icons/Add_Event_Icon.png' />
-          <IconMenu imageSource='https://res.cloudinary.com/drf6ttx34/image/upload/v1530996063/App%20Icons/My_Events_Icon.png' />
-          <IconMenu imageSource='https://res.cloudinary.com/drf6ttx34/image/upload/v1530996065/App%20Icons/My_Messages_Icon.png' />
-          <IconMenu imageSource='https://res.cloudinary.com/drf6ttx34/image/upload/v1530996065/App%20Icons/My_Profile_Icon.png' />
+          <IconMenu source={ homeImage } />
+          <IconMenu source={ addEventImage } />
+          <IconMenu source={ myEventsImage } />
+          <IconMenu source={ myMessagesImage } />
+          <IconMenu source={ myProfileImage } />
         </FooterTab>
       </Footer>
     )
