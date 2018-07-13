@@ -58,13 +58,11 @@ import {
        <DatePickerInputFormField
          name={BIRTHDAY_FIELD}
          label='Birthday'
-         placeholder='18+'
+         placeholder='Please select...'
          maxDate={moment().utc().subtract(18, 'years').format(DATE_FORMAT)}
        />
       </Item>
-      <Item
-        // style={PickerInputFormFieldStyle}
-      >
+      <Item>
         <PickerInputFormField
           name={GENDER_FIELD}
           label='Gender'
@@ -99,6 +97,8 @@ import {
         loading={auth.loading}
         onPress={handleSubmit}
         style={buttonSubmitStyle}
+        block
+        rounded
       >
         <Text style={textStyleSubmit}>
           sign up
@@ -114,9 +114,8 @@ import {
      marginLeft: 10,
      marginRight: 10,
      marginBottom: 20,
-     backgroundColor: 'gray',
+     backgroundColor: '#4380B0',
      alignSelf: 'center',
-
    },
    textStyleSubmit: {
      letterSpacing: 3,
@@ -125,10 +124,6 @@ import {
      marginTop: 35,
      height: 60
    },
-   PickerInputFormFieldStyle: {
-     width: 300,
-
-   }
  }
 
  const mapStateToProps = (state) => {

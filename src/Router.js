@@ -79,6 +79,7 @@ const RouterComponent = ({ resetError }) => {
         />
         <Scene
           key='profile'
+          hideNavBar='true'
           component={LoggedInLandingScene}
           LandingComponent={Profile}
           title='Profile'

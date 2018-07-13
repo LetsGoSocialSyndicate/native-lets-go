@@ -4,8 +4,12 @@ import React, { Component } from 'react'
 import { ActivityIndicator, Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { showImagePicker } from 'react-native-image-picker'
 import { connect } from 'react-redux'
+import {
 
-import { Button, Card, CardSection, LoadingButton } from '../common'
+  Button,
+
+} from 'native-base'
+import { Card, CardSection, LoadingButton } from '../common'
 import { IMAGE_OP_NONE, IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
 import {
   cancelEditing,
@@ -124,9 +128,11 @@ class Profile extends Component {
     }
     return (
       <CardSection>
-        <LoadingButton loading={this.props.user.updating} onPress={onSave}>
+        <Button onPress={onSave}>
+        {/* <LoadingButton loading={this.props.user.updating} onPress={onSave}> */}
           Save
-        </LoadingButton>
+        {/* </LoadingButton> */}
+        </Button>
         <Button onPress={onCancel}>
           Cancel
         </Button>
@@ -213,10 +219,14 @@ const styles = {
     borderWidth: 5,
   },
   layoutView: {
-     justifyContent: 'center',
-     alignItems: 'center'
-   },
+    marginTop: 50,
+    marginBottom: 50,
+
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
    textInputStyle: {
+     marginTop: 150,
      borderColor: 'gray',
      borderWidth: 1,
      height: 40,
