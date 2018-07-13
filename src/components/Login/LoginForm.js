@@ -7,7 +7,6 @@ import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import {
   Item,
-  // Input,
   Form,
   Icon,
   Button,
@@ -36,23 +35,25 @@ const initialValues = () => {
   }
   : {}
 }
+
 const LoginForm = ({ handleSubmit, auth }) => {
   const {
     buttonSubmitStyle,
     textStyleSubmit,
-    formStyle
+    formStyle,
+    itemStyle
   } = styles
 
   return (
     <Form style={formStyle}>
-      <Item>
+      <Item style={itemStyle}>
         <Icon active name='lock' />
         <TextInputFormField
           name={EMAIL_FIELD}
           placeholder='email'
         />
       </Item>
-      <Item>
+      <Item style={itemStyle}>
         <Icon active name='lock' />
         <TextInputFormField
           name={PASSWORD_FIELD}
@@ -64,10 +65,9 @@ const LoginForm = ({ handleSubmit, auth }) => {
 
       {/* TODO: need to add loading functionality: */}
       <Button
-        //loading={auth.loading}
+        // loading={auth.loading}
         onPress={handleSubmit}
         style={buttonSubmitStyle}
-        large
         block
         rounded
       >
@@ -81,11 +81,11 @@ const LoginForm = ({ handleSubmit, auth }) => {
 
 const styles = {
   buttonSubmitStyle: {
-    marginTop: 25,
-    marginBottom: 80,
+    marginTop: 20,
+    marginBottom: 70,
     paddingLeft: 10,
     paddingRight: 10,
-    backgroundColor: 'gray',
+    backgroundColor: '#4380B0',
     alignSelf: 'center',
   },
   textStyleSubmit: {
@@ -93,6 +93,11 @@ const styles = {
   },
   formStyle: {
     height: 30
+  },
+  itemStyle: {
+    marginLeft: 50,
+    marginRight: 50,
+    marginTop: 10
   }
 }
 

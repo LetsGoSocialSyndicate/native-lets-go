@@ -73,16 +73,19 @@ const renderDatePickerInput = (props) => {
        format={DATE_FORMAT}
        confirmBtnText='Confirm'
        cancelBtnText='Cancel'
+       showIcon={false}
        style={datePickerStyle}
        customStyles={{
-          dateIcon: {
-            // position: 'absolute',
-            right: 0,
-            // top: 4,
-            marginLeft: 10
-          },
+          // dateIcon: {
+          //   right: 0,
+          //   marginLeft: 10
+          // },
           dateInput: {
             borderWidth: 0
+          },
+          placeholderText: {
+            fontSize: 18,
+            color: 'black'
           }
         }}
        {...rest}
@@ -102,6 +105,7 @@ const TextInputFormField = ({ name, label, placeholder, secureTextEntry }) => {
         name={name}
         secureTextEntry={secureTextEntry}
         placeholder={placeholder}
+        placeholderTextColor='white'
         autoCorrect={false}
         autoCapitalize='none'
         style={inputStyle}
@@ -169,7 +173,7 @@ const styles = {
   dropdownText: {
     fontSize: 18,
     marginRight: 120,
-    color: 'black',
+    color: 'white',
     marginVertical: 10,
     marginHorizontal: 6,
     textAlign: 'center',
@@ -183,8 +187,14 @@ const styles = {
     borderRadius: 5,
   },
   datePickerStyle: {
-    marginRight: 90,
+    marginRight: 80,
     width: 200,
+    // fontSize: 18,
+    // color: 'black',
+    // marginVertical: 10,
+    // marginHorizontal: 6,
+    // textAlign: 'center',
+    // textAlignVertical: 'center',
   },
   pickerInputStyle1: {
 

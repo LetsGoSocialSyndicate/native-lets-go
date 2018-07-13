@@ -2,17 +2,11 @@
 import React from 'react'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
-import { reduxForm } from 'redux-form'
+import { Image } from 'react-native'
 import {
   Container,
-  Item,
-  Input,
-  Form,
-  Icon,
   Button,
-  Text,
-  Title,
-  H1
+  Text
 } from 'native-base'
 import {
   loginSubmit,
@@ -29,6 +23,7 @@ const navigate = (destination, resetError) => {
   resetError()
   Actions[destination].call()
 }
+const loginTitleImage = require('../../assets/loginTitle.png')
 
 const Login = ({ loginAction, resetError }) => {
   const action = (fields) => onSubmit(loginAction, fields)
@@ -37,14 +32,19 @@ const Login = ({ loginAction, resetError }) => {
     titleStyle,
     containerStyle,
     signupAndForgotStyle,
-    signupAndForgotTextStyle
+    signupAndForgotTextStyle,
+    titleContainerStyle
   } = styles
 
   return (
     <Container style={containerStyle}>
-      <Title style={titleStyle}>
-        LOG IN
-      </Title>
+      <Container style={titleContainerStyle}>
+        <Image
+          source={loginTitleImage}
+          style={titleStyle}
+        />
+      </Container>
+
 
       <LoginForm onSubmit={action} />
 
@@ -57,7 +57,7 @@ const Login = ({ loginAction, resetError }) => {
           onPress={() => navigate('forgotPassword', resetError)}
         >
           <Text style={signupAndForgotTextStyle}>
-            Forgot password?
+            forgot password?
           </Text>
         </Button>
         <Button
@@ -68,7 +68,7 @@ const Login = ({ loginAction, resetError }) => {
           onPress={() => navigate('signup', resetError)}
         >
           <Text style={signupAndForgotTextStyle}>
-            Signup
+            signup
           </Text>
         </Button>
       </Container>
@@ -77,27 +77,31 @@ const Login = ({ loginAction, resetError }) => {
 }
 const styles = {
   containerStyle: {
-    // width: '100%',
-    // height: '100%',
     backgroundColor: 'transparent'
   },
   buttonsContainer: {
-    marginLeft: 25,
-    marginRight: 25,
-    marginTop: 250
+    marginLeft: 80,
+    marginRight: 80,
+    marginTop: 200
   },
   signupAndForgotStyle: {
     marginBottom: 15,
     borderColor: 'white',
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   signupAndForgotTextStyle: {
     color: 'white',
-    letterSpacing: 3,
+    letterSpacing: 2,
   },
   titleStyle: {
-    marginTop: 50,
-    height: 50,
-    color: 'white'
+    width: null,
+    resizeMode: 'contain',
+    height: 40
+  },
+  titleContainerStyle: {
+    marginTop: 100,
+    marginBottom: 60,
   }
 }
 
