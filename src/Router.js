@@ -12,8 +12,10 @@ import {
 import EventFeeds from './components/Events/EventFeeds'
 import ForgotPassword from './components/Login/ForgotPassword'
 import NewPassword from './components/Login/NewPassword'
-import LoginGood from './components/Login/LoginGood'
-// import Login from './components/Login/Login'
+// import LoginGood from './components/Login/LoginGood'
+// import SignupGood from './components/Login/SignupGood'
+
+import Login from './components/Login/Login'
 import Profile from './components/Profile/Profile'
 import Signup from './components/Signup/Signup'
 import VerifySignup from './components/Signup/VerifySignup'
@@ -31,7 +33,7 @@ const RouterComponent = ({ resetError }) => {
           key='login'
           hideNavBar='true'
           component={LoggedOutLandingScene}
-          LandingComponent={LoginGood}
+          LandingComponent={Login}
           // title='Please Login'
           initial
         />
@@ -43,6 +45,7 @@ const RouterComponent = ({ resetError }) => {
         />
         <Scene
           key='signup'
+          hideNavBar='true'
           component={LoggedOutLandingScene}
           LandingComponent={Signup}
           title='Signup'

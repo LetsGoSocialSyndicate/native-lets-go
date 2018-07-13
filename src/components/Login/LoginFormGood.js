@@ -29,7 +29,7 @@ const initialValues = () => {
   : {}
 }
 
-const LoginForm = ({ handleSubmit, auth }) => {
+const LoginFormGood = ({ handleSubmit, auth }) => {
   return (
     <Card>
       <CardSection>
@@ -62,4 +62,4 @@ const mapStateToProps = (state) => {
 }
 export default connect(mapStateToProps)(reduxForm({
   form: 'login', initialValues: initialValues()
-})(LoginForm))
+})(LoginFormGood))
