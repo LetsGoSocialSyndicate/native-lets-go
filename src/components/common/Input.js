@@ -8,17 +8,6 @@ import ModalDropdown from 'react-native-modal-dropdown'
 import { Field } from 'redux-form'
 import { DATE_FORMAT } from './Constants'
 
-// import {
-//   AppRegistry,
-//   StyleSheet,
-//   Text,
-//   View,
-//   Image,
-//   TouchableOpacity,
-//   TouchableHighlight,
-//   ScrollView,
-// } from 'react-native'
-
 //If we want to use simple Input (without Redux form)
 const Input = ({ label, value, onChangeText, placeholder, secureTextEntry }) => {
   const {
@@ -26,6 +15,7 @@ const Input = ({ label, value, onChangeText, placeholder, secureTextEntry }) => 
     labelStyle,
     containerStyle
   } = styles
+
   return (
     <View style={containerStyle}>
       <Text style={labelStyle}>{label}</Text>
@@ -57,30 +47,13 @@ const renderPickerInput = (props) => {
   //input is what we get from Field,
   //...rest - all props from PickerInputFormField and parent components
   const { input, ...rest } = props
-  // const { modalDropdownStyle } = styles
-  // <View style={styles.cell}>
-  //   <ModalDropdown ref="dropdown_2"
-  //                  style={styles.dropdown_2}
-  //                  textStyle={styles.dropdown_2_text}
-  //                  dropdownStyle={styles.dropdown_2_dropdown}
-  //                  options={DEMO_OPTIONS_2}
-  //                  renderButtonText={(rowData) => this._dropdown_2_renderButtonText(rowData)}
-  //                  renderRow={this._dropdown_2_renderRow.bind(this)}
-  //                  renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._dropdown_2_renderSeparator(sectionID, rowID, adjacentRowHighlighted)}
-  //   />
-  //   <TouchableOpacity onPress={() => {
-  //     this.refs.dropdown_2.select(0);
-  //   }}>
-  //     <Text style={styles.textButton}>
-  //       select Rex
-  //     </Text>
-  //   </TouchableOpacity>
-  // </View>
+  const { dropdown, dropdownText, dropdownDropdown } = styles
   return (
     <ModalDropdown
-      // textStyle={{ fontSize: 18, marginRight: 120, color: 'lightgray' }}
-      // style={modalDropdownStyle}
-      onSelect={(index, value) => input.onChange(value)} {...rest}
+     style={dropdown}
+     textStyle={dropdownText}
+     dropdownStyle={dropdownDropdown}
+     onSelect={(index, value) => input.onChange(value)} {...rest}
     />
   )
 }
@@ -90,6 +63,8 @@ const renderDatePickerInput = (props) => {
   //input is what we get from Field,
   //...rest - all props from PickerInputFormField and parent components
   const { input, ...rest } = props
+  const { datePickerStyle } = styles
+
   return (
     <DatePicker
        onDateChange={input.onChange}
@@ -98,6 +73,18 @@ const renderDatePickerInput = (props) => {
        format={DATE_FORMAT}
        confirmBtnText='Confirm'
        cancelBtnText='Cancel'
+       style={datePickerStyle}
+       customStyles={{
+          dateIcon: {
+            // position: 'absolute',
+            right: 0,
+            // top: 4,
+            marginLeft: 10
+          },
+          dateInput: {
+            borderWidth: 0
+          }
+        }}
        {...rest}
     />
   )
@@ -125,7 +112,7 @@ const TextInputFormField = ({ name, label, placeholder, secureTextEntry }) => {
 
 // https://www.npmjs.com/package/react-native-modal-dropdown
 const PickerInputFormField = ({ name, label, defaultOption, options }) => {
-  const { pickerInputStyle, labelStyle, containerStyle } = styles
+  const { pickerInputStyle1, labelStyle, containerStyle } = styles
   return (
     <View style={containerStyle}>
       <Text style={labelStyle}>{label}</Text>
@@ -134,7 +121,7 @@ const PickerInputFormField = ({ name, label, defaultOption, options }) => {
         defaultValue={defaultOption}
         options={options}
         name={name}
-        style={pickerInputStyle}
+        style={pickerInputStyle1}
       />
     </View>
   )
@@ -142,7 +129,7 @@ const PickerInputFormField = ({ name, label, defaultOption, options }) => {
 
 // https://www.npmjs.com/package/react-native-datepicker
 const DatePickerInputFormField = ({ name, label, placeholder, minDate, maxDate }) => {
-  const { pickerInputStyle, labelStyle, containerStyle } = styles
+  const { labelStyle, containerStyle } = styles
   return (
     <View style={containerStyle}>
       <Text style={labelStyle}>{label}</Text>
@@ -152,7 +139,6 @@ const DatePickerInputFormField = ({ name, label, placeholder, minDate, maxDate }
         placeholder={placeholder}
         minDate={minDate}
         maxDate={maxDate}
-        style={pickerInputStyle}
       />
     </View>
   )
@@ -162,17 +148,9 @@ const styles = {
     fontSize: 18,
     flex: 2,
   },
-  pickerInputStyle: {
-
-  },
   labelStyle: {
     fontSize: 18,
     flex: 1
-  },
-  modalDropdownStyle: {
-    width: 200,
-    paddingRight: 30,
-    marginRight: 30
   },
   containerStyle: {
     height: 40,
@@ -180,118 +158,37 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center'
   },
-  container: {
-    flex: 1,
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  cell: {
-    flex: 1,
-    //borderWidth: StyleSheet.hairlineWidth,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  contentContainer: {
-    height: 500,
-    paddingVertical: 100,
-    paddingLeft: 20,
-  },
-  textButton: {
-    color: 'deepskyblue',
-    //borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'deepskyblue',
-    margin: 2,
-  },
-
-  dropdown_1: {
-    flex: 1,
-    top: 32,
-    left: 8,
-  },
-  dropdown_2: {
+  dropdown: {
     alignSelf: 'flex-end',
-    width: 150,
+    width: 250,
     marginTop: 32,
     right: 8,
     borderWidth: 0,
     borderRadius: 3,
-    backgroundColor: 'cornflowerblue',
   },
-  dropdown_2_text: {
+  dropdownText: {
+    fontSize: 18,
+    marginRight: 120,
+    color: 'black',
     marginVertical: 10,
     marginHorizontal: 6,
-    fontSize: 18,
-    color: 'white',
     textAlign: 'center',
     textAlignVertical: 'center',
   },
-  dropdown_2_dropdown: {
-    width: 150,
-    height: 300,
-    borderColor: 'cornflowerblue',
+  dropdownDropdown: {
+    width: 200,
+    height: 70,
+    borderColor: 'white',
     borderWidth: 2,
-    borderRadius: 3,
+    borderRadius: 5,
   },
-  dropdown_2_row: {
-    flexDirection: 'row',
-    height: 40,
-    alignItems: 'center',
+  datePickerStyle: {
+    marginRight: 90,
+    width: 200,
   },
-  dropdown_2_image: {
-    marginLeft: 4,
-    width: 30,
-    height: 30,
-  },
-  dropdown_2_row_text: {
-    marginHorizontal: 4,
-    fontSize: 16,
-    color: 'navy',
-    textAlignVertical: 'center',
-  },
-  dropdown_2_separator: {
-    height: 1,
-    backgroundColor: 'cornflowerblue',
-  },
-  dropdown_3: {
-    width: 150,
-    borderColor: 'lightgray',
-    borderWidth: 1,
-    borderRadius: 1,
-  },
-  dropdown_3_dropdownTextStyle: {
-    backgroundColor: '#000',
-    color: '#fff'
-  },
-  dropdown_3_dropdownTextHighlightStyle: {
-    backgroundColor: '#fff',
-    color: '#000'
-  },
-  dropdown_4: {
-    margin: 8,
-    borderColor: 'lightgray',
-    borderWidth: 1,
-    borderRadius: 1,
-  },
-  dropdown_4_dropdown: {
-    width: 100,
-  },
-  dropdown_5: {
-    margin: 8,
-    borderColor: 'lightgray',
-    borderWidth: 1,
-    borderRadius: 1,
-  },
-  dropdown_6: {
-    flex: 1,
-    left: 8,
-  },
-  dropdown_6_image: {
-    width: 40,
-    height: 40,
-  },
+  pickerInputStyle1: {
+
+  }
 }
 
 export { DatePickerInputFormField, Input, TextInputFormField, PickerInputFormField }
