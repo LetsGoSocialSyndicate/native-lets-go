@@ -85,7 +85,7 @@ const renderDatePickerInput = (props) => {
           },
           placeholderText: {
             fontSize: 18,
-            color: 'black'
+            color: 'white'
           }
         }}
        {...rest}
@@ -122,7 +122,7 @@ const PickerInputFormField = ({ name, label, defaultOption, options }) => {
       <Text style={labelStyle}>{label}</Text>
       <Field
         component={renderPickerInput}
-        defaultValue={defaultOption}
+        defaultValue={'select gender'}
         options={options}
         name={name}
         style={pickerInputStyle1}
@@ -150,7 +150,7 @@ const DatePickerInputFormField = ({ name, label, placeholder, minDate, maxDate }
 const styles = {
   inputStyle: {
     fontSize: 18,
-    flex: 2,
+    flex: 5,
   },
   labelStyle: {
     fontSize: 18,
@@ -163,7 +163,6 @@ const styles = {
     alignItems: 'center'
   },
   dropdown: {
-    alignSelf: 'flex-end',
     width: 250,
     marginTop: 32,
     right: 8,
@@ -171,13 +170,12 @@ const styles = {
     borderRadius: 3,
   },
   dropdownText: {
+    alignSelf: 'center',
     fontSize: 18,
     marginRight: 120,
     color: 'white',
     marginVertical: 10,
     marginHorizontal: 6,
-    textAlign: 'center',
-    textAlignVertical: 'center',
   },
   dropdownDropdown: {
     width: 200,
@@ -187,14 +185,8 @@ const styles = {
     borderRadius: 5,
   },
   datePickerStyle: {
-    marginRight: 80,
+    marginRight: 70,
     width: 200,
-    // fontSize: 18,
-    // color: 'black',
-    // marginVertical: 10,
-    // marginHorizontal: 6,
-    // textAlign: 'center',
-    // textAlignVertical: 'center',
   },
   pickerInputStyle1: {
 

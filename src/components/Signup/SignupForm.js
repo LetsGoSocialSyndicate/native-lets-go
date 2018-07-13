@@ -35,59 +35,62 @@ import {
    buttonSubmitStyle,
    textStyleSubmit,
    formStyle,
-   PickerInputFormFieldStyle
+   // PickerInputFormFieldStyle,
+   itemStyle
   } = styles
   return (
     <Form style={formStyle}>
-      <Item>
+      <Item style={itemStyle}>
         <TextInputFormField
         name={FIRST_NAME_FIELD}
-        label='First Name'
-        placeholder='Scott'
+        // label='First Name'
+        placeholder='first name'
         />
       </Item>
 
-      <Item>
+      <Item style={itemStyle}>
         <TextInputFormField
          name={LAST_NAME_FIELD}
-         label='Last Name'
-         placeholder='Bean'
+         // label='Last Name'
+         placeholder='last name'
         />
       </Item>
-      <Item>
+      <Item style={itemStyle}>
        <DatePickerInputFormField
          name={BIRTHDAY_FIELD}
-         label='Birthday'
-         placeholder='Please select...'
+         // label='Birthday'
+         placeholder='select birthday'
          maxDate={moment().utc().subtract(18, 'years').format(DATE_FORMAT)}
        />
       </Item>
-      <Item>
+      <Item style={itemStyle}>
         <PickerInputFormField
           name={GENDER_FIELD}
-          label='Gender'
+          // label='Gender'
           options={['Male', 'Female']}
         />
       </Item>
-      <Item>
+      <Item style={itemStyle}>
          <TextInputFormField
            name={EMAIL_FIELD}
-           label='Email'
-           placeholder='email@gmail.com'
+           // label='Email'
+           placeholder='university email'
          />
       </Item>
-      <Item>
+      <Item style={itemStyle}>
          <TextInputFormField
            name={PASSWORD_FIELD}
            secureTextEntry
-           label='Password'
+           placeholder='password'
+           // label='Password'
          />
       </Item>
-      <Item>
+      <Item style={itemStyle}>
          <TextInputFormField
            name={PASSWORD2_FIELD}
            secureTextEntry
-           label='Password'
+           placeholder='confirm password'
+           // label='Password'
          />
       </Item>
       <Error
@@ -124,6 +127,11 @@ import {
      marginTop: 35,
      height: 60
    },
+   itemStyle: {
+     marginLeft: 50,
+     marginRight: 50,
+     marginTop: 10
+   }
  }
 
  const mapStateToProps = (state) => {

@@ -1,33 +1,17 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
 import moment from 'moment'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { ActivityIndicator, Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { showImagePicker } from 'react-native-image-picker'
-import {
-  ActivityIndicator,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  TouchableHighlight,
-  View } from 'react-native'
-import {
-  Container,
-  Card,
-  Item,
-  Text,
-  Button,
-} from 'native-base'
-import { CardSection, LoadingButton } from '../common'
+import { connect } from 'react-redux'
+
+import { Button, Card, CardSection, LoadingButton } from '../common'
 import { IMAGE_OP_NONE, IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
 import {
   cancelEditing,
   startEditing,
   updateProfile
 } from '../../actions/userAction'
-
-//TODO: change later to real Edit icon
-const editIcon = require('../../assets/Add_Event_Icon.png')
-const doneButton = require('../../assets/Home_Icon.png')
 
 const getUser = (props) => {
   return props.forOtherUser
@@ -54,21 +38,16 @@ const getUserpicId = (user) => {
 const LoadingImageButton = ({ loading, readOnly, onPress, imageUrl }) => {
   if (loading) {
     return (
-      <View>
+      <View style={styles.layoutView}>
         <ActivityIndicator size={'large'} />
       </View>
     )
   }
-  const {
-    imageReadOnly,
-    image
-  } = styles
-  const imageStyle = readOnly ? imageReadOnly : image
+  const imageStyle = readOnly ? styles.imageReadOnly : styles.image
   const source = imageUrl ? { uri: imageUrl } : null
-
   return (
     <TouchableOpacity onPress={onPress}>
-      <View>
+      <View style={styles.layoutView}>
         <Image style={imageStyle} source={source} />
       </View>
     </TouchableOpacity>
@@ -94,14 +73,12 @@ class Profile extends Component {
   }
 
   constructEditButton() {
-    const { iconStyle } = styles
     return (
-      <TouchableHighlight onPress={this.props.startEditingAction}>
-        <Image
-          source={editIcon}
-          style={iconStyle}
-        />
-      </TouchableHighlight>
+      <CardSection>
+        <Button onPress={this.props.startEditingAction}>
+          Edit
+        </Button>
+      </CardSection>
     )
   }
 
@@ -116,8 +93,6 @@ class Profile extends Component {
 
   constructSaveCancelButtons() {
     const originalUser = getUser(this.props)
-
-    //this is Done button
     const onSave = () => {
       let imageRequest = []
       if (this.state.profileImageOp !== IMAGE_OP_NONE) {
@@ -137,35 +112,26 @@ class Profile extends Component {
         })
       })
     }
-
-    //TODO: This functionality need to transfer to back button in navigation bar
-    // const onCancel = () => {
-    //   this.props.cancelEditingAction()
-    //   // Revert state back to original settings.
-    //   this.setState({
-    //     ...this.state,
-    //     user: originalUser,
-    //     currentImageUrl: getUserpic(originalUser),
-    //     profileImageOp: IMAGE_OP_NONE
-    //   })
-    // }
-    const { iconStyle } = styles
+    const onCancel = () => {
+      this.props.cancelEditingAction()
+      // Revert state back to original settings.
+      this.setState({
+        ...this.state,
+        user: originalUser,
+        currentImageUrl: getUserpic(originalUser),
+        profileImageOp: IMAGE_OP_NONE
+      })
+    }
     return (
-      <TouchableHighlight onPress={onSave}>
-        <Image
-          source={doneButton}
-          style={iconStyle}
-        />
-      </TouchableHighlight>
+      <CardSection>
+        <LoadingButton loading={this.props.user.updating} onPress={onSave}>
+          Save
+        </LoadingButton>
+        <Button onPress={onCancel}>
+          Cancel
+        </Button>
+      </CardSection>
     )
-      // <CardSection>
-      //   <LoadingButton loading={this.props.user.updating} onPress={onSave}>
-      //     done
-      //   </LoadingButton>
-      // <Button onPress={onCancel}>
-      //    cancel
-      //  </Button>
-      // </CardSection>
   }
 
   selectImage() {
@@ -197,113 +163,65 @@ class Profile extends Component {
     const age = moment.duration(moment().diff(user.birthday)).years()
     const onImagePress = readOnly ? () => {} : () => this.selectImage()
     const saveAbout = about => this.saveAbout(about)
-    let button = null
+    let buttons = null
     if (!this.props.forOtherUser) {
       if (readOnly) {
-        button = this.constructEditButton()
+        buttons = this.constructEditButton()
       } else {
-        button = this.constructSaveCancelButtons()
+        buttons = this.constructSaveCancelButtons()
       }
     }
-    const {
-      nameItemStyle,
-      nameTextStyle,
-      descriptionTextStyle,
-      itemsCenterFlex
-    } = styles
 
     return (
-      <Container>
-        <Container>
-          {button}
-        </Container>
-
-        <View style={itemsCenterFlex}>
-
-          <LoadingImageButton
-            loading={this.state.imageLoading}
-            readOnly={readOnly}
-            onPress={onImagePress}
-            imageUrl={this.state.currentImageUrl}
-          />
-
-          <Item style={nameItemStyle}>
-            <Text style={nameTextStyle}>
-              {user.first_name.toUpperCase()} {lastName.toUpperCase()}, {age}
-            </Text>
-          </Item>
-
-          <Item>
-            <TextInput
-              style={descriptionTextStyle}
-              value={user.about}
-              editable={!readOnly}
-              multiline
-              numberOfLines={10}
-              onChangeText={saveAbout}
-            />
-          </Item>
+      <Card>
+        <LoadingImageButton
+          loading={this.state.imageLoading}
+          readOnly={readOnly}
+          onPress={onImagePress}
+          imageUrl={this.state.currentImageUrl}
+        />
+        <View style={styles.layoutView}>
+          <Text>{user.first_name} {lastName}, {age}</Text>
         </View>
-      </Container>
+        <View style={styles.layoutView}>
+          <TextInput
+            style={styles.textInputStyle}
+            value={user.about}
+            editable={!readOnly}
+            multiline
+            numberOfLines={5}
+            onChangeText={saveAbout}
+          />
+        </View>
+        {buttons}
+      </Card>
     )
   }
 }
 
 const styles = {
   imageReadOnly: {
-    marginTop: 380,
-    height: 200,
-    borderRadius: 100,
-    width: 200,
-    borderColor: 'white',
-    borderWidth: 8
+    height: 100,
+    borderRadius: 50,
+    width: 100,
   },
   image: {
-    marginTop: 380,
-    height: 200,
-    borderRadius: 100,
-    width: 200,
-    borderColor: 'white',
-    borderWidth: 8
+    height: 100,
+    borderRadius: 50,
+    width: 100,
+    borderColor: 'yellow',
+    borderWidth: 5,
   },
-  nameItemStyle: {
+  layoutView: {
      justifyContent: 'center',
-     alignItems: 'center',
-     marginTop: 530,
-     height: 150,
-     borderColor: 'transparent'
+     alignItems: 'center'
    },
-  nameTextStyle: {
-    color: 'white',
-    fontSize: 25,
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  descriptionTextStyle: {
-     paddingTop: 10,
-     paddingBottom: 10,
-     paddingLeft: 20,
-     paddingRight: 20,
-     fontSize: 18,
-     color: 'white',
-     backgroundColor: '#4380B0',
-     borderRadius: 15,
-     height: 80,
-     width: 300
+   textInputStyle: {
+     borderColor: 'gray',
+     borderWidth: 1,
+     height: 40,
+     width: 100
    },
-   iconStyle: {
-     position: 'absolute',
-     right: 50,
-     top: 50,
-     width: 30,
-     height: 30
-   },
-   itemsCenterFlex: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 }
 
 const mapStateToProps = (state) => {
