@@ -28,13 +28,11 @@ const backButton = (resetError) => {
 const RouterComponent = ({ resetError }) => {
   return (
     <Router>
-      <Scene key='root'>
+      <Scene key='root' hideNavBar='true'>
         <Scene
           key='login'
-          hideNavBar='true'
           component={LoggedOutLandingScene}
           LandingComponent={Login}
-          // title='Please Login'
           initial
         />
         <Scene
@@ -45,7 +43,6 @@ const RouterComponent = ({ resetError }) => {
         />
         <Scene
           key='signup'
-          hideNavBar='true'
           component={LoggedOutLandingScene}
           LandingComponent={Signup}
           title='Signup'

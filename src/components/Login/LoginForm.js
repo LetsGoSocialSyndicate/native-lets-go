@@ -46,7 +46,7 @@ const LoginForm = ({ handleSubmit, auth }) => {
   return (
     <Form style={formStyle}>
       <Item>
-        <Icon active name='lock' />
+        <Icon active name='mail' />
         <TextInputFormField
           name={EMAIL_FIELD}
           placeholder='email'
