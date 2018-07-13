@@ -20,7 +20,7 @@ const Error = ({ error }) => {
 
 const styles = {
   viewStyle: {
-    backgroundColor: 'white'
+    backgroundColor: 'transparent'
   },
   errorTextStyle: {
     fontSize: 20,

@@ -18,6 +18,7 @@ import {
   loginSubmit,
   resetAuthError
 } from '../../actions/authAction'
+import LoginForm from './LoginForm'
 
 const onSubmit = (action, fields) => {
   console.log('Login ON SUBMIT:', fields)
@@ -32,53 +33,22 @@ const navigate = (destination, resetError) => {
 const Login = ({ loginAction, resetError }) => {
   const action = (fields) => onSubmit(loginAction, fields)
   const {
-    buttonSubmitStyle,
-    textStyleSubmit,
     buttonsContainer,
     titleStyle,
     containerStyle,
     signupAndForgotStyle,
-    signupAndForgotTextStyle,
-    formStyle
+    signupAndForgotTextStyle
   } = styles
 
   return (
-    <Container
-      style={containerStyle}
-    >
-        <Title
-          style={titleStyle}
-        >
-          LOG IN
-        </Title>
-        <Form
-          onSubmit={action}
-          style={formStyle}
-        >
-          <Item>
-            <Icon active name='lock' />
-            <Input placeholder='email' />
-          </Item>
-          <Item>
-            <Icon active name='lock' />
-            <Input placeholder='password' />
-          </Item>
-          <Button
-            style={buttonSubmitStyle}
-            large
-            block
-            rounded
-          >
-            <Text
-              style={textStyleSubmit}
-            >
-              submit
-            </Text>
-          </Button>
-        </Form>
-        <Container
-          style={buttonsContainer}
-        >
+    <Container style={containerStyle}>
+      <Title style={titleStyle}>
+        LOG IN
+      </Title>
+
+      <LoginForm onSubmit={action} />
+
+      <Container style={buttonsContainer}>
         <Button
           style={signupAndForgotStyle}
           block
@@ -86,9 +56,7 @@ const Login = ({ loginAction, resetError }) => {
           rounded
           onPress={() => navigate('forgotPassword', resetError)}
         >
-          <Text
-            style={signupAndForgotTextStyle}
-          >
+          <Text style={signupAndForgotTextStyle}>
             Forgot password?
           </Text>
         </Button>
@@ -99,14 +67,11 @@ const Login = ({ loginAction, resetError }) => {
           rounded
           onPress={() => navigate('signup', resetError)}
         >
-          <Text
-            style={signupAndForgotTextStyle}
-          >
+          <Text style={signupAndForgotTextStyle}>
             Signup
           </Text>
         </Button>
       </Container>
-
     </Container>
   )
 }
@@ -115,16 +80,6 @@ const styles = {
     // width: '100%',
     // height: '100%',
     backgroundColor: 'transparent'
-  },
-  buttonSubmitStyle: {
-    marginTop: 25,
-    marginLeft: 100,
-    marginRight: 100,
-    marginBottom: 80,
-    backgroundColor: 'gray',
-  },
-  textStyleSubmit: {
-    letterSpacing: 3,
   },
   buttonsContainer: {
     marginLeft: 25,
@@ -143,9 +98,6 @@ const styles = {
     marginTop: 50,
     height: 50,
     color: 'white'
-  },
-  formStyle: {
-    height: 30
   }
 }
 
