@@ -24,7 +24,15 @@ class ActivityFeed extends Component {
     } = styles
     console.log('=====', eventDate)
     return (
-      <Text style={ textStyle }>{ eventDate.date }</Text>
+      <Container>
+        <Card style={ cardStyle }>
+          <CardItem>
+            <Body>
+              <Text style={ textStyle }>{ eventDate.time }</Text>
+            </Body>
+          </CardItem>
+        </Card>
+      </Container>
     )
   }
 }
@@ -34,8 +42,7 @@ const styles = {
     flex: 1
   },
   textStyle: {
-    marginTop: 5,
-    color: '#000',
+    color: 'black',
     letterSpacing: 2,
     height: 30
   },

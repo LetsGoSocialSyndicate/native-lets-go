@@ -32,7 +32,7 @@ class ActivityFeeds extends Component {
     const items = Object.values(this.props.eventFeeds)
     return (
       <ScrollView>
-        <List dataArray={items}
+        <List dataArray={items} style={{ height: 400 }}
           renderRow={(item) =>
             <ListItem>
               <ActivityFeed activity={ item } />
