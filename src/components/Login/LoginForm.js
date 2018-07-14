@@ -2,9 +2,12 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import React from 'react'
-//import { REACT_AUTO_LOGIN_USER, REACT_AUTO_LOGIN_PASSWORD } from 'react-native-dotenv'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
+import {
+  AUTO_LOGIN_USER,
+  AUTO_LOGIN_PASSWORD
+} from 'react-native-dotenv'
 import {
   Item,
   Form,
@@ -17,20 +20,16 @@ import {
   // LoadingButton
 } from '../common'
 
-// TODO: Temporary, instead react-native-dotenv
-const REACT_AUTO_LOGIN_USER = 'sukmi.ledru@gmail.com'
-const REACT_AUTO_LOGIN_PASSWORD = 'Aa123456'
-
 const EMAIL_FIELD = 'email'
 const PASSWORD_FIELD = 'password'
 const submitButton = require('../../assets/buttons/submit.png')
 
 // DEBUG: For faster login
 const initialValues = () => {
-  return REACT_AUTO_LOGIN_USER && REACT_AUTO_LOGIN_PASSWORD ?
+  return AUTO_LOGIN_USER && AUTO_LOGIN_PASSWORD ?
   {
-    [EMAIL_FIELD]: REACT_AUTO_LOGIN_USER,
-    [PASSWORD_FIELD]: REACT_AUTO_LOGIN_PASSWORD
+    [EMAIL_FIELD]: AUTO_LOGIN_USER,
+    [PASSWORD_FIELD]: AUTO_LOGIN_PASSWORD
   }
   : {}
 }
