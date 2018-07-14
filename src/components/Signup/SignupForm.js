@@ -5,22 +5,21 @@ import moment from 'moment'
 import React from 'react'
 import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
+import { Image } from 'react-native'
 import {
-  Item,
-  Input,
   Form,
-  Button,
-  Text
+  Item
 } from 'native-base'
 import { DATE_FORMAT } from '../common/Constants'
 import {
   DatePickerInputFormField,
   Error,
-  // LoadingButton,
   PickerInputFormField,
   TextInputFormField
  } from '../common'
+ import LoadingButton from '../common/LoadingButton'
 
+ const submitButton = require('../../assets/buttons/submit.png')
 
  const FIRST_NAME_FIELD = 'firstName'
  const LAST_NAME_FIELD = 'lastName'
@@ -33,9 +32,8 @@ import {
  const SignupForm = ({ handleSubmit, auth }) => {
   const {
    buttonSubmitStyle,
-   textStyleSubmit,
+   buttonSubmitImageStyle,
    formStyle,
-   // PickerInputFormFieldStyle,
    itemStyle
   } = styles
   return (
@@ -96,32 +94,30 @@ import {
       <Error
         error={auth.error}
       />
-      <Button
+      <LoadingButton
         loading={auth.loading}
         onPress={handleSubmit}
         style={buttonSubmitStyle}
-        block
-        rounded
+        transparent
       >
-        <Text style={textStyleSubmit}>
-          sign up
-        </Text>
-      </Button>
+        <Image source={submitButton} style={buttonSubmitImageStyle} />
+      </LoadingButton>
     </Form>
    )
  }
 
  const styles = {
    buttonSubmitStyle: {
-     marginTop: 50,
-     marginLeft: 10,
-     marginRight: 10,
-     marginBottom: 20,
-     backgroundColor: '#4380B0',
+     resizeMode: 'contain',
+     width: 150,
+     height: 50,
      alignSelf: 'center',
+     marginTop: 10
    },
-   textStyleSubmit: {
-     letterSpacing: 3,
+   buttonSubmitImageStyle: {
+     width: 150,
+     height: 50,
+     alignSelf: 'center',
    },
    formStyle: {
      marginTop: 35,

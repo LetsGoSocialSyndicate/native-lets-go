@@ -2,23 +2,25 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import React from 'react'
+//Tanya - DEBUG: comment this out
+import { REACT_AUTO_LOGIN_USER, REACT_AUTO_LOGIN_PASSWORD } from 'react-native-dotenv'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
+import { Image } from 'react-native'
 import {
-  AUTO_LOGIN_USER,
-  AUTO_LOGIN_PASSWORD
-} from 'react-native-dotenv'
-import {
+  Icon,
   Item,
   Form,
-  Icon,
 } from 'native-base'
 import {
   Error,
-  TextInputFormField,
-  ImageButton,
-  // LoadingButton
+  TextInputFormField
 } from '../common'
+import LoadingButton from '../common/LoadingButton'
+
+//Tanya - DEBUG: uncomment this 
+// const REACT_AUTO_LOGIN_USER = 'panich.photos3@gmail.com'
+// const REACT_AUTO_LOGIN_PASSWORD = '123'
 
 const EMAIL_FIELD = 'email'
 const PASSWORD_FIELD = 'password'
@@ -26,25 +28,26 @@ const submitButton = require('../../assets/buttons/submit.png')
 
 // DEBUG: For faster login
 const initialValues = () => {
-  return AUTO_LOGIN_USER && AUTO_LOGIN_PASSWORD ?
+  return REACT_AUTO_LOGIN_USER && REACT_AUTO_LOGIN_PASSWORD ?
   {
-    [EMAIL_FIELD]: AUTO_LOGIN_USER,
-    [PASSWORD_FIELD]: AUTO_LOGIN_PASSWORD
+    [EMAIL_FIELD]: REACT_AUTO_LOGIN_USER,
+    [PASSWORD_FIELD]: REACT_AUTO_LOGIN_PASSWORD
   }
   : {}
 }
 
 const LoginForm = ({ handleSubmit, auth }) => {
   const {
-    buttonSubmitStyle,
     formStyle,
     itemStyle,
+    buttonSubmitStyle,
+    buttonSubmitImageStyle
   } = styles
 
   return (
     <Form style={formStyle}>
       <Item style={itemStyle}>
-        <Icon active name='lock' />
+        <Icon active name='user' type='Entypo' />
         <TextInputFormField
           name={EMAIL_FIELD}
           placeholder='email'
@@ -61,10 +64,14 @@ const LoginForm = ({ handleSubmit, auth }) => {
 
       <Error error={auth.error} />
 
-      {/* TODO: need to add loading functionality: */}
-
-      <ImageButton handleOnPress={ handleSubmit }
-        buttonSource={ submitButton }/>
+      <LoadingButton
+        style={buttonSubmitStyle}
+        transparent
+        loading={auth.loading}
+        onPress={handleSubmit}
+      >
+        <Image source={submitButton} style={buttonSubmitImageStyle} />
+      </LoadingButton>
     </Form>
   )
 }
@@ -75,7 +82,12 @@ const styles = {
     width: 150,
     height: 50,
     alignSelf: 'center',
-    marginTop: 20
+    marginTop: 10
+  },
+  buttonSubmitImageStyle: {
+    width: 150,
+    height: 50,
+    alignSelf: 'center',
   },
   formStyle: {
     height: 30

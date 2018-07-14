@@ -5,10 +5,9 @@
  import { reduxForm } from 'redux-form'
  import { connect } from 'react-redux'
  import { Item, Form } from 'native-base'
- import {
-   Error, TextInputFormField,
-   LoadingButton, ImageButton
-} from '../common'
+ import { Image } from 'react-native'
+ import { Error, TextInputFormField } from '../common'
+ import LoadingButton from '../common/LoadingButton'
 
 export const EMAIL_FIELD = 'email'
 const submitButton = require('../../assets/buttons/submit.png')
@@ -17,7 +16,8 @@ const ForgotPasswordForm = ({ handleSubmit, auth }) => {
   const {
    formStyle,
    itemStyle,
-   buttonSubmitStyle
+   buttonSubmitStyle,
+   buttonSubmitImageStyle
   } = styles
    return (
     <Form style={formStyle}>
@@ -28,12 +28,14 @@ const ForgotPasswordForm = ({ handleSubmit, auth }) => {
         />
        </Item>
        <Error error={auth.error} />
-       {/* TODO add spinner here!!! */}
-       <ImageButton onPress={handleSubmit}
-         buttonSource={ submitButton }/>
-         {/* <LoadingButton loading={auth.loading} onPress={handleSubmit}>
-           Verify
-         </LoadingButton> */}
+       <LoadingButton
+         style={buttonSubmitStyle}
+         transparent
+         loading={auth.loading}
+         onPress={handleSubmit}
+       >
+         <Image source={submitButton} style={buttonSubmitImageStyle} />
+       </LoadingButton>
      </Form>
     )
   }
@@ -53,6 +55,11 @@ const ForgotPasswordForm = ({ handleSubmit, auth }) => {
       alignSelf: 'center',
       marginTop: 10
     },
+    buttonSubmitImageStyle: {
+      width: 150,
+      height: 50,
+      alignSelf: 'center',
+    }
   }
 
   const mapStateToProps = (state) => {

@@ -5,10 +5,9 @@ import React from 'react'
 import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { Item, Form } from 'native-base'
-import {
-  Error, TextInputFormField,
-  LoadingButton, ImageButton
-} from '../common'
+import { Image } from 'react-native'
+import { Error, TextInputFormField } from '../common'
+import LoadingButton from '../common/LoadingButton'
 
 export const VERIFICATION_CODE = 'VERIFICATION_CODE'
 export const PASSWORD_FIELD = 'password'
@@ -20,7 +19,8 @@ const NewPasswordForm = ({ handleSubmit, auth }) => {
   const {
    formStyle,
    itemStyle,
-   buttonSubmitStyle
+   buttonSubmitStyle,
+   buttonSubmitImageStyle
   } = styles
    return (
     <Form style={formStyle}>
@@ -45,13 +45,14 @@ const NewPasswordForm = ({ handleSubmit, auth }) => {
           />
        </Item>
        <Error error={auth.error} />
-
-       {/* TODO add spinner here!!! */}
-       <ImageButton onPress={handleSubmit}
-         buttonSource={submitButton}/>
-         {/* <LoadingButton loading={auth.loading} onPress={handleSubmit}>
-           Verify
-         </LoadingButton> */}
+       <LoadingButton
+         style={buttonSubmitStyle}
+         transparent
+         loading={auth.loading}
+         onPress={handleSubmit}
+       >
+         <Image source={submitButton} style={buttonSubmitImageStyle} />
+       </LoadingButton>
      </Form>
     )
   }
@@ -69,8 +70,13 @@ const NewPasswordForm = ({ handleSubmit, auth }) => {
       width: 150,
       height: 50,
       alignSelf: 'center',
-      marginTop: 20
+      marginTop: 10
     },
+    buttonSubmitImageStyle: {
+      width: 150,
+      height: 50,
+      alignSelf: 'center',
+    }
   }
 
   const mapStateToProps = (state) => {
