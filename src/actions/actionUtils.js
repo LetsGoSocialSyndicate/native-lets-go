@@ -18,4 +18,11 @@ const getRequestOptions = (method, token, body = null) => {
   return opts
 }
 
-export { getRequestOptions }
+// Useful for debugging.
+const delay = ms => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
+}
+
+export { getRequestOptions, delay }

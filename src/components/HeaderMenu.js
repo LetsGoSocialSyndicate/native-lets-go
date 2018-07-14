@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Actions } from 'react-native-router-flux';
 import { Dimensions } from 'react-native'
 import { Header, Left, Body, Title, Thumbnail, Right } from 'native-base'
 
@@ -8,6 +9,7 @@ const { width } = Dimensions.get('window')
 
 class HeaderMenu extends Component {
   render() {
+    console.log('HeaderMenu:', Actions.currentScene)
     return (
       <Header
         style={{
