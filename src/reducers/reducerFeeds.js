@@ -24,7 +24,7 @@ function eventFeeds(state = initialFeedsState, action) {
 
   case FETCH_EVENT_FEEDS:
   case FETCH_MY_EVENTS:
-    console.log('reducer eventFeeds', state, action)
+    // console.log('reducer eventFeeds', state, action)
     const mappedKey = action.payload.reduce((acc, feed) => {
       acc[feed.event_id] = { ...feed }
       return acc

@@ -5,8 +5,8 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
-import { Container, Card, Item } from 'native-base'
-import { LGButton } from '../common'
+import { ScrollView } from 'react-native'
+import { List, ListItem } from 'native-base'
 import ActivityFeed from './ActivityFeed'
 import { fetchEventFeeds } from '../../actions/actionFeeds'
 import { logout } from '../../actions/authAction'
@@ -16,48 +16,39 @@ class ActivityFeeds extends Component {
     this.props.fetchEventFeeds(this.props.token)
   }
 
-  renderActivity(activity) {
-    return (
-      <Item key={ activity.event_id }>
-        <ActivityFeed activity={ activity }></ActivityFeed>
-      </Item>
-    )
-  }
-
   renderActivityFeeds() {
     return (
       Object.values(this.props.eventFeeds)
         .map((event) => {
-          return this.renderActivity(event)
+          return <ActivityFeed activity={ event } key={ event.event_id }/>
         })
     )
   }
 
   render() {
     const {
-      containerStyle, buttonsContainer
+      containerStyle, contentStyle
     } = styles
-
+    const items = Object.values(this.props.eventFeeds)
     return (
-      <Container style={ containerStyle }>
-        <Container style={ buttonsContainer }>
-          <LGButton
-            onPress={() => Actions.profile({ forOtherUser: false })}
-            buttonText="profile" />
-          <LGButton
-            onPress={ this.props.logoutAction }
-            buttonText="logout"/>
-        </Container>
-        <Card>
-          { this.renderActivityFeeds() }
-        </Card>
-      </Container>
+      <ScrollView>
+        <List dataArray={items}
+          renderRow={(item) =>
+            <ListItem>
+              <ActivityFeed activity={ item } />
+            </ListItem>
+          }>
+        </List>
+      </ScrollView>
     )
   }
 }
 
 const styles = {
   containerStyle: {
+    backgroundColor: 'transparent'
+  },
+  contentStyle: {
     backgroundColor: 'transparent'
   },
   buttonsContainer: {
