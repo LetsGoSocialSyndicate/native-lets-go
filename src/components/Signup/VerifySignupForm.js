@@ -4,10 +4,7 @@
 import React from 'react'
 import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
-import {
-  Item,
-  Form,
-} from 'native-base'
+import { Item, Form } from 'native-base'
 import { Image, TouchableHighlight } from 'react-native'
 import { Error, TextInputFormField } from '../common'
 

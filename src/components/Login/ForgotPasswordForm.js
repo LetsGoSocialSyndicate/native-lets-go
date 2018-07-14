@@ -4,27 +4,57 @@
  import React from 'react'
  import { reduxForm } from 'redux-form'
  import { connect } from 'react-redux'
- import { Card, CardSection, Error, TextInputFormField, LoadingButton } from '../common'
+ import { Item, Form } from 'native-base'
+ import { Image, TouchableHighlight } from 'react-native'
+ import { Error, TextInputFormField, LoadingButton } from '../common'
 
  export const EMAIL_FIELD = 'email'
+ const submitButton = require('../../assets/buttons/submit.png')
 
 const ForgotPasswordForm = ({ handleSubmit, auth }) => {
+  const {
+   formStyle,
+   itemStyle,
+   buttonSubmitStyle
+  } = styles
    return (
-     <Card>
-       <CardSection>
-          <TextInputFormField
-            name={EMAIL_FIELD}
-            label='Please enter your email'
-          />
-       </CardSection>
+    <Form style={formStyle}>
+      <Item style={itemStyle}>
+        <TextInputFormField
+          name={EMAIL_FIELD}
+          placeholder='university email'
+        />
+       </Item>
        <Error error={auth.error} />
-       <CardSection>
-         <LoadingButton loading={auth.loading} onPress={handleSubmit}>
+       {/* TODO add spinner here!!! */}
+       <TouchableHighlight onPress={handleSubmit}>
+         <Image
+           source={submitButton}
+           style={buttonSubmitStyle}
+         />
+       </TouchableHighlight>
+         {/* <LoadingButton loading={auth.loading} onPress={handleSubmit}>
            Verify
-         </LoadingButton>
-       </CardSection>
-     </Card>
+         </LoadingButton> */}
+     </Form>
     )
+  }
+  const styles = {
+    formStyle: {
+      height: 200
+    },
+    itemStyle: {
+      marginLeft: 50,
+      marginRight: 50,
+      marginTop: 10
+    },
+    buttonSubmitStyle: {
+      resizeMode: 'contain',
+      width: 150,
+      height: 50,
+      alignSelf: 'center',
+      marginTop: 10
+    },
   }
 
   const mapStateToProps = (state) => {

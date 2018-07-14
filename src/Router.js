@@ -54,8 +54,8 @@ const RouterComponent = ({ resetError }) => {
           onBack={() => backButton(resetError)}
         />
         <Scene
-          hideNavBar='true'
           key='verifySignup'
+          hideNavBar='true'
           component={LoggedOutLandingScene}
           LandingComponent={VerifySignup}
           onLeft={() => {}}
@@ -63,6 +63,7 @@ const RouterComponent = ({ resetError }) => {
         />
         <Scene
           key='forgotPassword'
+          hideNavBar='true'
           component={LoggedOutLandingScene}
           LandingComponent={ForgotPassword}
           title='Password Recovery'
@@ -71,6 +72,7 @@ const RouterComponent = ({ resetError }) => {
         />
         <Scene
           key='newPassword'
+          hideNavBar='true'
           component={LoggedOutLandingScene}
           LandingComponent={NewPassword}
           title='New Password'

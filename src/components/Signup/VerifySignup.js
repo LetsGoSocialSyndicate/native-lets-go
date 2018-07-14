@@ -3,11 +3,7 @@
  */
  import React from 'react'
  import { Text } from 'react-native'
- import {
-   Item,
-   Form,
-   H1
- } from 'native-base'
+ import { Item, Form, H1 } from 'native-base'
  import { connect } from 'react-redux'
  import { verifyCode } from '../../actions/authAction'
  import VerifySignupForm, { VERIFICATION_CODE } from './VerifySignupForm'
@@ -32,11 +28,9 @@
    return (
      <Form style={formStyle}>
        <H1 style={h1Style}>SIGNUP - email verification</H1>
-       {/* <Item style={itemStyle}> */}
          <Text style={verificationTextStyle}>
            Please check {auth.email} for a verification code:
          </Text>
-       {/* </Item> */}
        <VerifySignupForm onSubmit={action} />
      </Form>
    )
