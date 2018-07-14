@@ -67,7 +67,7 @@ import {
         <PickerInputFormField
           name={GENDER_FIELD}
           // label='Gender'
-          options={['Male', 'Female']}
+          options={['male', 'female']}
         />
       </Item>
       <Item style={itemStyle}>

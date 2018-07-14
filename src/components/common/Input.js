@@ -80,12 +80,18 @@ const renderDatePickerInput = (props) => {
           //   right: 0,
           //   marginLeft: 10
           // },
+          dateText: {
+            marginRight: 65,
+            color: '#27608b',
+            fontSize: 20,
+          },
           dateInput: {
             borderWidth: 0
           },
           placeholderText: {
-            fontSize: 18,
-            color: 'white'
+            marginRight: 55,
+            fontSize: 20,
+            color: 'hsla(206, 56%, 35%, 0.5)'
           }
         }}
        {...rest}
@@ -105,7 +111,7 @@ const TextInputFormField = ({ name, label, placeholder, secureTextEntry }) => {
         name={name}
         secureTextEntry={secureTextEntry}
         placeholder={placeholder}
-        placeholderTextColor='white'
+        placeholderTextColor='hsla(206, 56%, 35%, 0.5)'
         autoCorrect={false}
         autoCapitalize='none'
         style={inputStyle}
@@ -149,12 +155,10 @@ const DatePickerInputFormField = ({ name, label, placeholder, minDate, maxDate }
 }
 const styles = {
   inputStyle: {
-    fontSize: 18,
-    flex: 5,
-  },
-  labelStyle: {
-    fontSize: 18,
-    flex: 1
+    fontSize: 20,
+    flex: 2,
+    color: '#27608b',
+    paddingLeft: 10,
   },
   containerStyle: {
     height: 40,
@@ -170,26 +174,18 @@ const styles = {
     borderRadius: 3,
   },
   dropdownText: {
-    alignSelf: 'center',
-    fontSize: 18,
-    marginRight: 120,
-    color: 'white',
-    marginVertical: 10,
-    marginHorizontal: 6,
+    paddingLeft: 10,
+    fontSize: 20,
+    color: 'hsla(206, 56%, 35%, 0.5)',
   },
   dropdownDropdown: {
     width: 200,
     height: 70,
-    borderColor: 'white',
-    borderWidth: 2,
-    borderRadius: 5,
   },
   datePickerStyle: {
-    marginRight: 70,
     width: 200,
   },
   pickerInputStyle1: {
-
   }
 }
 

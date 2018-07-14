@@ -5,14 +5,12 @@ import React from 'react'
 //import { REACT_AUTO_LOGIN_USER, REACT_AUTO_LOGIN_PASSWORD } from 'react-native-dotenv'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
+import { Image, TouchableHighlight } from 'react-native'
 import {
   Item,
   Form,
   Icon,
-  Button,
-  Text
 } from 'native-base'
-
 import {
   Error,
   TextInputFormField,
@@ -25,6 +23,7 @@ const REACT_AUTO_LOGIN_PASSWORD = '123'
 
 const EMAIL_FIELD = 'email'
 const PASSWORD_FIELD = 'password'
+const submitButton = require('../../assets/buttons/submit.png')
 
 // DEBUG: For faster login
 const initialValues = () => {
@@ -39,9 +38,8 @@ const initialValues = () => {
 const LoginForm = ({ handleSubmit, auth }) => {
   const {
     buttonSubmitStyle,
-    textStyleSubmit,
     formStyle,
-    itemStyle
+    itemStyle,
   } = styles
 
   return (
@@ -57,6 +55,7 @@ const LoginForm = ({ handleSubmit, auth }) => {
         <Icon active name='lock' />
         <TextInputFormField
           name={PASSWORD_FIELD}
+          secureTextEntry
           placeholder='password'
         />
       </Item>
@@ -64,32 +63,23 @@ const LoginForm = ({ handleSubmit, auth }) => {
       <Error error={auth.error} />
 
       {/* TODO: need to add loading functionality: */}
-      <Button
-        // loading={auth.loading}
-        onPress={handleSubmit}
-        style={buttonSubmitStyle}
-        block
-        rounded
-      >
-        <Text style={textStyleSubmit}>
-          submit
-        </Text>
-      </Button>
+      <TouchableHighlight onPress={handleSubmit}>
+        <Image
+          source={submitButton}
+          style={buttonSubmitStyle}
+        />
+      </TouchableHighlight>
     </Form>
   )
 }
 
 const styles = {
   buttonSubmitStyle: {
-    marginTop: 20,
-    marginBottom: 70,
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: '#4380B0',
+    resizeMode: 'contain',
+    width: 150,
+    height: 50,
     alignSelf: 'center',
-  },
-  textStyleSubmit: {
-    letterSpacing: 3,
+    marginTop: 20
   },
   formStyle: {
     height: 30

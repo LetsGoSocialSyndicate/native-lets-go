@@ -26,8 +26,8 @@ import {
 } from '../../actions/userAction'
 
 //TODO: change later to real Edit icon
-const editIcon = require('../../assets/Add_Event_Icon.png')
-const doneButton = require('../../assets/Home_Icon.png')
+const editIcon = require('../../assets/buttons/edit.png')
+const doneButton = require('../../assets/buttons/add.png')
 
 const getUser = (props) => {
   return props.forOtherUser
