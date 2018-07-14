@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { ImageBackground } from 'react-native'
 import { Container } from 'native-base'
-import FooterMenu from './FooterMenu'
 import HeaderMenu from './HeaderMenu'
 import AppContent from './AppContent'
 
@@ -19,7 +18,6 @@ class AppContainer extends Component {
           <AppContent>
             { this.props.children }
           </AppContent>
-          {/* <FooterMenu /> */}
         </ImageBackground>
       </Container>
     )
