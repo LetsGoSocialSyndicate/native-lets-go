@@ -12,13 +12,13 @@ import { fetchEventFeeds } from '../../actions/actionFeeds'
 import { logout } from '../../actions/authAction'
 
 class ActivityFeeds extends Component {
-  componentDidMount(){
+  componentWillMount() {
     this.props.fetchEventFeeds(this.props.token)
   }
 
   renderActivity(activity) {
     return (
-      <Item>
+      <Item key={ activity.event_id }>
         <ActivityFeed activity={ activity }></ActivityFeed>
       </Item>
     )
@@ -50,8 +50,6 @@ class ActivityFeeds extends Component {
         </Container>
         <Card>
           { this.renderActivityFeeds() }
-          <Item>
-          </Item>
         </Card>
       </Container>
     )

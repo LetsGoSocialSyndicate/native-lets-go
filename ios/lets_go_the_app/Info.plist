@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Let&apos;s Go</string>
+	<string>Let's Go</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -59,13 +59,13 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Let&apos;s Go, The App</string>
+	<string>Let's Go, The App</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Let&apos;s Go, The App</string>
+	<string>Let's Go, The App</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Let&apos;s Go, The App</string>
+	<string>Let's Go, The App</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Let&apos;s Go, The App</string>
+	<string>Let's Go, The App</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>

@@ -5,6 +5,8 @@ import {
 } from './types'
 import { getRequestOptions } from './actionUtils'
 
+const REACT_APP_API_URL = 'http://localhost:8000'
+
 const handleRequest = (e_id, u_id, token) => {
   console.log('i am here in the handleRequest')
   return async (dispatch) => {

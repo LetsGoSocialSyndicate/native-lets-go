@@ -4,8 +4,11 @@
 import { FETCH_EVENT_FEEDS, ADD_NEW_EVENT, FETCH_MY_EVENTS } from './types'
 import { getRequestOptions } from './actionUtils'
 
+const REACT_APP_API_URL = 'http://localhost:8000'
+
 const fetchEventFeeds = (token) => {
-  const url = `${process.env.REACT_APP_API_URL}/events`
+  console.log('fetchEventFeeds', REACT_APP_API_URL)
+  const url = `${REACT_APP_API_URL}/events`
   //console.log('fetchEventFeeds')
   return async (dispatch) => {
     console.log('we are inside the fetch events feed')
