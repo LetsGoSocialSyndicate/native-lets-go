@@ -5,11 +5,13 @@
  import { reduxForm } from 'redux-form'
  import { connect } from 'react-redux'
  import { Item, Form } from 'native-base'
- import { Image, TouchableHighlight } from 'react-native'
- import { Error, TextInputFormField, LoadingButton } from '../common'
+ import {
+   Error, TextInputFormField,
+   LoadingButton, ImageButton
+} from '../common'
 
- export const EMAIL_FIELD = 'email'
- const submitButton = require('../../assets/buttons/submit.png')
+export const EMAIL_FIELD = 'email'
+const submitButton = require('../../assets/buttons/submit.png')
 
 const ForgotPasswordForm = ({ handleSubmit, auth }) => {
   const {
@@ -27,12 +29,8 @@ const ForgotPasswordForm = ({ handleSubmit, auth }) => {
        </Item>
        <Error error={auth.error} />
        {/* TODO add spinner here!!! */}
-       <TouchableHighlight onPress={handleSubmit}>
-         <Image
-           source={submitButton}
-           style={buttonSubmitStyle}
-         />
-       </TouchableHighlight>
+       <ImageButton onPress={handleSubmit}
+         buttonSource={ submitButton }/>
          {/* <LoadingButton loading={auth.loading} onPress={handleSubmit}>
            Verify
          </LoadingButton> */}

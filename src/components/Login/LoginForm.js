@@ -5,7 +5,6 @@ import React from 'react'
 //import { REACT_AUTO_LOGIN_USER, REACT_AUTO_LOGIN_PASSWORD } from 'react-native-dotenv'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import { Image, TouchableHighlight } from 'react-native'
 import {
   Item,
   Form,
