@@ -1,7 +1,7 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
- export * from './Button'
+ export * from './LGButton'
  export * from './Card'
  export * from './CardSection'
  export * from './Error'

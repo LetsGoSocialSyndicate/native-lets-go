@@ -9,7 +9,7 @@ import {
   LoggedInLandingScene,
   LoggedOutLandingScene
 } from './components/common/LandingScene'
-import EventFeeds from './components/Events/EventFeeds'
+import ActivityFeeds from './components/Events/ActivityFeeds'
 import ForgotPassword from './components/Login/ForgotPassword'
 import NewPassword from './components/Login/NewPassword'
 // import LoginGood from './components/Login/LoginGood'
@@ -37,9 +37,9 @@ const RouterComponent = ({ resetError }) => {
           initial
         />
         <Scene
-          key='eventFeeds'
+          key='activityFeeds'
           component={LoggedInLandingScene}
-          LandingComponent={EventFeeds}
+          LandingComponent={ActivityFeeds}
           hideNavBar='true'
           title='Feeds'
         />

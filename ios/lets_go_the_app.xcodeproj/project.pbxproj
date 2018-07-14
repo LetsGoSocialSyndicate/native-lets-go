@@ -40,6 +40,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* lets_go_the_appTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* lets_go_the_appTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		4636C0C9BD894DD68C6A4A99 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A7E2D4DA5894104BFD70D5F /* Octicons.ttf */; };
+		4A19F3CC20FA1EA900867137 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D4362F920F69BDA00774983 /* libRNImagePicker.a */; };
 		4A23A77920EFAD37008A8C33 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A23A77820EFAD1E008A8C33 /* libRCTCameraRoll.a */; };
 		4A23A77B20EFBE7F008A8C33 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A23A77A20EFBE7F008A8C33 /* StoreKit.framework */; };
 		4A23A77D20EFBE89008A8C33 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A23A77C20EFBE89008A8C33 /* MapKit.framework */; };
@@ -47,7 +48,6 @@
 		545E8A12483D44BD822431F3 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C9220F3AD0D34009AAC55600 /* Ionicons.ttf */; };
 		54D13F6590F741A3BFBECE95 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33E6292A62124A4D96D9699A /* FontAwesome.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		6C5D69EDB8974317A34E8167 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB9D55683FC644D091ACE671 /* libRNImagePicker.a */; };
 		7C03A19624C24060971CECCE /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 46D084A82DC240E6B32609A7 /* MaterialIcons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
@@ -410,6 +410,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A19F3CC20FA1EA900867137 /* libRNImagePicker.a in Frameworks */,
 				4A23A77920EFAD37008A8C33 /* libRCTCameraRoll.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				4A23A77D20EFBE89008A8C33 /* MapKit.framework in Frameworks */,
@@ -426,7 +427,6 @@
 				4A23A77B20EFBE7F008A8C33 /* StoreKit.framework in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				6C5D69EDB8974317A34E8167 /* libRNImagePicker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

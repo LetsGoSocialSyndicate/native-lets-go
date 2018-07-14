@@ -36,7 +36,7 @@ const loginSubmit = (fields) => {
           isOtherUser: false
         })
         dispatch({ type: LOGIN_SUCCESS, token: responseJSON.token })
-        Actions.eventFeeds({ type: 'reset' })
+        Actions.activityFeeds({ type: 'reset' })
       } else {
         dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
       }
@@ -82,7 +82,7 @@ const verifyAccount = (token, route) => {
         isOtherUser: false
       })
       dispatch({ type: LOGIN_SUCCESS, token: responseJSON.token })
-      Actions.eventFeeds({ type: 'reset' })
+      Actions.activityFeeds({ type: 'reset' })
     } else {
       dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
     }
@@ -108,7 +108,7 @@ const verifyCode = (code, email, password = null) => {
           isOtherUser: false
         })
         dispatch({ type: LOGIN_SUCCESS, token: responseJSON.token })
-        Actions.eventFeeds({ type: 'reset' })
+        Actions.activityFeeds({ type: 'reset' })
       } else {
         dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
       }

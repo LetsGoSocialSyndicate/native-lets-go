@@ -13,6 +13,7 @@ import {
   resetAuthError
 } from '../../actions/authAction'
 import LoginForm from './LoginForm'
+import { LGButton } from '../common'
 
 const onSubmit = (action, fields) => {
   console.log('Login ON SUBMIT:', fields)
@@ -31,8 +32,6 @@ const Login = ({ loginAction, resetError }) => {
     buttonsContainer,
     titleStyle,
     containerStyle,
-    signupAndForgotStyle,
-    signupAndForgotTextStyle,
     titleContainerStyle
   } = styles
 
@@ -49,28 +48,12 @@ const Login = ({ loginAction, resetError }) => {
       <LoginForm onSubmit={action} />
 
       <Container style={buttonsContainer}>
-        <Button
-          style={signupAndForgotStyle}
-          block
-          bordered
-          rounded
+        <LGButton
           onPress={() => navigate('forgotPassword', resetError)}
-        >
-          <Text style={signupAndForgotTextStyle}>
-            forgot password?
-          </Text>
-        </Button>
-        <Button
-          style={signupAndForgotStyle}
-          block
-          bordered
-          rounded
+          buttonText="forgot password?" />
+        <LGButton
           onPress={() => navigate('signup', resetError)}
-        >
-          <Text style={signupAndForgotTextStyle}>
-            signup
-          </Text>
-        </Button>
+          buttonText="signup" />
       </Container>
     </Container>
   )
@@ -83,16 +66,6 @@ const styles = {
     marginLeft: 80,
     marginRight: 80,
     marginTop: 200
-  },
-  signupAndForgotStyle: {
-    marginBottom: 15,
-    borderColor: 'white',
-    paddingLeft: 10,
-    paddingRight: 10,
-  },
-  signupAndForgotTextStyle: {
-    color: 'white',
-    letterSpacing: 2,
   },
   titleStyle: {
     width: null,

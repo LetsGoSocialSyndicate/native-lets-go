@@ -4,7 +4,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import EventFeeds from '../Events/EventFeeds'
+import ActivityFeeds from '../Events/ActivityFeeds'
 import Login from '../Login/Login'
 
 const LandingScene = (props) => {
@@ -12,7 +12,7 @@ const LandingScene = (props) => {
   const { LandingComponent, requiredLoginState, auth, ...rest } = props
   console.log('requiredLoginState', auth.isUserLoggedIn, requiredLoginState)
   if (auth.isUserLoggedIn && !requiredLoginState) {
-    return <EventFeeds {...rest} />
+    return <ActivityFeeds {...rest} />
   }
   if (!auth.isUserLoggedIn && requiredLoginState) {
     return <Login {...rest} />
