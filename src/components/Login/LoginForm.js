@@ -14,12 +14,13 @@ import {
 import {
   Error,
   TextInputFormField,
+  ImageButton,
   // LoadingButton
 } from '../common'
 
 // TODO: Temporary, instead react-native-dotenv
-const REACT_AUTO_LOGIN_USER = 'panich.photos3@gmail.com'
-const REACT_AUTO_LOGIN_PASSWORD = '123'
+const REACT_AUTO_LOGIN_USER = 'sukmi.ledru@gmail.com'
+const REACT_AUTO_LOGIN_PASSWORD = 'Aa123456'
 
 const EMAIL_FIELD = 'email'
 const PASSWORD_FIELD = 'password'
@@ -63,12 +64,9 @@ const LoginForm = ({ handleSubmit, auth }) => {
       <Error error={auth.error} />
 
       {/* TODO: need to add loading functionality: */}
-      <TouchableHighlight onPress={handleSubmit}>
-        <Image
-          source={submitButton}
-          style={buttonSubmitStyle}
-        />
-      </TouchableHighlight>
+
+      <ImageButton handleOnPress={ handleSubmit }
+        buttonSource={ submitButton }/>
     </Form>
   )
 }

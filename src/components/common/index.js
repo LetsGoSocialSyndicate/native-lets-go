@@ -10,3 +10,4 @@
  export * from './Spinner'
  export * from './TextField'
  export * from './LandingScene'
+ export * from './ImageButton'
