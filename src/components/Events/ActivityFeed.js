@@ -45,8 +45,12 @@ const styles = {
     marginBottom: 0
   },
   textStyle: {
+<<<<<<< HEAD
     marginTop: 5,
     color: '#FFF',
+=======
+    color: 'black',
+>>>>>>> 7e886386ecd9440ca989c7d1eed2afc381054488
     letterSpacing: 2,
     height: 30
   },
