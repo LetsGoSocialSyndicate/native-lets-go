@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux';
-import { TouchableOpacity } from 'react-native'
-import { Header, Left, Body, Title, Thumbnail, Right } from 'native-base'
+import { Header, Left, Body, Title, Thumbnail, Right, Button } from 'native-base'
 import {
   HEADER_HEIGHT, CONTENT_WIDTH
 } from './common/Constants'
@@ -27,13 +26,13 @@ class HeaderMenu extends Component {
         <Left />
         <Body >
           <Title style={{ marginTop: 18 }}>
-            <TouchableOpacity onPress={() => Actions.login()}>
+            <Button onPress={() => Actions.login()}>
               <Thumbnail
                 square
                 style={{ width: 55, height: 55 }}
                 source={appIconImage}
               />
-            </TouchableOpacity>
+            </Button>
           </Title>
         </Body>
         <Right />
