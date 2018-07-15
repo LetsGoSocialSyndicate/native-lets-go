@@ -42,6 +42,7 @@ const styles = {
     backgroundColor: 'transparent'
   },
   buttonsContainer: {
+    backgroundColor: 'transparent',
     marginLeft: 80,
     marginRight: 80,
     marginTop: 50
@@ -52,6 +53,7 @@ const styles = {
     height: 40
   },
   titleContainerStyle: {
+    backgroundColor: 'transparent',
     marginTop: 100,
     marginBottom: 60,
   }
