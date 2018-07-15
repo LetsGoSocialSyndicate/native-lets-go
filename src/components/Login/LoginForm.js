@@ -6,7 +6,6 @@ import React from 'react'
 import { REACT_AUTO_LOGIN_USER, REACT_AUTO_LOGIN_PASSWORD } from 'react-native-dotenv'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import { Image } from 'react-native'
 import {
   Icon,
   Item,
@@ -69,9 +68,8 @@ const LoginForm = ({ handleSubmit, auth }) => {
         transparent
         loading={auth.loading}
         onPress={handleSubmit}
-      >
-        <Image source={submitButton} style={buttonSubmitImageStyle} />
-      </LoadingButton>
+        source={submitButton}
+      />
     </Form>
   )
 }
@@ -82,11 +80,6 @@ const styles = {
     height: 50,
     alignSelf: 'center',
     marginTop: 10
-  },
-  buttonSubmitImageStyle: {
-    width: 150,
-    height: 50,
-    alignSelf: 'center',
   },
   formStyle: {
     height: 30
