@@ -5,11 +5,13 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
-import { ScrollView } from 'react-native'
-import { List, ListItem } from 'native-base'
+import { View, ImageBackground, Image, Dimensions } from 'react-native'
+import { List, ListItem, Text, Container } from 'native-base'
 import ActivityFeed from './ActivityFeed'
 import { fetchEventFeeds } from '../../actions/actionFeeds'
 import { logout } from '../../actions/authAction'
+
+const { width, height } = Dimensions.get('window');
 
 class ActivityFeeds extends Component {
   componentWillMount() {
@@ -20,50 +22,30 @@ class ActivityFeeds extends Component {
     return (
       Object.values(this.props.eventFeeds)
         .map((event) => {
-          return <ActivityFeed activity={ event } key={ event.event_id }/>
+          return (
+            <ActivityFeed
+              activity={ event } key={ event.event_id }/>
+          )
         })
     )
   }
 
   render() {
-    const {
-      containerStyle, contentStyle
-    } = styles
-    const items = Object.values(this.props.eventFeeds)
     return (
-      <ScrollView>
-        <List dataArray={items}
-          renderRow={(item) =>
-            <ListItem>
-              <ActivityFeed activity={ item } />
-            </ListItem>
-          }>
-        </List>
-      </ScrollView>
+      <Container style={ styles.containerStyle }>
+        { this.renderActivityFeeds() }
+      </Container>
     )
   }
 }
 
 const styles = {
   containerStyle: {
-    backgroundColor: 'transparent'
-  },
-  contentStyle: {
-    backgroundColor: 'transparent'
-  },
-  buttonsContainer: {
-    marginLeft: 80,
-    marginRight: 80,
-    marginTop: 50
-  },
-  titleStyle: {
-    width: null,
-    resizeMode: 'contain',
-    height: 40
-  },
-  titleContainerStyle: {
-    marginTop: 100,
-    marginBottom: 60,
+    flex: 1,
+    backgroundColor: 'transparent',
+    marginTop: -1,
+    width: width,
+    zIndex: 90
   }
 }
 
