@@ -18,7 +18,7 @@ import {
 } from '../common'
 import LoadingButton from '../common/LoadingButton'
 
-//Tanya - DEBUG: uncomment this 
+//Tanya - DEBUG: uncomment this
 // const REACT_AUTO_LOGIN_USER = 'panich.photos3@gmail.com'
 // const REACT_AUTO_LOGIN_PASSWORD = '123'
 
@@ -78,7 +78,6 @@ const LoginForm = ({ handleSubmit, auth }) => {
 
 const styles = {
   buttonSubmitStyle: {
-    resizeMode: 'contain',
     width: 150,
     height: 50,
     alignSelf: 'center',
