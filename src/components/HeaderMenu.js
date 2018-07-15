@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux';
-import { Dimensions } from 'react-native'
 import { Header, Left, Body, Title, Thumbnail, Right } from 'native-base'
-import { HEADER_HEIGHT } from './common/Constants'
+import {
+  HEADER_HEIGHT, CONTENT_WIDTH
+} from './common/Constants'
 const appIconImage = require('../assets/lets-go-icon.png')
-
-const { width } = Dimensions.get('window')
 
 class HeaderMenu extends Component {
   render() {
@@ -14,15 +13,14 @@ class HeaderMenu extends Component {
       <Header
         style={{
           height: HEADER_HEIGHT,
-          width,
+          width: CONTENT_WIDTH,
           backgroundColor: 'transparent',
           marginTop: 0,
           marginBottom: 2,
           paddingLeft: 0,
           paddingRight: 0,
           borderBottomColor: '#FFF',
-          borderBottomWidth: 2,
-          zIndex: 100
+          borderBottomWidth: 2
         }}
       >
         <Left />

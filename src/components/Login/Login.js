@@ -2,7 +2,7 @@
 import React from 'react'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
-import { Image, Dimensions } from 'react-native'
+import { Image } from 'react-native'
 import {
   Container,
   Button,
@@ -14,9 +14,7 @@ import {
 } from '../../actions/authAction'
 import LoginForm from './LoginForm'
 import { LGButton } from '../common'
-import { HEADER_HEIGHT, FOOTER_HEIGHT } from '../common/Constants'
-const { height } = Dimensions.get('window');
-const contentHeight = height - HEADER_HEIGHT - FOOTER_HEIGHT
+import { CONTENT_HEIGHT } from '../common/Constants'
 
 const onSubmit = (action, fields) => {
   console.log('Login ON SUBMIT:', fields)
@@ -63,7 +61,7 @@ const Login = ({ loginAction, resetError }) => {
 const styles = {
   containerStyle: {
     backgroundColor: 'transparent',
-    height: contentHeight
+    height: CONTENT_HEIGHT
   },
   buttonsContainer: {
     backgroundColor: 'transparent',

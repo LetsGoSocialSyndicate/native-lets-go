@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import { ImageBackground, Dimensions } from 'react-native'
+import { ImageBackground } from 'react-native'
 import { Container } from 'native-base'
 import HeaderMenu from './HeaderMenu'
+import FooterMenu from './FooterMenu'
 import AppContent from './AppContent'
 
 const backgroundImage = require('../assets/1_a_base_02.png')
-const { width, height } = Dimensions.get('window');
-import { HEADER_HEIGHT, FOOTER_HEIGHT } from './common/Constants'
-const contentHeight = height - HEADER_HEIGHT - FOOTER_HEIGHT
+import {
+  HEADER_HEIGHT, FOOTER_HEIGHT,
+  CONTENT_WIDTH, CONTENT_HEIGHT
+} from './common/Constants'
 
 class AppContainer extends Component {
   render() {
@@ -18,9 +20,10 @@ class AppContainer extends Component {
           style={{ width: '100%', height: '100%' }}
         >
           <HeaderMenu />
-          <AppContent style={{ height: contentHeight, width: width }}>
+          <AppContent style={{ height: CONTENT_HEIGHT, width: CONTENT_WIDTH }}>
             { this.props.children }
           </AppContent>
+          { this.props.showFooter ? <FooterMenu /> : null }
         </ImageBackground>
       </Container>
     )
