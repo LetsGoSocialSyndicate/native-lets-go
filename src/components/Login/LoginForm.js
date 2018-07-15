@@ -3,7 +3,7 @@
  */
 import React from 'react'
 //Tanya - DEBUG: comment this out
-//import { REACT_AUTO_LOGIN_USER, REACT_AUTO_LOGIN_PASSWORD } from 'react-native-dotenv'
+import { REACT_AUTO_LOGIN_USER, REACT_AUTO_LOGIN_PASSWORD } from 'react-native-dotenv'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import {
@@ -18,8 +18,8 @@ import {
 import LoadingButton from '../common/LoadingButton'
 
 //Tanya - DEBUG: uncomment this
-const REACT_AUTO_LOGIN_USER = 'panich.photos3@gmail.com'
-const REACT_AUTO_LOGIN_PASSWORD = '123'
+// const REACT_AUTO_LOGIN_USER = 'panich.photos3@gmail.com'
+// const REACT_AUTO_LOGIN_PASSWORD = '123'
 
 const EMAIL_FIELD = 'email'
 const PASSWORD_FIELD = 'password'
