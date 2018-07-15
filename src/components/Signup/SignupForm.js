@@ -32,7 +32,6 @@ import {
  const SignupForm = ({ handleSubmit, auth }) => {
   const {
    buttonSubmitStyle,
-   buttonSubmitImageStyle,
    formStyle,
    itemStyle
   } = styles
@@ -99,25 +98,18 @@ import {
         onPress={handleSubmit}
         style={buttonSubmitStyle}
         transparent
-      >
-        <Image source={submitButton} style={buttonSubmitImageStyle} />
-      </LoadingButton>
+        source={submitButton}
+      />
     </Form>
    )
  }
 
  const styles = {
    buttonSubmitStyle: {
-     resizeMode: 'contain',
      width: 150,
      height: 50,
      alignSelf: 'center',
      marginTop: 10
-   },
-   buttonSubmitImageStyle: {
-     width: 150,
-     height: 50,
-     alignSelf: 'center',
    },
    formStyle: {
      marginTop: 35,

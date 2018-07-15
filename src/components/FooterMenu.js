@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Footer, FooterTab } from 'native-base'
-import IconMenu from './common/IconMenu'
+import { IconMenu } from './common'
+import { FOOTER_HEIGHT } from './common/Constants'
 
 const homeImage = require('../assets/menus/Home_Icon.png')
 const addEventImage = require('../assets/menus/Add_Event_Icon.png')
@@ -11,7 +12,7 @@ const myProfileImage = require('../assets/menus/My_Profile_Icon.png')
 class FooterMenu extends Component {
   render() {
     return (
-      <Footer style={{ height: 70, backgroundColor: 'transparent' }}>
+      <Footer style={{ height: FOOTER_HEIGHT, backgroundColor: 'transparent' }}>
         <FooterTab>
           <IconMenu source={ homeImage } />
           <IconMenu source={ addEventImage } />

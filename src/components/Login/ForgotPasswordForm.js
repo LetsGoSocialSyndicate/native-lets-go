@@ -16,8 +16,7 @@ const ForgotPasswordForm = ({ handleSubmit, auth }) => {
   const {
    formStyle,
    itemStyle,
-   buttonSubmitStyle,
-   buttonSubmitImageStyle
+   buttonSubmitStyle
   } = styles
    return (
     <Form style={formStyle}>
@@ -33,9 +32,8 @@ const ForgotPasswordForm = ({ handleSubmit, auth }) => {
          transparent
          loading={auth.loading}
          onPress={handleSubmit}
-       >
-         <Image source={submitButton} style={buttonSubmitImageStyle} />
-       </LoadingButton>
+         source={submitButton}
+       />
      </Form>
     )
   }
@@ -49,16 +47,10 @@ const ForgotPasswordForm = ({ handleSubmit, auth }) => {
       marginTop: 10
     },
     buttonSubmitStyle: {
-      resizeMode: 'contain',
       width: 150,
       height: 50,
       alignSelf: 'center',
       marginTop: 10
-    },
-    buttonSubmitImageStyle: {
-      width: 150,
-      height: 50,
-      alignSelf: 'center',
     }
   }
 

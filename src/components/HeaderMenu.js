@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux';
 import { Dimensions } from 'react-native'
 import { Header, Left, Body, Title, Thumbnail, Right } from 'native-base'
-
+import { HEADER_HEIGHT } from './common/Constants'
 const appIconImage = require('../assets/lets-go-icon.png')
 
 const { width } = Dimensions.get('window')
@@ -13,7 +13,7 @@ class HeaderMenu extends Component {
     return (
       <Header
         style={{
-          height: 62,
+          height: HEADER_HEIGHT,
           width,
           backgroundColor: 'transparent',
           marginTop: 0,
