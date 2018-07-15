@@ -9,7 +9,7 @@ import { Container } from 'native-base'
 import ActivityFeed from './ActivityFeed'
 import { fetchEventFeeds } from '../../actions/actionFeeds'
 
-import { CONTENT_WIDTH } from '../common/Constants'
+import { CONTENT_WIDTH, CONTENT_HEIGHT } from '../common/Constants'
 
 class ActivityFeeds extends Component {
   componentWillMount() {
@@ -42,7 +42,8 @@ const styles = {
     flex: 1,
     backgroundColor: 'transparent',
     marginTop: -1,
-    width: CONTENT_WIDTH
+    width: CONTENT_WIDTH,
+    height: CONTENT_HEIGHT
   }
 }
 

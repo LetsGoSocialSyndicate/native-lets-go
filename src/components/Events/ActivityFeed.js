@@ -24,12 +24,8 @@ class ActivityFeed extends Component {
     } = styles
     return (
       <Item bordered style={ cardItemStyle }>
-        <ImageBackground
-          source={ backgroundImage }
-          style={ imageStyle }>
-          <Text style={ textStyle }>{ eventDate.date }</Text>
-          <Text style={ textStyle }>{ eventDate.time }</Text>
-        </ImageBackground>
+        <Text style={ textStyle }>{ eventDate.date }</Text>
+        <Text style={ textStyle }>{ eventDate.time }</Text>
       </Item>
     )
   }
@@ -51,14 +47,9 @@ const styles = {
     height: 30
   },
   cardItemStyle: {
-    height: 400,
+    // height: 200,
     width: CONTENT_WIDTH,
-    backgroundColor: 'transparent',
-    marginTop: 0,
-    marginBottom: 0,
-    marginLeft: 0,
-    marginRight: 0,
-    zIndex: 80
+    // backgroundColor: 'transparent'
   }
 }
 
@@ -67,3 +58,12 @@ const dispatchToProps = (dispatch) => bindActionCreators({
 }, dispatch)
 
 export default connect(null, dispatchToProps)(ActivityFeed)
+
+/*
+<ImageBackground
+  source={ backgroundImage }
+  style={ imageStyle }>
+  <Text style={ textStyle }>{ eventDate.date }</Text>
+  <Text style={ textStyle }>{ eventDate.time }</Text>
+</ImageBackground>
+*/
