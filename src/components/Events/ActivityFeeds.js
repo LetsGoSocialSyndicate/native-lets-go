@@ -47,7 +47,7 @@ const styles = {
   }
 }
 
-const mapStateToProps =  (state) => ({ ...state.eventFeeds, ...state.user, ...state.auth })
+const mapStateToProps = (state) => ({ ...state.eventFeeds, ...state.user, ...state.auth })
 
 const dispatchToProps = (dispatch) => bindActionCreators({
   fetchEventFeeds

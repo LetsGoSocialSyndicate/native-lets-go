@@ -3,27 +3,20 @@
  */
 import React from 'react'
 import { Button, Text } from 'native-base'
-import { Spinner } from './Spinner'
 
 const LGButton = ({ onPress, buttonText }) => {
   const { buttonStyle, textStyle } = styles
   return (
     <Button
-      style={ buttonStyle }
+      style={buttonStyle}
       block
       bordered
       rounded
-      onPress={ onPress }>
-      <Text style={ textStyle }>{ buttonText }</Text>
+      onPress={onPress}
+    >
+      <Text style={textStyle}>{buttonText}</Text>
     </Button>
   )
-}
-
-const LoadingButton = ({ loading, onPress, children }) => {
-  if (loading) {
-    return <Spinner size="large" />
-  }
-  return <Button onPress={onPress}>{children}</Button>
 }
 
 const styles = {
@@ -39,4 +32,4 @@ const styles = {
   }
 }
 
-export { LGButton, LoadingButton }
+export { LGButton }

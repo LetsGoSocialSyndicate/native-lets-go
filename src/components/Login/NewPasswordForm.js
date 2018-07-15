@@ -66,7 +66,7 @@ const NewPasswordForm = ({ handleSubmit, auth }) => {
       marginTop: 10
     },
     buttonSubmitStyle: {
-      resizeMode: 'contain',
+      // resizeMode: 'contain',
       width: 150,
       height: 50,
       alignSelf: 'center',

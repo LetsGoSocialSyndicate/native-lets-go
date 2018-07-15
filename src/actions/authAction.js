@@ -1,7 +1,6 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
-// import { REACT_APP_API_URL } from 'react-native-dotenv'
+//import { REACT_APP_API_URL } from 'react-native-dotenv'
 import { Actions } from 'react-native-router-flux'
-
 import { getRequestOptions } from './actionUtils'
 
 import {
@@ -36,7 +35,6 @@ const loginSubmit = (fields) => {
           isOtherUser: false
         })
         dispatch({ type: LOGIN_SUCCESS, token: responseJSON.token })
-        Actions.activityFeeds({ type: 'reset' })
       } else {
         dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
       }
@@ -82,7 +80,6 @@ const verifyAccount = (token, route) => {
         isOtherUser: false
       })
       dispatch({ type: LOGIN_SUCCESS, token: responseJSON.token })
-      Actions.activityFeeds({ type: 'reset' })
     } else {
       dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
     }
@@ -108,7 +105,6 @@ const verifyCode = (code, email, password = null) => {
           isOtherUser: false
         })
         dispatch({ type: LOGIN_SUCCESS, token: responseJSON.token })
-        Actions.activityFeeds({ type: 'reset' })
       } else {
         dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
       }

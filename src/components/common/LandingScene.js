@@ -6,8 +6,8 @@ import { connect } from 'react-redux'
 import AppContainer from '../AppContainer'
 
 // TODO: Switch back to activiity feds once all header/footer nagivation done
-import ActivityFeeds from '../Events/ActivityFeeds'
-// import TempMainScene from '../TempMainScene'
+// import ActivityFeeds from '../Events/ActivityFeeds'
+import TempMainScene from '../TempMainScene'
 import Login from '../Login/Login'
 
 const LandingScene = (props) => {
@@ -15,8 +15,8 @@ const LandingScene = (props) => {
   const { LandingComponent, requiredLoginState, auth, ...rest } = props
   console.log('requiredLoginState', auth.isUserLoggedIn, requiredLoginState)
   if (auth.isUserLoggedIn && !requiredLoginState) {
-    return <ActivityFeeds {...rest} />
-    // return <TempMainScene {...rest} />
+    // return <ActivityFeeds {...rest} />
+    return <TempMainScene {...rest} />
   }
   if (!auth.isUserLoggedIn && requiredLoginState) {
     return <Login {...rest} />

@@ -14,7 +14,7 @@
  } from './types'
 import { IMAGE_OP_NONE } from './imageOp'
 
- // // TODO: Temporary, instead react-native-dotenv
+ // TODO: Temporary, instead react-native-dotenv
  const REACT_APP_API_URL = 'http://localhost:8000'
 
 const fetchOtherUser = (id, token) => {

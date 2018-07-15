@@ -15,9 +15,7 @@ import {
   Card,
   Item,
   Text,
-  Button,
 } from 'native-base'
-import { CardSection, LoadingButton } from '../common'
 import { IMAGE_OP_NONE, IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
 import {
   cancelEditing,
@@ -37,6 +35,10 @@ const getUser = (props) => {
 
 const isReadOnly = (props) => {
   return props.forOtherUser || props.user.isReadOnly
+}
+
+const getFileExtension = (filename) => {
+  return filename.split('.').pop().toLowerCase()
 }
 
 const getUserpic = (user) => {
@@ -173,10 +175,11 @@ class Profile extends Component {
     showImagePicker({}, (response) => {
       // Profile userpic was modified - added or updated.
       const op = getUserpicId(this.state.user) ? IMAGE_OP_UPDATE : IMAGE_OP_ADD
+      const ext = getFileExtension(response.fileName)
       this.setState({
         ...this.state,
         imageLoading: false,
-        currentImageUrl: response.uri,
+        currentImageUrl: `data:image/${ext};base64,${response.data}`,
         profileImageOp: op
       })
     })

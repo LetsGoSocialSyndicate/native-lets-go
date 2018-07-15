@@ -6,10 +6,7 @@ import React from 'react'
 import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { Image } from 'react-native'
-import {
-  Form,
-  Item
-} from 'native-base'
+import { Form, Item } from 'native-base'
 import { DATE_FORMAT } from '../common/Constants'
 import {
   DatePickerInputFormField,
@@ -107,7 +104,7 @@ import {
  const styles = {
    buttonSubmitStyle: {
      width: 150,
-     height: 50,
+     height: 80,
      alignSelf: 'center',
      marginTop: 10
    },
