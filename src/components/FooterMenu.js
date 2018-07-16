@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Footer, FooterTab } from 'native-base'
 import { IconMenu } from './common'
-import { FOOTER_HEIGHT } from './common/Constants'
+import { FOOTER_HEIGHT, CONTENT_WIDTH } from './common/Constants'
 
 const homeImage = require('../assets/menus/Home_Icon.png')
 const addEventImage = require('../assets/menus/Add_Event_Icon.png')
@@ -11,8 +11,9 @@ const myProfileImage = require('../assets/menus/My_Profile_Icon.png')
 
 class FooterMenu extends Component {
   render() {
+    const { footerStyle } = styles
     return (
-      <Footer style={{ height: FOOTER_HEIGHT, backgroundColor: 'transparent' }}>
+      <Footer style={ footerStyle }>
         <FooterTab>
           <IconMenu source={ homeImage } />
           <IconMenu source={ addEventImage } />
@@ -25,4 +26,11 @@ class FooterMenu extends Component {
   }
 }
 
+const styles = {
+  footerStyle: {
+    height: FOOTER_HEIGHT,
+    width: CONTENT_WIDTH,
+    backgroundColor: 'transparent'
+  }
+}
 export default FooterMenu
