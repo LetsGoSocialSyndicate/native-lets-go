@@ -8,7 +8,7 @@ import AppContent from './AppContent'
 const backgroundImage = require('../assets/1_a_base_02.png')
 import {
   HEADER_HEIGHT, FOOTER_HEIGHT,
-  CONTENT_WIDTH, CONTENT_HEIGHT
+  CONTENT_WIDTH, CONTENT_HEIGHT, CONTAINER_HEIGHT
 } from './common/Constants'
 
 class AppContainer extends Component {
@@ -17,7 +17,7 @@ class AppContainer extends Component {
       <Container style={{ paddingTop: 20 }}>
         <ImageBackground
           source={backgroundImage}
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: CONTENT_WIDTH, height: CONTAINER_HEIGHT }}
         >
           <HeaderMenu />
           <AppContent style={{ height: CONTENT_HEIGHT, width: CONTENT_WIDTH }}>
