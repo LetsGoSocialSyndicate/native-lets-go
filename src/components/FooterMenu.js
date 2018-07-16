@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Actions } from 'react-native-router-flux';
 import { Footer, FooterTab, Button, Text } from 'native-base'
 import { IconMenu } from './common'
 import { FOOTER_HEIGHT, CONTENT_WIDTH } from './common/Constants'
@@ -15,11 +16,11 @@ class FooterMenu extends Component {
     return (
       <Footer style={ footerStyle }>
         <FooterTab >
-          <IconMenu source={ homeImage } />
+          <IconMenu source={ homeImage } onPress={() => Actions.login()} />
           <IconMenu source={ addEventImage } />
           <IconMenu source={ myEventsImage } />
           <IconMenu source={ myMessagesImage } />
-          <IconMenu source={ myProfileImage } />
+          <IconMenu source={ myProfileImage } onPress={() => Actions.profile()}/>
         </FooterTab>
       </Footer>
     )

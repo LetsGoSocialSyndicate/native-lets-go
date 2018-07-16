@@ -5,7 +5,7 @@ class IconMenu extends Component {
   render() {
     const { buttonStyle, thumbnailStyle } = styles
     return (
-      <Button style={ buttonStyle }>
+      <Button style={ buttonStyle } onPress={ this.props.onPress }>
         <Thumbnail
           style={ thumbnailStyle }
           source={ this.props.source }
