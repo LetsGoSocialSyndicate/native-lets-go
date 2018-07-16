@@ -27,17 +27,22 @@ const LandingSceneContainer = (props) => {
   return (
     <AppContainer
       showFooter={ props.requiredLoginState }
-      style={{
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
+      style={ styles.containerStyle }
     >
       <LandingScene {...props} />
     </AppContainer>
   )
 }
+
+const styles = {
+  containerStyle: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
+}
+
 const LoggedInLandingSceneFunc = (props) =>
   LandingSceneContainer({ requiredLoginState: true, ...props })
 
