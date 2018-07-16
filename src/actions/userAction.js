@@ -1,21 +1,20 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
- //import { REACT_APP_API_URL } from 'react-native-dotenv'
- import { getRequestOptions } from './actionUtils'
+import { getRequestOptions } from './actionUtils'
 
- import {
-   FETCH_USER,
-   EDIT_USER_START,
-   EDIT_USER_CANCEL,
-   SAVE_USER_START,
-   SAVE_USER_SUCCESS,
-   SAVE_USER_FAILED
- } from './types'
+import {
+  FETCH_USER,
+  EDIT_USER_START,
+  EDIT_USER_CANCEL,
+  SAVE_USER_START,
+  SAVE_USER_SUCCESS,
+  SAVE_USER_FAILED
+} from './types'
 import { IMAGE_OP_NONE } from './imageOp'
 
- // TODO: Temporary, instead react-native-dotenv
- const REACT_APP_API_URL = 'http://localhost:8000'
+// import { REACT_APP_API_URL } from 'react-native-dotenv'
+const REACT_APP_API_URL = 'http://localhost:8000'
 
 const fetchOtherUser = (id, token) => {
   return async (dispatch) => {

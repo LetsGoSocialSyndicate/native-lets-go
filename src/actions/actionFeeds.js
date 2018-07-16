@@ -4,6 +4,7 @@
 import { FETCH_EVENT_FEEDS, ADD_NEW_EVENT, FETCH_MY_EVENTS } from './types'
 import { getRequestOptions } from './actionUtils'
 
+// import { REACT_APP_API_URL } from 'react-native-dotenv'
 const REACT_APP_API_URL = 'http://localhost:8000'
 
 const fetchEventFeeds = (token) => {
@@ -29,7 +30,7 @@ const fetchEventFeeds = (token) => {
 }
 
 const fetchMyEventFeeds = (user, hosted, token) => {
-  const url = `${process.env.REACT_APP_API_URL}/users/${user.email}/${hosted ? 'hosted' : 'requested'}`
+  const url = `${REACT_APP_API_URL}/users/${user.email}/${hosted ? 'hosted' : 'requested'}`
   console.log('fetchMyEventFeeds', url)
   return async (dispatch) => {
     const opts = getRequestOptions('GET', token)
@@ -54,7 +55,7 @@ const fetchMyEventFeeds = (user, hosted, token) => {
 const addNewEvent = (newEvent, token, history) => {
   console.log('addNewEvent', token)
   return async (dispatch) => {
-    const url = `${process.env.REACT_APP_API_URL}/events`
+    const url = `${REACT_APP_API_URL}/events`
     // console.log('url', url)
     const opts = getRequestOptions('POST', token, newEvent)
     const response = await fetch(url, opts)

@@ -1,5 +1,4 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
-//import { REACT_APP_API_URL } from 'react-native-dotenv'
 import { Actions } from 'react-native-router-flux'
 import { getRequestOptions } from './actionUtils'
 
@@ -15,7 +14,7 @@ import {
   RESET_AUTH_ERROR
 } from './types'
 
-// TODO: Temporary, instead react-native-dotenv
+// import { REACT_APP_API_URL } from 'react-native-dotenv'
 const REACT_APP_API_URL = 'http://localhost:8000'
 
 const loginSubmit = (fields) => {
