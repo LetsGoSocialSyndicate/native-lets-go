@@ -8,21 +8,8 @@ const appIconImage = require('../assets/lets-go-icon.png')
 
 class HeaderMenu extends Component {
   render() {
-    console.log('HeaderMenu:', Actions.currentScene)
     return (
-      <Header
-        style={{
-          height: HEADER_HEIGHT,
-          width: CONTENT_WIDTH,
-          backgroundColor: 'transparent',
-          marginTop: 0,
-          marginBottom: 2,
-          paddingLeft: 0,
-          paddingRight: 0,
-          borderBottomColor: '#FFF',
-          borderBottomWidth: 2
-        }}
-      >
+      <Header style={ styles.headerStyle }>
         <Left />
         <Body >
           <Title style={{ marginTop: 18 }}>
@@ -38,6 +25,20 @@ class HeaderMenu extends Component {
         <Right />
       </Header>
     )
+  }
+}
+
+const styles = {
+  headerStyle: {
+    height: HEADER_HEIGHT,
+    width: CONTENT_WIDTH,
+    backgroundColor: 'transparent',
+    marginTop: 0,
+    marginBottom: 2,
+    paddingLeft: 0,
+    paddingRight: 0,
+    borderBottomColor: '#FFF',
+    borderBottomWidth: 2
   }
 }
 
