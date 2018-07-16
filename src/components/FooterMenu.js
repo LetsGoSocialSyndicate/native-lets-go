@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Footer, FooterTab } from 'native-base'
+import { Footer, FooterTab, Button, Text } from 'native-base'
 import { IconMenu } from './common'
 import { FOOTER_HEIGHT, CONTENT_WIDTH } from './common/Constants'
 
@@ -14,7 +14,7 @@ class FooterMenu extends Component {
     const { footerStyle } = styles
     return (
       <Footer style={ footerStyle }>
-        <FooterTab>
+        <FooterTab >
           <IconMenu source={ homeImage } />
           <IconMenu source={ addEventImage } />
           <IconMenu source={ myEventsImage } />
@@ -30,7 +30,10 @@ const styles = {
   footerStyle: {
     height: FOOTER_HEIGHT,
     width: CONTENT_WIDTH,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    // marginTop: 0,
+    // paddingTop: 0,
+    // paddingBottom: 0
   }
 }
 export default FooterMenu

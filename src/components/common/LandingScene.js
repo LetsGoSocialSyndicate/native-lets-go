@@ -26,7 +26,7 @@ const LandingScene = (props) => {
 const LandingSceneContainer = (props) => {
   return (
     <AppContainer
-      showFooter={ !props.requiredLoginState }
+      showFooter={ props.requiredLoginState }
       style={{
         flex: 1,
         flexDirection: 'column',

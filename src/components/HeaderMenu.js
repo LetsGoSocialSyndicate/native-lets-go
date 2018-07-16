@@ -12,7 +12,7 @@ class HeaderMenu extends Component {
       <Header style={ styles.headerStyle }>
         <Left />
         <Body >
-          <Title style={{ marginTop: 18 }}>
+          <Title style={{ marginTop: 11 }}>
             <Button onPress={() => Actions.login()}>
               <Thumbnail
                 square
