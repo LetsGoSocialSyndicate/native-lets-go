@@ -14,4 +14,4 @@ class IconMenu extends Component {
   }
 }
 
-export default IconMenu
+export { IconMenu }

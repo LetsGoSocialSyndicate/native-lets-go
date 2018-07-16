@@ -14,3 +14,4 @@
  export * from './TextField' // OLD
  export * from './LandingScene'
  export * from './ImageButton'
+ export * from './IconMenu'
