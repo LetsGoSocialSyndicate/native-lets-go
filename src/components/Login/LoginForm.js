@@ -40,7 +40,7 @@ const LoginForm = ({ handleSubmit, auth }) => {
     formStyle,
     itemStyle,
     buttonSubmitStyle,
-    buttonSubmitImageStyle
+    // buttonSubmitImageStyle
   } = styles
 
   return (
@@ -79,15 +79,15 @@ const styles = {
     width: 150,
     height: 50,
     alignSelf: 'center',
-    marginTop: 10,
+    marginTop: 30,
   },
   formStyle: {
-    height: 30
+    height: 240,
   },
   itemStyle: {
     marginLeft: 50,
     marginRight: 50,
-    marginTop: 10
+    marginTop: 20
   }
 }
 

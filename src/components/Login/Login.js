@@ -3,15 +3,8 @@ import React from 'react'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import { Image } from 'react-native'
-import {
-  Container,
-  Button,
-  Text
-} from 'native-base'
-import {
-  loginSubmit,
-  resetAuthError
-} from '../../actions/authAction'
+import { Container } from 'native-base'
+import { loginSubmit, resetAuthError } from '../../actions/authAction'
 import LoginForm from './LoginForm'
 import { LGButton } from '../common'
 import { CONTENT_HEIGHT } from '../common/Constants'
@@ -50,10 +43,12 @@ const Login = ({ loginAction, resetError }) => {
       <Container style={buttonsContainer}>
         <LGButton
           onPress={() => navigate('forgotPassword', resetError)}
-          buttonText="forgot password?" />
+          buttonText="forgot password?"
+        />
         <LGButton
           onPress={() => navigate('signup', resetError)}
-          buttonText="signup" />
+          buttonText="signup"
+        />
       </Container>
     </Container>
   )
@@ -67,19 +62,16 @@ const styles = {
     backgroundColor: 'transparent',
     marginLeft: 80,
     marginRight: 80,
-    marginTop: 180
+    marginBottom: 70
   },
   titleStyle: {
     width: null,
     resizeMode: 'contain',
     height: 40,
-    // backgroundColor: 'black',
   },
   titleContainerStyle: {
-    backgroundColor: 'transparent',
     marginTop: 80,
-    marginBottom: 0,
-    height: 80
+    backgroundColor: 'transparent',
   }
 }
 

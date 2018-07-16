@@ -18,7 +18,7 @@ class HeaderMenu extends Component {
                 square
                 style={{ width: 55, height: 55 }}
                 source={appIconImage}
-            />
+               />
             </Button>
           </Item>
         </Body>
