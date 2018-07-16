@@ -4,7 +4,7 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { ImageBackground } from 'react-native'
+import { Image, View } from 'react-native'
 import { Text, Card, CardItem, Item, Body, Container } from 'native-base'
 import { ImageButton } from '../common'
 
@@ -20,25 +20,36 @@ class ActivityFeed extends Component {
       time: (this.props.activity.event_start_time).substr(11,5)
     }
     const {
-      textStyle, cardItemStyle, imageStyle
+      containerStyle, textStyle,
+      cardItemStyle, imageStyle
     } = styles
     return (
-      <Item bordered style={ cardItemStyle }>
-        <Text style={ textStyle }>{ eventDate.date }</Text>
-        <Text style={ textStyle }>{ eventDate.time }</Text>
-      </Item>
+      <View style={ containerStyle }>
+        <View>
+          <Image style={imageStyle} source={{ uri: this.props.activity.user_image_url }} />
+        </View>
+        <Item bordered >
+          <Text style={ textStyle }>{ eventDate.date }</Text>
+          <Text style={ textStyle }>{ eventDate.time }</Text>
+        </Item>
+      </View>
     )
   }
 }
 
 const styles = {
-  imageStyle: {
+  containerStyle: {
     width: CONTENT_WIDTH,
-    height: '100%',
-    marginLeft: 0,
-    marginRight: 0,
-    marginTop: 0,
-    marginBottom: 0
+    backgroundColor: 'transparent',
+  },
+  imageStyle: {
+    marginTop: 10,
+    marginLeft: 10,
+    height: 70,
+    borderRadius: 35,
+    width: 70,
+    borderColor: 'white',
+    borderWidth: 4
   },
   textStyle: {
     marginTop: 5,
@@ -49,7 +60,7 @@ const styles = {
   cardItemStyle: {
     // height: 200,
     width: CONTENT_WIDTH,
-    // backgroundColor: 'transparent'
+    backgroundColor: 'transparent'
   }
 }
 
@@ -58,12 +69,3 @@ const dispatchToProps = (dispatch) => bindActionCreators({
 }, dispatch)
 
 export default connect(null, dispatchToProps)(ActivityFeed)
-
-/*
-<ImageBackground
-  source={ backgroundImage }
-  style={ imageStyle }>
-  <Text style={ textStyle }>{ eventDate.date }</Text>
-  <Text style={ textStyle }>{ eventDate.time }</Text>
-</ImageBackground>
-*/

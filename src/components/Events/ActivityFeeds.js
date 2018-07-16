@@ -41,7 +41,7 @@ const styles = {
   containerStyle: {
     flex: 1,
     backgroundColor: 'transparent',
-    marginTop: -1,
+    marginTop: 10,
     width: CONTENT_WIDTH,
     height: CONTENT_HEIGHT
   }
