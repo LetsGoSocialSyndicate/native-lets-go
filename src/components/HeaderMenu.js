@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux';
-import { Header, Left, Body, Title, Thumbnail, Right, Button } from 'native-base'
+import { Header, Left, Body, Item, Thumbnail, Right, Button } from 'native-base'
 import {
   HEADER_HEIGHT, CONTENT_WIDTH
 } from './common/Constants'
@@ -9,18 +9,18 @@ const appIconImage = require('../assets/lets-go-icon.png')
 class HeaderMenu extends Component {
   render() {
     return (
-      <Header style={ styles.headerStyle }>
+      <Header style={styles.headerStyle}>
         <Left />
         <Body >
-          <Title style={{ marginTop: 18 }}>
+          <Item style={{ marginTop: 18 }}>
             <Button onPress={() => Actions.login()}>
-              <Thumbnail
+               <Thumbnail
                 square
                 style={{ width: 55, height: 55 }}
                 source={appIconImage}
-              />
+            />
             </Button>
-          </Title>
+          </Item>
         </Body>
         <Right />
       </Header>
