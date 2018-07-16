@@ -5,7 +5,8 @@ import { ActivityIndicator, Image, Text, TextInput, TouchableOpacity, View } fro
 import { showImagePicker } from 'react-native-image-picker'
 import { connect } from 'react-redux'
 
-import { Button, Card, CardSection, LoadingButton } from '../common'
+import { Button, Card, CardSection } from '../common'
+import LoadingButton from './common/LoadingButton'
 import { IMAGE_OP_NONE, IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
 import {
   cancelEditing,

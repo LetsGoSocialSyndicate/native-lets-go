@@ -8,9 +8,10 @@ import {
   Card,
   CardSection,
   Error,
-  TextInputFormField,
-  LoadingButton
+  TextInputFormField
 } from '../common'
+
+import LoadingButton from '../common/LoadingButton'
 
 // TODO: Temporary, instead react-native-dotenv
 const REACT_AUTO_LOGIN_USER = 'panich.photos3@gmail.com'

@@ -11,10 +11,10 @@ import {
   CardSection,
   DatePickerInputFormField,
   Error,
-  LoadingButton,
   PickerInputFormField,
   TextInputFormField
- } from '../common'
+} from '../common'
+import LoadingButton from '../common/LoadingButton'
 
  const FIRST_NAME_FIELD = 'firstName'
  const LAST_NAME_FIELD = 'lastName'
