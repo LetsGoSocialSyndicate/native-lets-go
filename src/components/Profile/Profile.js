@@ -209,15 +209,17 @@ class Profile extends Component {
       }
     }
     const {
+      outterContainerStyle,
+      containerStyle,
       nameItemStyle,
       nameTextStyle,
       descriptionTextStyle,
-      itemsCenterFlex
+      itemsCenterFlex,
     } = styles
 
     return (
-      <Container>
-        <Container>
+      <Container style={outterContainerStyle}>
+        <Container style={containerStyle}>
           {button}
         </Container>
 
@@ -253,8 +255,14 @@ class Profile extends Component {
 }
 
 const styles = {
+  outterContainerStyle: {
+    backgroundColor: 'transparent',
+    height: 300,
+  },
+  containerStyle: {
+    backgroundColor: 'transparent'
+  },
   imageReadOnly: {
-    marginTop: 380,
     height: 200,
     borderRadius: 100,
     width: 200,
@@ -262,7 +270,6 @@ const styles = {
     borderWidth: 8
   },
   image: {
-    marginTop: 380,
     height: 200,
     borderRadius: 100,
     width: 200,
@@ -272,8 +279,8 @@ const styles = {
   nameItemStyle: {
      justifyContent: 'center',
      alignItems: 'center',
-     marginTop: 530,
-     height: 150,
+     marginTop: 5,
+     height: 70,
      borderColor: 'transparent'
    },
   nameTextStyle: {
@@ -306,6 +313,7 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    height: 20
   },
 }
 
