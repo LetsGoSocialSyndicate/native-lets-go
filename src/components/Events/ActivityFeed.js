@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Image, View } from 'react-native'
 import { Text, Card, CardItem, Item, Body, Container } from 'native-base'
+import moment from 'moment'
 import { ImageButton } from '../common'
 
 import { handleRequest } from '../../actions/actionRequest'
@@ -20,17 +21,31 @@ class ActivityFeed extends Component {
       time: (this.props.activity.event_start_time).substr(11,5)
     }
     const {
-      containerStyle, textStyle,
-      cardItemStyle, imageStyle
+      containerStyle, textStyle, textHeaderStyle,
+      rowStyle, eventInfoStyle, eventSectionStyle,
+      cardItemStyle, imageStyle, organizerSectionStyle,
+      eventTitleStyle
     } = styles
+    const {
+      user_image_url, first_name, last_name, birthday,
+      event_location, event_title
+    } = this.props.activity
+    const age = moment.duration(moment().diff(birthday)).years()
     return (
       <View style={ containerStyle }>
-        <View>
-          <Image style={imageStyle} source={{ uri: this.props.activity.user_image_url }} />
+        <View style={ organizerSectionStyle }>
+          <Image style={imageStyle} source={{ uri: user_image_url }} />
+          <View style={ eventInfoStyle }>
+            <Text style={ textHeaderStyle }>{ first_name.toUpperCase() } { last_name.toUpperCase() }, {age}</Text>
+            <Text style={ textStyle }>{ `on ${eventDate.date} at ${eventDate.time}` }</Text>
+            <Text style={ textStyle }>{ event_location }</Text>
+          </View>
         </View>
-        <Item bordered >
-          <Text style={ textStyle }>{ eventDate.date }</Text>
-          <Text style={ textStyle }>{ eventDate.time }</Text>
+        <View style={ eventSectionStyle }>
+          <Text style={ eventTitleStyle }>{ event_title }</Text>
+        </View>
+        <Item bordered>
+          <Text></Text>
         </Item>
       </View>
     )
@@ -42,6 +57,23 @@ const styles = {
     width: CONTENT_WIDTH,
     backgroundColor: 'transparent',
   },
+  organizerSectionStyle: {
+    flexDirection: 'row'
+  },
+  eventSectionStyle: {
+    marginTop: 10,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  eventInfoStyle: {
+    marginTop: 15,
+    marginLeft: 10,
+    flexDirection: 'column'
+  },
+  rowStyle: {
+    flexDirection: 'row'
+  },
   imageStyle: {
     marginTop: 10,
     marginLeft: 10,
@@ -51,11 +83,21 @@ const styles = {
     borderColor: 'white',
     borderWidth: 4
   },
-  textStyle: {
-    marginTop: 5,
+  textHeaderStyle: {
     color: '#FFF',
     letterSpacing: 2,
-    height: 30
+    fontSize: 14,
+    fontWeight: 'bold'
+  },
+  eventTitleStyle: {
+    color: '#FFF',
+    letterSpacing: 2,
+    fontSize: 18,
+  },
+  textStyle: {
+    color: '#FFF',
+    letterSpacing: 2,
+    fontSize: 12,
   },
   cardItemStyle: {
     // height: 200,
