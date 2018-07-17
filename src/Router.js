@@ -20,6 +20,7 @@ import Profile from './components/Profile/Profile'
 import Signup from './components/Signup/Signup'
 import VerifySignup from './components/Signup/VerifySignup'
 import TempMainScene from './components/TempMainScene'
+import Chat from './components/Messages/Chat'
 
 const backButton = (resetError) => {
   resetError()
@@ -93,6 +94,13 @@ const RouterComponent = ({ resetError }) => {
           component={LoggedInLandingScene}
           LandingComponent={Profile}
           title='Profile'
+        />
+        <Scene
+          key='chat'
+          hideNavBar='true'
+          component={LoggedInLandingScene}
+          LandingComponent={Chat}
+          title='Chat'
         />
       </Scene>
     </Router>

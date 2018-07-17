@@ -13,7 +13,7 @@ import Login from '../Login/Login'
 const LandingScene = (props) => {
   // This is weird, but LandingComponent has to be capitalized!!!
   const { LandingComponent, requiredLoginState, auth, ...rest } = props
-  console.log('requiredLoginState', auth.isUserLoggedIn, requiredLoginState)
+  console.log('requiredLoginState', props.name, auth.isUserLoggedIn, requiredLoginState)
   if (auth.isUserLoggedIn && !requiredLoginState) {
     // return <ActivityFeeds {...rest} />
     return <TempMainScene {...rest} />
@@ -23,12 +23,20 @@ const LandingScene = (props) => {
   }
   return <LandingComponent {...rest} />
 }
+
 const LandingSceneContainer = (props) => {
   return (
     <AppContainer
-      showFooter={ props.requiredLoginState }
-      style={ styles.containerStyle }
-      showDropdown={ props.requiredLoginState }
+      // requiredLoginState - this is the desired state of page we asked to go
+      // isUserLoggedIn - this is state of app
+      // user gets to the page he asked only if his state === required state of the page
+      // else --> he is redirected to Login or to Main page
+      // if we redirected --> means page we asked has different requested state,
+      // that the page we are redirected to
+      // that's why we have to use here isUserLoggedIn
+      showFooter={props.auth.isUserLoggedIn}
+      style={styles.containerStyle}
+      showDropdown={props.auth.isUserLoggedIn}
     >
       <LandingScene {...props} />
     </AppContainer>
