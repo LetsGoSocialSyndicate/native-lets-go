@@ -77,7 +77,7 @@ const styles = {
     alignItems: 'center'
   },
   eventInfoStyle: {
-    marginTop: 15,
+    marginTop: 20,
     marginLeft: 10,
     flexDirection: 'column'
   },
