@@ -27,6 +27,13 @@ const LandingScene = (props) => {
 const LandingSceneContainer = (props) => {
   return (
     <AppContainer
+      // requiredLoginState - this is the desired state of page we asked to go
+      // isUserLoggedIn - this is state of app
+      // user gets to the page he asked only if his state === required state of the page
+      // else --> he is redirected to Login or to Main page
+      // if we redirected --> means page we asked has different requested state,
+      // that the page we are redirected to
+      // that's why we have to use here isUserLoggedIn
       showFooter={props.auth.isUserLoggedIn}
       style={styles.containerStyle}
       showDropdown={props.auth.isUserLoggedIn}
