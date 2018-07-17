@@ -1,3 +1,6 @@
+/*
+ * Copyright 2018, Socializing Syndicate Corp.
+ */
 const beerBlack = require('../../assets/activities/BeerBlack.png')
 const beerWhite = require('../../assets/activities/BeerWhite.png')
 const boardGameBlack = require('../../assets/activities/BoardGameBlack.png')
