@@ -1,50 +1,60 @@
-// /*
-//  * Copyright 2018, Socializing Syndicate Corp.
-//  */
-// import React from 'react'
-// import { connect } from 'react-redux'
-// // import { signupSubmit, setSignupError } from '../../actions/authAction'
-// import ProfileEditForm from './ProfileEditForm'
-//
-// class ProfileEdit extends Component {
-//
-//   buildImageRequest() {
-//     // For now returning array of 1 - we allow only 1 profile userpic
-//     return [{
-//        op: this.state.profileImageOp,
-//        id: getUserpicId(this.state.user),
-//        image_url: this.state.currentImageUrl
-//     }]
-//   }
-//
-//   constructSaveCancelButtons() {
-//     const originalUser = getUser(this.props)
-//
-//     //this is Done button
-//     const onSave = () => {
-//       let imageRequest = []
-//       if (this.state.profileImageOp !== IMAGE_OP_NONE) {
-//         imageRequest = this.buildImageRequest()
-//       }
-//       this.props.updateProfileAction(
-//         this.state.user, originalUser.id, this.props.auth.token, imageRequest)
-//       .then(() => {
-//         // After the server update completes we need to update
-//         // internal state with fetched user data.
-//         const updatedUser = getUser(this.props)
-//         this.setState({
-//           ...this.state,
-//           user: updatedUser,
-//           currentImageUrl: getUserpic(updatedUser),
-//           profileImageOp: IMAGE_OP_NONE
-//         })
-//       })
-//     }
-//   const action = () => {}
-//   return (<ProfileEditForm onSubmit={action} />)
-// }
-//
-// const actions = {
-//
-// }
-// export default connect(null, actions)(ProfileEdit)
+/* Copyright 2018, Socializing Syndicate Corp. */
+import React from 'react'
+import { Image, View } from 'react-native'
+import { Container } from 'native-base'
+import ProfileEditForm from './ProfileEditForm'
+import { CONTENT_HEIGHT } from '../common/Constants'
+
+//TODO: change later to real DONE icon
+const doneButton = require('../../assets/buttons/submit.png')
+const defaultUser = require('../../assets/default.png')
+
+const Profile = () => {
+  const {
+    outterContainerStyle,
+    itemsCenterFlex,
+    imageContainerStyle,
+    image
+  } = styles
+
+  return (
+    <Container style={outterContainerStyle}>
+      <View style={itemsCenterFlex}>
+        <Container style={imageContainerStyle}>
+          <Image
+            source={defaultUser}
+            style={image}
+          />
+        </Container>
+        <ProfileEditForm />
+      </View>
+    </Container>
+  )
+}
+
+const styles = {
+  outterContainerStyle: {
+    backgroundColor: 'transparent',
+    height: CONTENT_HEIGHT,
+  },
+  itemsCenterFlex: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 20
+  },
+  image: {
+    height: 100,
+    borderRadius: 50,
+    width: 100,
+    borderColor: 'white',
+    borderWidth: 8
+  },
+  imageContainerStyle: {
+    marginTop: 50,
+    backgroundColor: 'transparent',
+  }
+}
+
+export default Profile
