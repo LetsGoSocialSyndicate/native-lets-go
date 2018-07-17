@@ -14,10 +14,10 @@ const CONTENT_WIDTH = width
 const CONTENT_HEIGHT = height - HEADER_HEIGHT - FOOTER_HEIGHT - 40
 
 const ACTIVITY_CATEGORIES = [
-  'beer', 'boardGame', 'camping', 'carPool', 'coffee',
-  'crafts', 'cycling', 'fishing', 'food', 'hiking',
-  'meeting', 'music', 'party', 'ski', 'sports', 'study',
-  'videoGame', 'weights', 'yoga'
+  'boardGame', 'camping', 'carPool', 'coffee',
+  'crafts', 'cycling', 'drinking', 'fishing', 'food',
+  'hiking', 'meeting', 'music', 'party', 'ski', 'sports',
+  'study', 'videoGame', 'weights', 'yoga'
 ]
 
 export {

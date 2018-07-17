@@ -52,7 +52,7 @@ const renderPickerInput = (props) => {
     <ModalDropdown
      style={dropdown}
      textStyle={dropdownText}
-     dropdownStyle={dropdownDropdown}
+     dropdownStyle={{...dropdownDropdown, height: 'auto' }}
      onSelect={(index, value) => input.onChange(value)} {...rest}
     />
   )
@@ -121,14 +121,14 @@ const TextInputFormField = ({ name, label, placeholder, secureTextEntry }) => {
 }
 
 // https://www.npmjs.com/package/react-native-modal-dropdown
-const PickerInputFormField = ({ name, label, defaultOption, options }) => {
+const PickerInputFormField = ({ name, label, defaultOption, options, defaultValue = 'select gender' }) => {
   const { pickerInputStyle1, labelStyle, containerStyle } = styles
   return (
     <View style={containerStyle}>
       <Text style={labelStyle}>{label}</Text>
       <Field
         component={renderPickerInput}
-        defaultValue={'select gender'}
+        defaultValue={defaultValue}
         options={options}
         name={name}
         style={pickerInputStyle1}
