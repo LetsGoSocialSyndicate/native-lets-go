@@ -28,6 +28,7 @@ const LandingSceneContainer = (props) => {
     <AppContainer
       showFooter={ props.requiredLoginState }
       style={ styles.containerStyle }
+      showDropdown={ props.requiredLoginState }
     >
       <LandingScene {...props} />
     </AppContainer>

@@ -19,7 +19,7 @@ class AppContainer extends Component {
           source={backgroundImage}
           style={{ width: CONTENT_WIDTH, height: CONTAINER_HEIGHT }}
         >
-          <HeaderMenu />
+          <HeaderMenu showMenu={ this.props.showDropdown }/>
           <AppContent style={{ height: CONTENT_HEIGHT, width: CONTENT_WIDTH }}>
             { this.props.children }
           </AppContent>
