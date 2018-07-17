@@ -5,11 +5,13 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
+import { View, TouchableHighlight, Image } from 'react-native'
 import { Container } from 'native-base'
 import ActivityFeed from './ActivityFeed'
 import { fetchEventFeeds } from '../../actions/actionFeeds'
 
 import { CONTENT_WIDTH, CONTENT_HEIGHT } from '../common/Constants'
+const filterButton = require('../../assets/buttons/filter.png')
 
 class ActivityFeeds extends Component {
   componentWillMount() {
@@ -44,6 +46,13 @@ const styles = {
     marginTop: 10,
     width: CONTENT_WIDTH,
     height: CONTENT_HEIGHT
+  },
+  iconStyle: {
+    position: 'absolute',
+    right: 50,
+    top: 50,
+    width: 130,
+    height: 130
   }
 }
 
