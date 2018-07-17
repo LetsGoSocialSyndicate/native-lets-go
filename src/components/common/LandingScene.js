@@ -13,7 +13,7 @@ import Login from '../Login/Login'
 const LandingScene = (props) => {
   // This is weird, but LandingComponent has to be capitalized!!!
   const { LandingComponent, requiredLoginState, auth, ...rest } = props
-  console.log('requiredLoginState', auth.isUserLoggedIn, requiredLoginState)
+  console.log('requiredLoginState', props.name, auth.isUserLoggedIn, requiredLoginState)
   if (auth.isUserLoggedIn && !requiredLoginState) {
     // return <ActivityFeeds {...rest} />
     return <TempMainScene {...rest} />
@@ -23,11 +23,12 @@ const LandingScene = (props) => {
   }
   return <LandingComponent {...rest} />
 }
+
 const LandingSceneContainer = (props) => {
   return (
     <AppContainer
-      showFooter={ props.requiredLoginState }
-      style={ styles.containerStyle }
+      showFooter={props.auth.isUserLoggedIn}
+      style={styles.containerStyle}
     >
       <LandingScene {...props} />
     </AppContainer>

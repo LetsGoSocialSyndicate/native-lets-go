@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Actions } from 'react-native-router-flux';
-import { Footer, FooterTab, Button, Text } from 'native-base'
+import { Actions } from 'react-native-router-flux'
+import { Footer, FooterTab } from 'native-base'
 import { IconMenu } from './common'
 import { FOOTER_HEIGHT, CONTENT_WIDTH } from './common/Constants'
 
@@ -14,13 +14,17 @@ class FooterMenu extends Component {
   render() {
     const { footerStyle } = styles
     return (
-      <Footer style={ footerStyle }>
+      <Footer style={footerStyle}>
         <FooterTab >
-          <IconMenu source={ homeImage } onPress={() => Actions.login()} />
-          <IconMenu source={ addEventImage } />
-          <IconMenu source={ myEventsImage } />
-          <IconMenu source={ myMessagesImage } />
-          <IconMenu source={ myProfileImage } onPress={() => Actions.profile()}/>
+          <IconMenu source={homeImage} onPress={() => Actions.login()} />
+          <IconMenu source={addEventImage} />
+          <IconMenu source={myEventsImage} />
+          {/*
+              TODO: Later navigate to Messages first and then
+              it will take you to chat with selected user
+          */}
+          <IconMenu source={myMessagesImage} onPress={() => Actions.chat()} />
+          <IconMenu source={myProfileImage} onPress={() => Actions.profile()} />
         </FooterTab>
       </Footer>
     )
