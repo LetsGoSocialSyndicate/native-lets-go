@@ -17,7 +17,7 @@ class FooterMenu extends Component {
       <Footer style={footerStyle}>
         <FooterTab >
           <IconMenu source={homeImage} onPress={() => Actions.login()} />
-          <IconMenu source={addEventImage} />
+          <IconMenu source={addEventImage} onPress={() => Actions.createActivity()} />
           <IconMenu source={myEventsImage} />
           {/*
               TODO: Later navigate to Messages first and then

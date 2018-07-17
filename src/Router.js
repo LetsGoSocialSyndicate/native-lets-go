@@ -103,6 +103,12 @@ const RouterComponent = ({ resetError }) => {
           LandingComponent={Chat}
           title='Chat'
         />
+        <Scene
+          key='createActivity'
+          component={LoggedInLandingScene}
+          LandingComponent={CreateActivity}
+          title='Create Activity'
+        />
       </Scene>
     </Router>
   )
