@@ -15,10 +15,9 @@ const ImageButton = ({ handleOnPress, buttonSource }) => {
 const styles = {
   buttonStyle: {
     resizeMode: 'contain',
-    width: 150,
-    height: 50,
+    width: 200,
+    height: 100,
     alignSelf: 'center',
-    marginTop: 20
   }
 }
 
