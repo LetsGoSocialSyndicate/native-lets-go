@@ -14,10 +14,6 @@ const onSubmit = (action, fields) => {
   action(fields)
 }
 
-const navigate = (destination, resetError) => {
-  resetError()
-  Actions[destination].call()
-}
 const loginTitleImage = require('../../assets/loginTitle.png')
 
 const Login = ({ loginAction, resetError }) => {
@@ -42,11 +38,17 @@ const Login = ({ loginAction, resetError }) => {
 
       <Container style={buttonsContainer}>
         <LGButton
-          onPress={() => navigate('forgotPassword', resetError)}
+          onPress={() => {
+            resetError()
+            Actions.forgotPassword({ origin: 'Login' })
+          }}
           buttonText="forgot password?"
         />
         <LGButton
-          onPress={() => navigate('signup', resetError)}
+          onPress={() => {
+            resetError()
+            Actions.signup({ origin: 'Login' })
+          }}
           buttonText="signup"
         />
       </Container>
