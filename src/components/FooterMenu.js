@@ -17,12 +17,12 @@ class FooterMenu extends Component {
       <Footer style={footerStyle}>
         <FooterTab >
           <IconMenu source={homeImage} onPress={() => Actions.login()} />
-          <IconMenu source={addEventImage} onPress={() => Actions.createActivity()} />
           <IconMenu source={myEventsImage} />
           {/*
               TODO: Later navigate to Messages first and then
               it will take you to chat with selected user
           */}
+          <IconMenu source={addEventImage} onPress={() => Actions.createActivity()} />
           <IconMenu source={myMessagesImage} onPress={() => Actions.chat()} />
           <IconMenu source={myProfileImage} onPress={() => Actions.profile()} />
         </FooterTab>
