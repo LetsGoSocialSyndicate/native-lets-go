@@ -53,11 +53,11 @@ class TempMainScene extends Component {
       <Container style={containerStyle}>
         <Container style={buttonsContainer}>
           <LGButton
-            onPress={() => Actions.activityFeeds()}
+            onPress={() => Actions.activityFeeds({ origin: 'TempMainScene' })}
             buttonText="feed"
           />
           <LGButton
-            onPress={() => Actions.profile({ forOtherUser: false })}
+            onPress={() => Actions.profile({ forOtherUser: false, origin: 'TempMainScene' })}
             buttonText="profile"
           />
           <LGButton
