@@ -1,12 +1,9 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
 import React from 'react'
 import { connect } from 'react-redux'
-import { Text, View } from 'react-native'
 import { Picker } from 'react-native'
 import { Form, Item } from 'native-base'
-import { reduxForm } from 'redux-form'
-// import ModalDropdown from 'react-native-modal-dropdown'
-// import LoadingButton from '../common'
+import { Field, reduxForm } from 'redux-form'
 import {
   DatePickerInputFormField,
   Error,
@@ -14,12 +11,16 @@ import {
   TextInputFormField
  } from '../common'
  import LoadingButton from '../common/LoadingButton'
- import { ACTIVITY_CATEGORIES } from '../common/Constants'
+ import { activityCategories } from '../common/imageUtils'
 
 const submitButton = require('../../assets/buttons/submit.png')
 
 const CreateActivity = () => {
-  const { buttonSubmitStyle, formStyle, itemStyle, pickerItemStyle } = styles
+  const {
+    buttonSubmitStyle,
+    formStyle,
+    itemStyle,
+    pickerItemStyle } = styles
 
   const HEADLINE_FIELD = 'headline'
   const LOCATION_FIELD = 'location'
@@ -29,7 +30,7 @@ const CreateActivity = () => {
   const ACTIVITY_END_TIME_FIELD = 'activityEnd'
 
   const renderCategoryPickerItems = () => {
-    return ACTIVITY_CATEGORIES.map(category => {
+    return activityCategories.map(category => {
       return (
         <Picker.Item label={category} key={category} value={category} style={pickerItemStyle} />
       )
@@ -55,7 +56,7 @@ const CreateActivity = () => {
         />
       </Item>
       <Picker
-        selectedValue="coffee"
+        selectedValue="Coffee"
         // style={{ height: 100 }}
         onValueChange={itemValue => this.selectedValue = itemValue}
       >
