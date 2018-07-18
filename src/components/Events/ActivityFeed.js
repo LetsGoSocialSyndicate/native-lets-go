@@ -25,7 +25,7 @@ class ActivityFeed extends Component {
     Actions.profile({ origin: 'ActivityFeed' })
   }
   onActivityPicturePress = () => {
-    Actions.viewActivity({ origin: 'ActivityFeed' })
+    Actions.viewActivity({ origin: 'ActivityFeed', activity: this.props.activity })
   }
   render() {
     const {
