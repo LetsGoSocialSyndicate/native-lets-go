@@ -13,6 +13,7 @@ import ActivityFeeds from './components/Events/ActivityFeeds'
 import CreateActivity from './components/Events/CreateActivity'
 import ForgotPassword from './components/Login/ForgotPassword'
 import NewPassword from './components/Login/NewPassword'
+import ViewActivity from './components/Events/ViewActivity'
 // import LoginGood from './components/Login/LoginGood'
 // import SignupGood from './components/Login/SignupGood'
 
@@ -51,7 +52,6 @@ const RouterComponent = ({ resetError }) => {
           component={LoggedInLandingScene}
           LandingComponent={ActivityFeeds}
           hideNavBar='true'
-          title='Feeds'
         />
         <Scene
           key='signup'
@@ -105,9 +105,15 @@ const RouterComponent = ({ resetError }) => {
         />
         <Scene
           key='createActivity'
+          hideNavBar='true'
           component={LoggedInLandingScene}
           LandingComponent={CreateActivity}
-          title='Create Activity'
+        />
+        <Scene
+          key='viewActivity'
+          component={LoggedInLandingScene}
+          LandingComponent={ViewActivity}
+          hideNavBar='true'
         />
       </Scene>
     </Router>

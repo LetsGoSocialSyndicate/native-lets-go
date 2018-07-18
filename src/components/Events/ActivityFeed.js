@@ -2,9 +2,10 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import React, { Component } from 'react'
+import { Actions } from 'react-native-router-flux'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Image, View } from 'react-native'
+import { Image, View, TouchableOpacity } from 'react-native'
 import { Text, Card, CardItem, Item, Body, Container } from 'native-base'
 import moment from 'moment'
 import { ImageButton } from '../common'
@@ -19,6 +20,12 @@ class ActivityFeed extends Component {
   onPressRequestToJoin = () => {
     const { user_id, event_id } = this.props.activity
     this.props.handleRequest(event_id, user_id, this.props.auth.token)
+  }
+  onProfilePicturePress = () => {
+    Actions.profile()
+  }
+  onActivityPicturePress = () => {
+    Actions.viewActivity()
   }
   render() {
     const {
@@ -41,7 +48,9 @@ class ActivityFeed extends Component {
     return (
       <View style={ containerStyle }>
         <View style={ organizerSectionStyle }>
-          <Image style={ profileImageStyle } source={{ uri: user_image_url }} />
+          <TouchableOpacity onPress={ this.onProfilePicturePress }>
+            <Image style={ profileImageStyle } source={{ uri: user_image_url }} />
+          </TouchableOpacity>
           <View style={ eventInfoStyle }>
             <Text style={ textHeaderStyle }>{ first_name } { last_name }, {age}</Text>
             <Text style={ textStyle }>{ `on ${eventDate.date} at ${eventDate.time}` }</Text>
@@ -50,7 +59,9 @@ class ActivityFeed extends Component {
         </View>
         <View style={ eventSectionStyle }>
           <Text style={ eventTitleStyle }>{ event_title }</Text>
-          <Image style={ eventImageStyle } source={ eventImage } />
+          <TouchableOpacity onPress={ this.onActivityPicturePress }>
+            <Image style={ eventImageStyle } source={ eventImage } />
+          </TouchableOpacity>
           <ImageButton buttonSource={ requestToJoinButton }
             handleOnPress={ this.onPressRequestToJoin }/>
         </View>
