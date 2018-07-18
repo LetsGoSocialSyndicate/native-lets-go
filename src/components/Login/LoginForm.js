@@ -6,15 +6,8 @@ import React from 'react'
 //import { REACT_AUTO_LOGIN_USER, REACT_AUTO_LOGIN_PASSWORD } from 'react-native-dotenv'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import {
-  Icon,
-  Item,
-  Form,
-} from 'native-base'
-import {
-  Error,
-  TextInputFormField
-} from '../common'
+import { Icon, Item, Form } from 'native-base'
+import { Error, TextInputFormField } from '../common'
 import LoadingButton from '../common/LoadingButton'
 
 //Tanya - DEBUG: uncomment this
@@ -40,7 +33,6 @@ const LoginForm = ({ handleSubmit, auth }) => {
     formStyle,
     itemStyle,
     buttonSubmitStyle,
-    // buttonSubmitImageStyle
   } = styles
 
   return (

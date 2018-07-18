@@ -6,8 +6,8 @@ import { connect } from 'react-redux'
 import AppContainer from '../AppContainer'
 
 // TODO: Switch back to activiity feds once all header/footer nagivation done
-// import ActivityFeeds from '../Events/ActivityFeeds'
-import TempMainScene from '../TempMainScene'
+import ActivityFeeds from '../Events/ActivityFeeds'
+// import TempMainScene from '../TempMainScene'
 import Login from '../Login/Login'
 
 const LandingScene = (props) => {
@@ -15,8 +15,8 @@ const LandingScene = (props) => {
   const { LandingComponent, requiredLoginState, auth, ...rest } = props
   console.log('requiredLoginState', props.name, props.origin, auth.isUserLoggedIn, requiredLoginState)
   if (auth.isUserLoggedIn && !requiredLoginState) {
-    // return <ActivityFeeds {...rest} />
-    return <TempMainScene {...rest} />
+    return <ActivityFeeds {...rest} />
+    // return <TempMainScene {...rest} />
   }
   if (!auth.isUserLoggedIn && requiredLoginState) {
     return <Login {...rest} />
@@ -29,7 +29,8 @@ const LandingSceneContainer = (props) => {
     <AppContainer
       // requiredLoginState - this is the desired state of page we asked to go
       // isUserLoggedIn - this is state of app
-      // user gets to the page he asked only if his state === required state of the page
+      // user gets to the page he asked only if
+      // his state === required state of the page
       // else --> he is redirected to Login or to Main page
       // if we redirected --> means page we asked has different requested state,
       // that the page we are redirected to

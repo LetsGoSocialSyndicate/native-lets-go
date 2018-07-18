@@ -9,16 +9,15 @@ import { Field } from 'redux-form'
 import { DATE_FORMAT } from './Constants'
 
 //If we want to use simple Input (without Redux form)
-const Input = ({ label, value, onChangeText, placeholder, secureTextEntry }) => {
+const Input = ({ value, onChangeText, placeholder, secureTextEntry }) => {
   const {
     inputStyle,
-    labelStyle,
     containerStyle
   } = styles
 
   return (
     <View style={containerStyle}>
-      <Text style={labelStyle}>{label}</Text>
+      {/* <Text style={labelStyle}>{label}</Text> */}
       <TextInput
         secureTextEntry={secureTextEntry}
         placeholder={placeholder}
@@ -32,12 +31,12 @@ const Input = ({ label, value, onChangeText, placeholder, secureTextEntry }) => 
   )
 }
 
-//helper function - we call it from InputFormField
-//every time there is a change in input, onChangeText is called
-//and it dispatches the change to ReduxForm (input.onChange)
+// helper function - we call it from InputFormField
+// every time there is a change in input, onChangeText is called
+// and it dispatches the change to ReduxForm (input.onChange)
 const renderTextInput = (props) => {
-  //input is what we get from Field,
-  //...rest - all props from InputFormField and parent components
+  // input is what we get from Field,
+  // ...rest - all props from InputFormField and parent components
   const { input, ...rest } = props
   return <TextInput onChangeText={input.onChange} {...rest} />
 }
@@ -60,7 +59,7 @@ const renderPickerInput = (props) => {
 
 // https://www.npmjs.com/package/react-native-datepicker
 const renderDatePickerInput = (props) => {
-  //input is what we get from Field,
+  // input is what we get from Field,
   //...rest - all props from PickerInputFormField and parent components
   const { input, ...rest } = props
   const { datePickerStyle } = styles

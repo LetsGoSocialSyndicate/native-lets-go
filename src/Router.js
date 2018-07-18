@@ -19,9 +19,10 @@ import ViewActivity from './components/Events/ViewActivity'
 
 import Login from './components/Login/Login'
 import Profile from './components/Profile/Profile'
+import ProfileEdit from './components/Profile/ProfileEdit'
 import Signup from './components/Signup/Signup'
 import VerifySignup from './components/Signup/VerifySignup'
-import TempMainScene from './components/TempMainScene'
+// import TempMainScene from './components/TempMainScene'
 import Chat from './components/Messages/Chat'
 
 const backButton = (resetError) => {
@@ -40,13 +41,13 @@ const RouterComponent = ({ resetError }) => {
           LandingComponent={Login}
           initial
         />
-        <Scene
+        {/* <Scene
           key='tempMainScene'
           component={LoggedInLandingScene}
           LandingComponent={TempMainScene}
           hideNavBar='true'
           title='Temp Main Scene'
-        />
+        /> */}
         <Scene
           key='activityFeeds'
           component={LoggedInLandingScene}
@@ -94,6 +95,13 @@ const RouterComponent = ({ resetError }) => {
           hideNavBar='true'
           component={LoggedInLandingScene}
           LandingComponent={Profile}
+          title='Profile'
+        />
+        <Scene
+          key='profileEdit'
+          hideNavBar='true'
+          component={LoggedInLandingScene}
+          LandingComponent={ProfileEdit}
           title='Profile'
         />
         <Scene
