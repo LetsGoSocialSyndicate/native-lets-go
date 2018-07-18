@@ -61,14 +61,14 @@ const CreateActivity = () => {
       >
         {renderCategoryPickerItems()}
       </Picker>
-      <Item style={itemStyle}>
+      {/* <Item style={itemStyle}>
        <DatePickerInputFormField
          name={ACTIVITY_DATE_FIELD}
          // label='Birthday'
          placeholder='select date'
          // maxDate={moment().utc().subtract(18, 'years').format(DATE_FORMAT)}
        />
-      </Item>
+      </Item> */}
       <Item style={itemStyle}>
        <DatePickerInputFormField
          name={ACTIVITY_START_TIME_FIELD}
@@ -104,7 +104,7 @@ const styles = {
     marginTop: 10
   },
   formStyle: {
-    marginTop: 35,
+    marginTop: 15,
     height: 60
   },
   itemStyle: {
