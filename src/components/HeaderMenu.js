@@ -7,16 +7,33 @@ import {
 } from './common/Constants'
 const appIconImage = require('../assets/lets-go-icon.png')
 const menuIconImage = require('../assets/menus/three-dot.png')
+const backIconImage = require('../assets/menus/back.png')
 
 class HeaderMenu extends Component {
-  renderMenu() {
-    const { buttonStyle, thumbnailStyle } = styles
+  renderBackMenu() {
+    const { backMenuStyle } = styles
+    if (this.props.showBackButton) {
+      return (
+        <TouchableOpacity onPress={ this.onBackPress }>
+          <Image
+           source={ backIconImage }
+           style={ backMenuStyle }
+         />
+        </TouchableOpacity>
+      )
+    }
+  }
+  onBackPress = () => {
+    Actions.pop()
+  }
+  renderDropdownMenu() {
+    const { dropdownMenuStyle } = styles
     if (this.props.showMenu) {
       return (
         <TouchableOpacity onPress={ this.onMenuPress }>
           <Image
            source={ menuIconImage }
-           style={ thumbnailStyle }
+           style={ dropdownMenuStyle }
          />
         </TouchableOpacity>
       )
@@ -38,7 +55,9 @@ class HeaderMenu extends Component {
   render() {
     return (
       <Header style={styles.headerStyle}>
-        <Left />
+        <Left>
+          { this.renderBackMenu() }
+        </Left>
         <Body >
           <Item style={{ marginTop: 28 }}>
             <Button onPress={() => Actions.login()}>
@@ -51,7 +70,7 @@ class HeaderMenu extends Component {
           </Item>
         </Body>
         <Right>
-          { this.renderMenu() }
+          { this.renderDropdownMenu() }
         </Right>
       </Header>
     )
@@ -70,7 +89,7 @@ const styles = {
     borderBottomColor: '#FFF',
     borderBottomWidth: 2
   },
-  thumbnailStyle: {
+  dropdownMenuStyle: {
     width: 40,
     height: 8,
     paddingTop: 0,
@@ -79,6 +98,16 @@ const styles = {
     marginRight: 10,
     marginTop: 0,
     marginBottom: 10
+  },
+  backMenuStyle: {
+    width: 40,
+    height: 30,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+    marginRight: 10,
+    marginTop: 0,
+    marginBottom: 15
   }
 }
 
