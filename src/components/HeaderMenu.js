@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { Actions } from 'react-native-router-flux';
 import { ActionSheetIOS, TouchableOpacity, Image } from 'react-native'
 import { Header, Left, Body, Item, Thumbnail, Right, Button, Text, Icon, ActionSheet } from 'native-base'
 import {
   HEADER_HEIGHT, CONTENT_WIDTH
 } from './common/Constants'
+import { logout } from '../actions/authAction'
 const appIconImage = require('../assets/lets-go-icon.png')
 const menuIconImage = require('../assets/menus/three-dot.png')
 const backIconImage = require('../assets/menus/back.png')
@@ -47,7 +50,7 @@ class HeaderMenu extends Component {
     },
     (buttonIndex) => {
       if (buttonIndex === 1) {
-        Actions.logout()
+        this.props.logoutAction()
       }
     });
   }
@@ -111,4 +114,8 @@ const styles = {
   }
 }
 
-export default HeaderMenu
+const dispatchToProps = (dispatch) => bindActionCreators({
+  logoutAction: logout
+}, dispatch)
+
+export default connect(null, dispatchToProps)(HeaderMenu)
