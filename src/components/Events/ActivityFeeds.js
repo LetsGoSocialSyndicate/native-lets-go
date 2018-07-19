@@ -10,7 +10,7 @@ import { Container } from 'native-base'
 import ActivityFeed from './ActivityFeed'
 import { fetchEventFeeds } from '../../actions/actionFeeds'
 
-import { CONTENT_WIDTH, CONTENT_HEIGHT } from '../common/Constants'
+import { CONTENT_WIDTH } from '../common/Constants'
 const filterButton = require('../../assets/buttons/filter.png')
 
 class ActivityFeeds extends Component {
@@ -44,8 +44,7 @@ const styles = {
     flex: 1,
     backgroundColor: 'transparent',
     marginTop: 10,
-    width: CONTENT_WIDTH,
-    height: CONTENT_HEIGHT
+    width: CONTENT_WIDTH
   }
 }
 
