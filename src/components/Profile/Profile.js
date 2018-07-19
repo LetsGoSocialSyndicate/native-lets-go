@@ -75,7 +75,9 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    console.log('Profile.componentDidMount', this.state)
+    console.log('Profile componentDidMount state', this.state)
+    console.log('Profile componentDidMount props', this.props)
+
     const user = getUser(this.props)
     this.setState({ user, currentImageUrl: getUserpic(user) })
   }
