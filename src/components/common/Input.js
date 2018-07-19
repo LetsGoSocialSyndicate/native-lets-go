@@ -6,7 +6,7 @@ import { DateTimePickerIOS, Text, TextInput, View } from 'react-native'
 import DatePicker from 'react-native-datepicker'
 import ModalDropdown from 'react-native-modal-dropdown'
 import { Field } from 'redux-form'
-import { DATE_FORMAT } from './Constants'
+import { DATE_FORMAT, DATETIME_FORMAT } from './Constants'
 
 //If we want to use simple Input (without Redux form)
 const Input = ({ value, onChangeText, placeholder, secureTextEntry }) => {
@@ -104,17 +104,13 @@ const renderDateTimePickerInput = (props) => {
     <DatePicker
        onDateChange={input.onChange}
        date={input.value}
-       mode='date'
-       format={DATE_FORMAT}
+       mode='datetime'
+       format={DATETIME_FORMAT}
        confirmBtnText='Confirm'
        cancelBtnText='Cancel'
        showIcon={false}
        style={datePickerStyle}
        customStyles={{
-          // dateIcon: {
-          //   right: 0,
-          //   marginLeft: 10
-          // },
           dateText: {
             marginRight: 65,
             color: '#27608b',
@@ -236,10 +232,16 @@ const styles = {
     height: 70,
   },
   datePickerStyle: {
-    width: 200,
+    width: 250,
   },
   pickerInputStyle1: {
   }
 }
 
-export { DatePickerInputFormField, Input, TextInputFormField, PickerInputFormField }
+export {
+  DatePickerInputFormField,
+  DateTimePickerInputFormField,
+  Input,
+  TextInputFormField,
+  PickerInputFormField
+}
