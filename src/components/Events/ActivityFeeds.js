@@ -46,13 +46,6 @@ const styles = {
     marginTop: 10,
     width: CONTENT_WIDTH,
     height: CONTENT_HEIGHT
-  },
-  iconStyle: {
-    position: 'absolute',
-    right: 50,
-    top: 50,
-    width: 130,
-    height: 130
   }
 }
 
