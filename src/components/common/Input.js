@@ -51,7 +51,7 @@ const renderPickerInput = (props) => {
     <ModalDropdown
      style={dropdown}
      textStyle={dropdownText}
-     dropdownStyle={{...dropdownDropdown, height: 'auto' }}
+     dropdownStyle={{ ...dropdownDropdown, height: 'auto' }}
      onSelect={(index, value) => input.onChange(value)} {...rest}
     />
   )
@@ -66,38 +66,33 @@ const renderDatePickerInput = (props) => {
 
   return (
     <DatePicker
-       onDateChange={input.onChange}
-       date={input.value}
-       mode='date'
-       format={DATE_FORMAT}
-       confirmBtnText='Confirm'
-       cancelBtnText='Cancel'
-       showIcon={false}
-       style={datePickerStyle}
-       customStyles={{
-          // dateIcon: {
-          //   right: 0,
-          //   marginLeft: 10
-          // },
-          dateText: {
-            marginRight: 65,
-            color: '#27608b',
-            fontSize: 20,
-          },
-          dateInput: {
-            borderWidth: 0
-          },
-          placeholderText: {
-            marginRight: 55,
-            fontSize: 20,
-            color: 'hsla(206, 56%, 35%, 0.5)'
-          }
-        }}
-       {...rest}
+      onDateChange={input.onChange}
+      date={input.value}
+      mode='date'
+      format={DATE_FORMAT}
+      confirmBtnText='Confirm'
+      cancelBtnText='Cancel'
+      showIcon={false}
+      style={datePickerStyle}
+      customStyles={{
+        dateText: {
+          marginRight: 65,
+          color: '#27608b',
+          fontSize: 20,
+        },
+        dateInput: {
+          borderWidth: 0
+        },
+        placeholderText: {
+          marginRight: 55,
+          fontSize: 20,
+          color: 'hsla(206, 56%, 35%, 0.5)'
+        }
+      }}
+      {...rest}
     />
   )
 }
-
 
 //if we want to use Input with ReduxForm, we must use this one:
 const TextInputFormField = ({ name, label, placeholder, secureTextEntry }) => {
@@ -114,6 +109,7 @@ const TextInputFormField = ({ name, label, placeholder, secureTextEntry }) => {
         autoCorrect={false}
         autoCapitalize='none'
         style={inputStyle}
+        // onClick={onClick}
       />
     </View>
   )
