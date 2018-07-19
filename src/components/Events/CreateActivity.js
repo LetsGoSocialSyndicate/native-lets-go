@@ -28,8 +28,10 @@ const CreateActivity = () => {
   const ACTIVITY_DATE_FIELD = 'activityDate'
   const ACTIVITY_START_TIME_FIELD = 'activityStart'
   const ACTIVITY_END_TIME_FIELD = 'activityEnd'
+  const DESCRIPTION_FIELD = 'description_field'
   const TODAY = new Date()
   const TODAY_PLUS_3 = new Date(TODAY.getTime()+1000*60*60*72)
+  const TODAY_PLUS_3_END = new Date(TODAY.getTime()+1000*60*60*84)
 
   const renderCategoryPickerItems = () => {
     return activityCategories.map(category => {
@@ -57,6 +59,15 @@ const CreateActivity = () => {
          placeholder='location'
         />
       </Item>
+
+      <Item style={itemStyle}>
+        <TextInputFormField
+         name={DESCRIPTION_FIELD}
+         // label='Last Name'
+         placeholder='description'
+        />
+      </Item>
+
         <Picker
           // selectedValue="Coffee"
           // style={{ height: 100 }}
@@ -80,22 +91,28 @@ const CreateActivity = () => {
          maximumDate={TODAY_PLUS_3}
          date={TODAY}
          // onDateChange={this.setDate}
-
-         // label='Birthday'
-         placeholder='start'
-         minDate="2018-07-19"
-         maxDate="2018-07-22"
-         // maxDate={moment().utc().subtract(18, 'years').format(DATE_FORMAT)}
+         // label='start time'
+         placeholder='start time'
        />
+        <DatePickerIOS
+          name={ACTIVITY_END_TIME_FIELD}
+          mode="datetime"
+          minimumDate={TODAY}
+          maximumDate={TODAY_PLUS_3_END}
+          date={TODAY}
+          // onDateChange={this.setDate}
+          // label='end time'
+          placeholder='end time'
+        />
       {/* </Item> */}
-      <Item style={itemStyle}>
+      {/* <Item style={itemStyle}>
        <DatePickerInputFormField
          name={ACTIVITY_END_TIME_FIELD}
-         // label='Birthday'
-         placeholder='end'
+         // label='end time'
+         placeholder='end time'
          // maxDate={moment().utc().subtract(18, 'years').format(DATE_FORMAT)}
        />
-      </Item>
+      </Item> */}
 
       <Error />
       <LoadingButton
