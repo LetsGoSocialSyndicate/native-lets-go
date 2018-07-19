@@ -17,7 +17,7 @@ class FooterMenu extends Component {
       <Footer style={footerStyle}>
         <FooterTab >
           <IconMenu source={homeImage} onPress={() => Actions.login()} />
-          <IconMenu source={myEventsImage} />
+          <IconMenu source={myEventsImage} onPress={() => Actions.myActivities()}/>
           {/*
               TODO: Later navigate to Messages first and then
               it will take you to chat with selected user

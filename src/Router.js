@@ -14,6 +14,7 @@ import CreateActivity from './components/Events/CreateActivity'
 import ForgotPassword from './components/Login/ForgotPassword'
 import NewPassword from './components/Login/NewPassword'
 import ViewActivity from './components/Events/ViewActivity'
+import MyActivities from './components/Events/MyActivities'
 // import LoginGood from './components/Login/LoginGood'
 // import SignupGood from './components/Login/SignupGood'
 
@@ -121,6 +122,12 @@ const RouterComponent = ({ resetError }) => {
           key='viewActivity'
           component={LoggedInLandingScene}
           LandingComponent={ViewActivity}
+          hideNavBar='true'
+        />
+        <Scene
+          key='myActivities'
+          component={LoggedInLandingScene}
+          LandingComponent={MyActivities}
           hideNavBar='true'
         />
       </Scene>
