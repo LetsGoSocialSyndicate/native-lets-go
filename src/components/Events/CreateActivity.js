@@ -55,13 +55,13 @@ const CreateActivity = () => {
          placeholder='location'
         />
       </Item>
-      <Picker
-        selectedValue="Coffee"
-        // style={{ height: 100 }}
-        onValueChange={itemValue => this.selectedValue = itemValue}
-      >
-        {renderCategoryPickerItems()}
-      </Picker>
+        <Picker
+          // selectedValue="Coffee"
+          // style={{ height: 100 }}
+          onValueChange={value => console.log('category is ', value)}
+        >
+          {renderCategoryPickerItems()}
+        </Picker>
       {/* <Item style={itemStyle}>
        <DatePickerInputFormField
          name={ACTIVITY_DATE_FIELD}
@@ -75,6 +75,8 @@ const CreateActivity = () => {
          name={ACTIVITY_START_TIME_FIELD}
          // label='Birthday'
          placeholder='start'
+         minDate="2018-07-19"
+         maxDate="2018-07-22"
          // maxDate={moment().utc().subtract(18, 'years').format(DATE_FORMAT)}
        />
       </Item>
