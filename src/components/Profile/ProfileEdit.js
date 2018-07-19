@@ -16,12 +16,11 @@ import {
 import { Container, Card, Form, Item } from 'native-base'
 import { cancelEditing, updateProfile } from '../../actions/userAction'
 import { DATE_FORMAT, CONTENT_HEIGHT } from '../common/Constants'
-// import LoadingButton from '../common/LoadingButton'
 import { Input } from '../common'
 import { IMAGE_OP_NONE, IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
 
-//TODO: change later to real DONE button
 const defaultUser = require('../../assets/default.png')
+//TODO: change later to real DONE button
 const submitButton = require('../../assets/buttons/submit.png')
 
 const FIRST_NAME_FIELD = 'firstName'
@@ -71,7 +70,8 @@ class Profile extends Component {
     user: {},
     currentImageUrl: '',
     imageLoading: false,
-    profileImageOp: IMAGE_OP_NONE
+    profileImageOp: IMAGE_OP_NONE,
+    aboutBoxHeight: 40
   }
 
   componentDidMount() {
@@ -113,7 +113,12 @@ class Profile extends Component {
   saveAbout(about) {
     this.setState({ ...this.state, user: { ...this.state.user, about } })
   }
-
+  updateAboutBoxHeight(height) {
+      this.setState({ ...this.state, aboutBoxHeight: height + 40 })
+  }
+  getAboutBoxStyle() {
+    return { ...styles.descriptionTextStyle, height: this.state.aboutBoxHeight }
+  }
   saveFirstName(first_name) {
     console.log('Inside saveFirstName:', first_name)
     console.log('Inside saveFirstName state:', this.state)
@@ -150,18 +155,17 @@ class Profile extends Component {
               profileImageOp: IMAGE_OP_NONE
             })
           })
-         .then(() => {
-           console.log('UPDATED STATE: ', this.state)
-           //TODO: Need proper rerender here
-           //Actions.pop({ refresh: {} })
-           //Actions.refresh()
-           //pop and refresh are not working. This is workaround,
-           // but it will have problems with BACK.
-           // PARENT --> Profile --> PRofileEdit --> Profile.
-           // And Shoudl be: PARENT --> Profile
-           Actions.profile()
-           console.log('UPDATED STATE after pop: ')
-         })
+          .then(() => {
+              console.log('UPDATED STATE: ', this.state)
+              // TODO: Need proper rerender here
+              // Actions.pop({ refresh: {} })
+              // Actions.refresh()
+              // pop and refresh are not working. This is workaround,
+              // but it will have problems with BACK.
+              // PARENT --> Profile --> ProfileEdit --> Profile.
+              // And should be: PARENT --> Profile
+              Actions.profile()
+            })
     }
     return (
       <TouchableHighlight onPress={onSave}>
@@ -174,7 +178,6 @@ class Profile extends Component {
   }
 
 render() {
-  console.log('ProfileEdit.render', this.state)
   if (Object.keys(this.state.user).length === 0) {
     return <Card />
   }
@@ -187,14 +190,15 @@ render() {
   const saveBirthday = bd => this.saveBirthday(bd)
   const onImagePress = () => this.selectImage()
   const button = this.constructSubmitButton()
+  const onContentSizeChange = e => this.updateAboutBoxHeight(e.nativeEvent.contentSize.height)
   const {
     outterContainerStyle,
     itemsCenterFlex,
     formStyle,
     itemStyle,
-    descriptionTextStyle,
     datePickerStyle
   } = styles
+  const descriptionTextStyle = this.getAboutBoxStyle()
 
   return (
     <Container style={outterContainerStyle}>
@@ -255,15 +259,15 @@ render() {
               }}
             />
           </Item>
-          {/* TODO need input field grow here */}
           <TextInput
             autoCapitalize='none'
-            blurOnSubmit
+            placeholder='Please describe yourself...'
             style={descriptionTextStyle}
             value={user.about}
             multiline
-            maxLength={500}
+            maxLength={200}
             onChangeText={saveAbout}
+            onContentSizeChange={onContentSizeChange}
           />
           {button}
         </Form>
@@ -320,7 +324,6 @@ const styles = {
      color: 'white',
      backgroundColor: '#4380B0',
      borderRadius: 15,
-     height: 80,
      width: 300
    },
    datePickerStyle: {
