@@ -1,7 +1,7 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
 import React from 'react'
 import { connect } from 'react-redux'
-import { Picker } from 'react-native'
+import { DatePickerIOS, Picker } from 'react-native'
 import { Form, Item } from 'native-base'
 import { Field, reduxForm } from 'redux-form'
 import {
@@ -28,6 +28,8 @@ const CreateActivity = () => {
   const ACTIVITY_DATE_FIELD = 'activityDate'
   const ACTIVITY_START_TIME_FIELD = 'activityStart'
   const ACTIVITY_END_TIME_FIELD = 'activityEnd'
+  const TODAY = new Date()
+  const TODAY_PLUS_3 = new Date(TODAY.getTime()+1000*60*60*72)
 
   const renderCategoryPickerItems = () => {
     return activityCategories.map(category => {
@@ -70,16 +72,22 @@ const CreateActivity = () => {
          // maxDate={moment().utc().subtract(18, 'years').format(DATE_FORMAT)}
        />
       </Item> */}
-      <Item style={itemStyle}>
-       <DatePickerInputFormField
+      {/* <Item style={itemStyle}> */}
+       <DatePickerIOS
          name={ACTIVITY_START_TIME_FIELD}
+         mode="datetime"
+         minimumDate={TODAY}
+         maximumDate={TODAY_PLUS_3}
+         date={TODAY}
+         // onDateChange={this.setDate}
+
          // label='Birthday'
          placeholder='start'
          minDate="2018-07-19"
          maxDate="2018-07-22"
          // maxDate={moment().utc().subtract(18, 'years').format(DATE_FORMAT)}
        />
-      </Item>
+      {/* </Item> */}
       <Item style={itemStyle}>
        <DatePickerInputFormField
          name={ACTIVITY_END_TIME_FIELD}
