@@ -6,6 +6,22 @@ import { Container } from 'native-base'
 import { connect } from 'react-redux'
 import SocketIOClient from 'socket.io-client'
 import { GiftedChat } from 'react-native-gifted-chat'
+import {
+  JOIN,
+  GET_PREVIOUS_MESSAGES,
+  SEND_MESSAGE,
+  PREVIOUS_MESSAGES,
+  CHATMATES,
+  MESSAGE
+} from './ChatProtocol'
+
+
+// DEBUG: Temporary hardcoded:
+const getChatmateId = userId => {
+ return userId === 'a9e6d36c-9ecb-408a-a4e4-e5893fa4154d'
+   ? 'e2aec1a1-60b4-46c0-8fb6-9bb663de862b'
+   : 'a9e6d36c-9ecb-408a-a4e4-e5893fa4154d'
+}
 
 class Chat extends Component {
 
@@ -14,14 +30,24 @@ class Chat extends Component {
     this.state = {
       messages: []
     }
+    console.log('Chat::constructor')
     // TODO: Use env/const
     this.socket = SocketIOClient('http://localhost:8001')
-    this.socket.on('message', (messages) => this.receiveMessages(messages))
+    this.socket.on(MESSAGE, (message) => this.receiveMessage(message))
+    this.socket.on(PREVIOUS_MESSAGES, (messages) => this.receivePreviousMessages(messages))
+    this.socket.on(CHATMATES, (chatmates) => this.receiveChatmates(chatmates))
   }
 
   componentDidMount() {
-    this.socket.emit('join', { userId: this.props.user.id })
-    this.socket.emit('getMessages', {})
+    // TODO: use redux state to fetch conversation.
+    console.log('Chat::componentDidMount', this.props.user)
+    // TODO: Move join to Messages.js
+    this.socket.emit(JOIN, this.props.user.id)
+    this.socket.emit(
+      GET_PREVIOUS_MESSAGES,
+      this.props.user.id,
+      getChatmateId(this.props.user.id)
+    )
   }
 
   getChatUser(user) {
@@ -31,14 +57,33 @@ class Chat extends Component {
     }
   }
 
-  receiveMessages(messages) {
+  receiveChatmates(chatmates) {
+    // TODO: do something
+    console.log('Chat.receiveChatmates:', chatmates)
+  }
+
+  receiveMessage(message) {
+    console.log('Chat.receiveMessage:', message)
+    // TODO: check if locked and put in temporary queue
+    this.storeMessages([message])
+  }
+
+  receivePreviousMessages(messages) {
+    console.log('Chat.receivePreviousMessages:', messages)
+    // TODO: unlock here
     this.storeMessages(messages)
   }
 
   sendMessages(messages) {
-    console.log('SEND', messages)
+    console.log('Chat.sendMessages:', messages)
     this.storeMessages(messages)
-    this.socket.emit('message', 'vasya', messages[0])
+    messages.forEach(message =>
+      this.socket.emit(
+        SEND_MESSAGE,
+        getChatmateId(this.props.user.id),
+        message
+      )
+    )
   }
 
   storeMessages(messages) {

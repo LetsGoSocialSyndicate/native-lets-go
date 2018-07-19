@@ -150,9 +150,18 @@ class Profile extends Component {
               profileImageOp: IMAGE_OP_NONE
             })
           })
-      console.log('UPDATED STATE: ', this.state)
-      //TODO: Need proper rerender here
-      Actions.pop({ refresh: {} })
+         .then(() => {
+           console.log('UPDATED STATE: ', this.state)
+           //TODO: Need proper rerender here
+           //Actions.pop({ refresh: {} })
+           //Actions.refresh()
+           //pop and refresh are not working. This is workaround,
+           // but it will have problems with BACK.
+           // PARENT --> Profile --> PRofileEdit --> Profile.
+           // And Shoudl be: PARENT --> Profile
+           Actions.profile()
+           console.log('UPDATED STATE after pop: ')
+         })
     }
     return (
       <TouchableHighlight onPress={onSave}>
@@ -165,7 +174,7 @@ class Profile extends Component {
   }
 
 render() {
-  // console.log('Profile.render', this.state)
+  console.log('ProfileEdit.render', this.state)
   if (Object.keys(this.state.user).length === 0) {
     return <Card />
   }
