@@ -20,10 +20,12 @@ class MyActivities extends Component {
     return (
       Object.values(this.props.eventFeeds)
         .map((event) => {
-          return (
-            <MyActivity
-              activity={ event } key={ event.event_id }/>
-          )
+          if (event.join_request_rejected_by === null) {
+            return (
+              <MyActivity
+                activity={ event } key={ event.event_id }/>
+            )
+          }
         })
     )
   }
@@ -41,7 +43,8 @@ const styles = {
   containerStyle: {
     flex: 1,
     backgroundColor: 'transparent',
-    marginTop: 10,
+    marginTop: 20,
+    marginLeft: 0,
     width: CONTENT_WIDTH,
     height: CONTENT_HEIGHT
   }
