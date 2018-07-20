@@ -139,9 +139,6 @@ const styles = {
     marginLeft: 50,
     marginRight: 50,
     marginTop: 10
-  },
-  pickerItemStyle: {
-    color: 'red'
   }
 }
 

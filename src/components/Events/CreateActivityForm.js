@@ -18,14 +18,14 @@ import {
  // import { activityCategories } from '../common/imageUtils'
 
  const submitButton = require('../../assets/buttons/submit.png')
- 
+
  const HEADLINE_FIELD = 'headline'
  const LOCATION_FIELD = 'location'
  // const CATEGORY_FIELD = 'category'
  // const ACTIVITY_DATE_FIELD = 'activityDate'
  const ACTIVITY_START_TIME_FIELD = 'activityStart'
  const ACTIVITY_END_TIME_FIELD = 'activityEnd'
- // const DESCRIPTION_FIELD = 'description_field'
+ const DESCRIPTION_FIELD = 'description_field'
  const TODAY = new Date()
  const TODAY_PLUS_3 = new Date(TODAY.getTime() + (1000 * 60 * 60 * 72))
  const TODAY_PLUS_3_END = new Date(TODAY.getTime() + (1000 * 60 * 60 * 84))
@@ -50,6 +50,15 @@ import {
         <TextInputFormField
           name={LOCATION_FIELD}
           placeholder='location'
+        />
+      </Item>
+
+      <Item style={itemStyle}>
+        <TextInputFormField
+          name={DESCRIPTION_FIELD}
+          placeholder='description'
+          multiline
+          // numberOfLne={4}
         />
       </Item>
       <Item style={itemStyle}>

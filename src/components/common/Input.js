@@ -2,11 +2,12 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import React from 'react'
-import { DateTimePickerIOS, Text, TextInput, View } from 'react-native'
+import { Picker, Text, TextInput, View } from 'react-native'
 import DatePicker from 'react-native-datepicker'
 import ModalDropdown from 'react-native-modal-dropdown'
 import { Field } from 'redux-form'
 import { DATE_FORMAT, DATETIME_FORMAT } from './Constants'
+import { activityCategories } from '../common/imageUtils'
 
 //If we want to use simple Input (without Redux form)
 const Input = ({ value, onChangeText, placeholder, secureTextEntry }) => {
@@ -31,6 +32,14 @@ const Input = ({ value, onChangeText, placeholder, secureTextEntry }) => {
   )
 }
 
+const renderCategoryPickerItems = () => {
+  return activityCategories.map(category => {
+    return (
+      <Picker.Item label={category} key={category} value={category} style={styles.pickerItemStyle} />
+    )
+  })
+}
+
 // helper function - we call it from InputFormField
 // every time there is a change in input, onChangeText is called
 // and it dispatches the change to ReduxForm (input.onChange)
@@ -48,10 +57,20 @@ const renderPickerInput = (props) => {
   const { input, ...rest } = props
   const { dropdown, dropdownText, dropdownDropdown } = styles
   return (
+    // <Picker
+    //   // selectedValue="Coffee"
+    //   // style={{ height: 100 }}
+    //   onValueChange={value => console.log('category is ', value)}
+    // >
+    //   {renderCategoryPickerItems()}
+    // </Picker>
+
     <ModalDropdown
      style={dropdown}
      textStyle={dropdownText}
-     dropdownStyle={{ ...dropdownDropdown, height: 'auto' }}
+     // transparent
+     dropdownStyle={{ ...dropdownDropdown, backgroundColor: 'transparent', height: 'auto' }}
+     // dropdownTextStyle={{ opacity: 0 }}
      onSelect={(index, value) => input.onChange(value)} {...rest}
     />
   )
@@ -132,7 +151,13 @@ const renderDateTimePickerInput = (props) => {
 
 
 //if we want to use Input with ReduxForm, we must use this one:
-const TextInputFormField = ({ name, label, placeholder, secureTextEntry }) => {
+const TextInputFormField = ({
+  label,
+  multiline,
+  name,
+  numberOfLne,
+  placeholder,
+  secureTextEntry }) => {
   const { inputStyle, labelStyle, containerStyle } = styles
   return (
     <View style={containerStyle}>
@@ -146,6 +171,8 @@ const TextInputFormField = ({ name, label, placeholder, secureTextEntry }) => {
         autoCorrect={false}
         autoCapitalize='none'
         style={inputStyle}
+        multiline={multiline}
+        numberOfLne={numberOfLne}
         // onClick={onClick}
       />
     </View>
@@ -164,6 +191,7 @@ const PickerInputFormField = ({ name, label, defaultOption, options, defaultValu
         options={options}
         name={name}
         style={pickerInputStyle1}
+        // transparent
       />
     </View>
   )
@@ -207,7 +235,7 @@ const styles = {
     fontSize: 20,
     flex: 2,
     color: '#27608b',
-    paddingLeft: 10,
+    paddingLeft: 10
   },
   containerStyle: {
     height: 40,
@@ -220,21 +248,24 @@ const styles = {
     marginTop: 32,
     right: 8,
     borderWidth: 0,
-    borderRadius: 3,
+    borderRadius: 3
   },
   dropdownText: {
     paddingLeft: 10,
     fontSize: 20,
-    color: 'hsla(206, 56%, 35%, 0.5)',
+    color: 'hsla(206, 56%, 35%, 0.5)'
   },
   dropdownDropdown: {
     width: 200,
-    height: 70,
+    height: 70
   },
   datePickerStyle: {
     width: 250,
   },
   pickerInputStyle1: {
+  },
+  pickerItemStyle: {
+    color: 'red'
   }
 }
 
