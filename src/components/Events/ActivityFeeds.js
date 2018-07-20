@@ -8,14 +8,14 @@ import { Actions } from 'react-native-router-flux'
 import { View, TouchableHighlight, Image } from 'react-native'
 import { Container } from 'native-base'
 import ActivityFeed from './ActivityFeed'
-import { fetchEventFeeds } from '../../actions/actionFeeds'
+import { fetchOtherEventFeeds } from '../../actions/actionFeeds'
 
 import { CONTENT_WIDTH } from '../common/Constants'
 const filterButton = require('../../assets/buttons/filter.png')
 
 class ActivityFeeds extends Component {
   componentWillMount() {
-    this.props.fetchEventFeeds(this.props.token)
+    this.props.fetchOtherEventFeeds(this.props.user, this.props.token)
   }
 
   renderActivityFeeds() {
@@ -51,7 +51,7 @@ const styles = {
 const mapStateToProps = (state) => ({ ...state.eventFeeds, ...state.user, ...state.auth })
 
 const dispatchToProps = (dispatch) => bindActionCreators({
-  fetchEventFeeds
+  fetchOtherEventFeeds
 }, dispatch)
 
 export default connect(mapStateToProps, dispatchToProps)(ActivityFeeds)

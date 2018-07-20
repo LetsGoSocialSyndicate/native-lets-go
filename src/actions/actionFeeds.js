@@ -1,7 +1,9 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
-import { FETCH_EVENT_FEEDS, ADD_NEW_EVENT, FETCH_MY_EVENTS, FETCH_MY_ALL_EVENTS } from './types'
+import { FETCH_EVENT_FEEDS, ADD_NEW_EVENT,
+  FETCH_MY_EVENTS, FETCH_MY_ALL_EVENTS, FETCH_OTHER_ALL_EVENTS
+} from './types'
 import { getRequestOptions } from './actionUtils'
 
 // import { REACT_APP_API_URL } from 'react-native-dotenv'
@@ -75,6 +77,29 @@ const fetchMyAllEventFeeds = (user, token) => {
   }
 }
 
+const fetchOtherEventFeeds = (user, token) => {
+  console.log('fetchOtherEventFeeds: user', user)
+  console.log('fetchOtherEventFeeds: token', token)
+  const url = `${REACT_APP_API_URL}/users/${user.email}/others`
+  console.log('fetchOtherEventFeeds', url)
+  return async (dispatch) => {
+    const opts = getRequestOptions('GET', token)
+    console.log('opts', opts)
+    const response = await fetch(url, opts)
+    if(response.status === 200){
+      const responseJSON = await response.json()
+      // console.log('responseJSON', responseJSON)
+      dispatch({
+        type: FETCH_OTHER_ALL_EVENTS,
+        payload: responseJSON
+      })
+    }
+    else {
+      // error
+    }
+  }
+}
+
 const addNewEvent = (newEvent, token, history) => {
   console.log('addNewEvent', token)
   return async (dispatch) => {
@@ -98,7 +123,7 @@ const addNewEvent = (newEvent, token, history) => {
 
 export {
   fetchEventFeeds, addNewEvent,
-  fetchMyEventFeeds, fetchMyAllEventFeeds
+  fetchMyEventFeeds, fetchMyAllEventFeeds, fetchOtherEventFeeds
 }
 
 // export const initialize = () => {
