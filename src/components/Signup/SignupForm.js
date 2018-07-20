@@ -10,7 +10,7 @@ import { DATE_FORMAT } from '../common/Constants'
 import {
   DatePickerInputFormField,
   Error,
-  PickerInputFormField,
+  PickerSelectInputFormFieldGender,
   TextInputFormField
  } from '../common'
  import LoadingButton from '../common/LoadingButton'
@@ -54,9 +54,12 @@ import {
        />
       </Item>
       <Item style={itemStyle}>
-        <PickerInputFormField
+        <PickerSelectInputFormFieldGender
           name={GENDER_FIELD}
-          options={['male', 'female']}
+          placeholder={{ label: 'select gender', value: null }}
+          items={[{ label: 'male', value: 'male', key: 'male' }, { label: 'female', value: 'female', key: 'female' }]}
+          hideIcon
+          hideDoneBar
         />
       </Item>
       <Item style={itemStyle}>

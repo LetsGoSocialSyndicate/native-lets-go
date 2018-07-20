@@ -168,7 +168,30 @@ const renderPickerSelectInput = (props) => {
       {...rest}
       style={pickerSelectStyles}
       onValueChange={onValueChangeHandler}
+      hideDoneBar
     />
+  )
+}
+
+const renderPickerSelectInputGender = (props) => {
+  //input is what we get from Field,
+  //...rest - all props from PickerSelectInputFormField and parent components
+  const { input, onValueChange, ...rest } = props
+  const { pickerSelectStylesGender } = styles
+  let onValueChangeHandler = (value) => input.onChange(value)
+  if (onValueChange) {
+    onValueChangeHandler = (value) => {
+      input.onChange(value)
+      onValueChange(value)
+    }
+  }
+  return (
+      <RNPickerSelect
+        {...rest}
+        style={pickerSelectStylesGender}
+        onValueChange={onValueChangeHandler}
+        hideDoneBar
+      />
   )
 }
 
@@ -239,6 +262,19 @@ const PickerSelectInputFormField = ({ name, ...rest }) => {
       name={name}
       {...rest}
     />
+  )
+}
+
+const PickerSelectInputFormFieldGender = ({ name, ...rest }) => {
+  return (
+    <View style={styles.containerStyle}>
+      <Field
+        component={renderPickerSelectInputGender}
+        name={name}
+        {...rest}
+      />
+    </View>
+
   )
 }
 
@@ -313,8 +349,6 @@ const styles = {
   dateTimePickerStyle: {
     //width: 250,
   },
-  pickerInputStyle1: {
-  },
   pickerSelectStyles: {
     inputIOS: {
       marginTop: 10,
@@ -329,8 +363,15 @@ const styles = {
       width: 200,
       height: 40
     }
+  },
+    pickerSelectStylesGender: {
+      inputIOS: {
+        fontSize: 20,
+        paddingLeft: 8
+      },
+      placeholderColor: 'hsla(206, 56%, 35%, 0.5)'
+    }
   }
-}
 
 export {
   DatePickerInputFormField,
@@ -338,6 +379,7 @@ export {
   Input,
   TextInputFormField,
   PickerInputFormField,
+  PickerSelectInputFormFieldGender,
   PickerSelectInputFormField,
   GenericTextInputFormField
 }
