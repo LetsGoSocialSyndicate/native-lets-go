@@ -1,7 +1,10 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
+import moment from 'moment'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Actions } from 'react-native-router-flux'
 import { showImagePicker } from 'react-native-image-picker'
+import DatePicker from 'react-native-datepicker'
 import {
   Image,
   View,
@@ -11,15 +14,13 @@ import {
   TouchableHighlight
  } from 'react-native'
 import { Container, Card, Form, Item } from 'native-base'
-import DatePicker from 'react-native-datepicker'
 import { cancelEditing, updateProfile } from '../../actions/userAction'
 import { DATE_FORMAT, CONTENT_HEIGHT } from '../common/Constants'
-// import LoadingButton from '../common/LoadingButton'
 import { Input } from '../common'
 import { IMAGE_OP_NONE, IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
 
-//TODO: change later to real DONE button
 const defaultUser = require('../../assets/default.png')
+//TODO: change later to real DONE button
 const submitButton = require('../../assets/buttons/submit.png')
 
 const FIRST_NAME_FIELD = 'firstName'
@@ -67,17 +68,15 @@ const LoadingImageButton = ({ loading, onPress, imageUrl }) => {
 class Profile extends Component {
   state = {
     user: {},
-    birthday: '',
     currentImageUrl: '',
     imageLoading: false,
-    profileImageOp: IMAGE_OP_NONE
-
+    profileImageOp: IMAGE_OP_NONE,
+    aboutBoxHeight: 40
   }
+
   componentDidMount() {
     const user = getUser(this.props)
-    console.log('USEEER', user)
-    const birthday = user.birthday.slice(0, 10)
-    this.setState({ user, birthday, currentImageUrl: getUserpic(user) })
+    this.setState({ user, currentImageUrl: getUserpic(user) })
   }
 
   buildImageRequest() {
@@ -114,13 +113,21 @@ class Profile extends Component {
   saveAbout(about) {
     this.setState({ ...this.state, user: { ...this.state.user, about } })
   }
+  updateAboutBoxHeight(height) {
+      this.setState({ ...this.state, aboutBoxHeight: height + 40 })
+  }
+  getAboutBoxStyle() {
+    return { ...styles.descriptionTextStyle, height: this.state.aboutBoxHeight }
+  }
+  saveFirstName(first_name) {
+    console.log('Inside saveFirstName:', first_name)
+    console.log('Inside saveFirstName state:', this.state)
 
-  saveFirstName(firstName) {
-    this.setState({ ...this.state, user: { ...this.state.user, firstName } })
+    this.setState({ ...this.state, user: { ...this.state.user, first_name } })
   }
 
-  saveLastName(lastName) {
-    this.setState({ ...this.state, user: { ...this.state.user, lastName } })
+  saveLastName(last_name) {
+    this.setState({ ...this.state, user: { ...this.state.user, last_name } })
   }
 
   saveBirthday(birthday) {
@@ -129,7 +136,6 @@ class Profile extends Component {
 
   constructSubmitButton() {
     const originalUser = getUser(this.props)
-    //this is Submit button
     const onSave = () => {
       let imageRequest = []
       if (this.state.profileImageOp !== IMAGE_OP_NONE) {
@@ -141,6 +147,7 @@ class Profile extends Component {
             // After the server update completes we need to update
             // internal state with fetched user data.
             const updatedUser = getUser(this.props)
+            console.log('updatedUser---->', updatedUser)
             this.setState({
               ...this.state,
               user: updatedUser,
@@ -148,6 +155,17 @@ class Profile extends Component {
               profileImageOp: IMAGE_OP_NONE
             })
           })
+          .then(() => {
+              console.log('UPDATED STATE: ', this.state)
+              // TODO: Need proper rerender here
+              // Actions.pop({ refresh: {} })
+              // Actions.refresh()
+              // pop and refresh are not working. This is workaround,
+              // but it will have problems with BACK.
+              // PARENT --> Profile --> ProfileEdit --> Profile.
+              // And should be: PARENT --> Profile
+              Actions.profile()
+            })
     }
     return (
       <TouchableHighlight onPress={onSave}>
@@ -160,7 +178,6 @@ class Profile extends Component {
   }
 
 render() {
-  console.log('Profile.render', this.state)
   if (Object.keys(this.state.user).length === 0) {
     return <Card />
   }
@@ -169,19 +186,19 @@ render() {
   const saveAbout = about => this.saveAbout(about)
   const saveFirstName = firstName => this.saveFirstName(firstName)
   const saveLastName = lastName => this.saveLastName(lastName)
-  const birthday = this.state.birthday
+  const birthday = user.birthday.split('T')[0]
   const saveBirthday = bd => this.saveBirthday(bd)
   const onImagePress = () => this.selectImage()
   const button = this.constructSubmitButton()
-
+  const onContentSizeChange = e => this.updateAboutBoxHeight(e.nativeEvent.contentSize.height)
   const {
     outterContainerStyle,
     itemsCenterFlex,
     formStyle,
     itemStyle,
-    descriptionTextStyle,
     datePickerStyle
   } = styles
+  const descriptionTextStyle = this.getAboutBoxStyle()
 
   return (
     <Container style={outterContainerStyle}>
@@ -198,7 +215,7 @@ render() {
             <Input
             name={FIRST_NAME_FIELD}
             value={user.first_name}
-            placeholder={user.first_name}
+            //placeholder={user.first_name}
             onChangeText={saveFirstName}
             />
           </Item>
@@ -207,50 +224,51 @@ render() {
             <Input
              name={LAST_NAME_FIELD}
              value={user.last_name}
-             placeholder={user.last_name}
+             //placeholder={user.last_name}
              onChangeText={saveLastName}
             />
           </Item>
 
           <Item style={itemStyle}>
             <DatePicker
-               // onDateChange={input.onChange}
-               // date={input.value}
-               name={BIRTHDAY_FIELD}
-               placeholder={birthday}
-               mode='date'
-               format={DATE_FORMAT}
-               confirmBtnText='Confirm'
-               cancelBtnText='Cancel'
-               showIcon={false}
-               style={datePickerStyle}
-               customStyles={{
-                dateText: {
-                  marginRight: 65,
-                  color: '#27608b',
-                  fontSize: 20,
-                },
-                dateInput: {
-                  borderWidth: 0
-                },
-                placeholderText: {
-                  marginRight: 65,
-                  fontSize: 20,
-                  color: 'hsla(206, 56%, 35%, 0.5)'
-                }
+              name={BIRTHDAY_FIELD}
+              maxDate={moment().utc().subtract(17, 'years').format(DATE_FORMAT)}
+              onDateChange={saveBirthday}
+              //value={birthday}
+              placeholder={birthday}
+              mode='date'
+              format={DATE_FORMAT}
+              confirmBtnText='Confirm'
+              cancelBtnText='Cancel'
+              showIcon={false}
+              style={datePickerStyle}
+              customStyles={{
+              dateText: {
+                marginRight: 65,
+                color: '#27608b',
+                fontSize: 20,
+              },
+              dateInput: {
+                borderWidth: 0
+              },
+              placeholderText: {
+                marginRight: 65,
+                fontSize: 20,
+                color: 'hsla(206, 56%, 35%, 0.5)'
+              }
               }}
             />
           </Item>
           <TextInput
             autoCapitalize='none'
-            blurOnSubmit
+            placeholder='Please describe yourself...'
             style={descriptionTextStyle}
             value={user.about}
             multiline
-            maxLength={500}
+            maxLength={200}
             onChangeText={saveAbout}
+            onContentSizeChange={onContentSizeChange}
           />
-
           {button}
         </Form>
       </View>
@@ -306,7 +324,6 @@ const styles = {
      color: 'white',
      backgroundColor: '#4380B0',
      borderRadius: 15,
-     height: 80,
      width: 300
    },
    datePickerStyle: {

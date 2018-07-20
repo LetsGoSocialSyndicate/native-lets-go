@@ -4,8 +4,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import AppContainer from '../AppContainer'
-
-// TODO: Switch back to activiity feds once all header/footer nagivation done
 import ActivityFeeds from '../Events/ActivityFeeds'
 // import TempMainScene from '../TempMainScene'
 import Login from '../Login/Login'
@@ -13,7 +11,8 @@ import Login from '../Login/Login'
 const LandingScene = (props) => {
   // This is weird, but LandingComponent has to be capitalized!!!
   const { LandingComponent, requiredLoginState, auth, ...rest } = props
-  console.log('requiredLoginState', props.name, props.origin, auth.isUserLoggedIn, requiredLoginState)
+  console.log('requiredLoginState:',
+  props.name, props.origin, auth.isUserLoggedIn, requiredLoginState)
   if (auth.isUserLoggedIn && !requiredLoginState) {
     return <ActivityFeeds {...rest} />
     // return <TempMainScene {...rest} />

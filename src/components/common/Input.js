@@ -2,11 +2,11 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import React from 'react'
-import { Text, TextInput, View } from 'react-native'
+import { DateTimePickerIOS, Text, TextInput, View } from 'react-native'
 import DatePicker from 'react-native-datepicker'
 import ModalDropdown from 'react-native-modal-dropdown'
 import { Field } from 'redux-form'
-import { DATE_FORMAT } from './Constants'
+import { DATE_FORMAT, DATETIME_FORMAT } from './Constants'
 
 //If we want to use simple Input (without Redux form)
 const Input = ({ value, onChangeText, placeholder, secureTextEntry }) => {
@@ -51,7 +51,7 @@ const renderPickerInput = (props) => {
     <ModalDropdown
      style={dropdown}
      textStyle={dropdownText}
-     dropdownStyle={{...dropdownDropdown, height: 'auto' }}
+     dropdownStyle={{ ...dropdownDropdown, height: 'auto' }}
      onSelect={(index, value) => input.onChange(value)} {...rest}
     />
   )
@@ -66,19 +66,51 @@ const renderDatePickerInput = (props) => {
 
   return (
     <DatePicker
+      onDateChange={input.onChange}
+      date={input.value}
+      mode='date'
+      format={DATE_FORMAT}
+      confirmBtnText='Confirm'
+      cancelBtnText='Cancel'
+      showIcon={false}
+      style={datePickerStyle}
+      customStyles={{
+        dateText: {
+          marginRight: 65,
+          color: '#27608b',
+          fontSize: 20,
+        },
+        dateInput: {
+          borderWidth: 0
+        },
+        placeholderText: {
+          marginRight: 55,
+          fontSize: 20,
+          color: 'hsla(206, 56%, 35%, 0.5)'
+        }
+      }}
+      {...rest}
+    />
+  )
+}
+
+const renderDateTimePickerInput = (props) => {
+  // input is what we get from Field,
+  //...rest - all props from PickerInputFormField and parent components
+  const { input, ...rest } = props
+  const { datePickerStyle } = styles
+
+  return (
+    <DatePicker
        onDateChange={input.onChange}
        date={input.value}
-       mode='date'
-       format={DATE_FORMAT}
+       mode='datetime'
+       format={DATETIME_FORMAT}
        confirmBtnText='Confirm'
        cancelBtnText='Cancel'
        showIcon={false}
        style={datePickerStyle}
        customStyles={{
-          // dateIcon: {
-          //   right: 0,
-          //   marginLeft: 10
-          // },
           dateText: {
             marginRight: 65,
             color: '#27608b',
@@ -114,6 +146,7 @@ const TextInputFormField = ({ name, label, placeholder, secureTextEntry }) => {
         autoCorrect={false}
         autoCapitalize='none'
         style={inputStyle}
+        // onClick={onClick}
       />
     </View>
   )
@@ -152,6 +185,23 @@ const DatePickerInputFormField = ({ name, label, placeholder, minDate, maxDate }
     </View>
   )
 }
+
+const DateTimePickerInputFormField = ({ name, label, placeholder, minDate, maxDate }) => {
+  const { labelStyle, containerStyle } = styles
+  return (
+    <View style={containerStyle}>
+      <Text style={labelStyle}>{label}</Text>
+      <Field
+        component={renderDateTimePickerInput}
+        name={name}
+        placeholder={placeholder}
+        minDate={minDate}
+        maxDate={maxDate}
+      />
+    </View>
+  )
+}
+
 const styles = {
   inputStyle: {
     fontSize: 20,
@@ -182,10 +232,16 @@ const styles = {
     height: 70,
   },
   datePickerStyle: {
-    width: 200,
+    width: 250,
   },
   pickerInputStyle1: {
   }
 }
 
-export { DatePickerInputFormField, Input, TextInputFormField, PickerInputFormField }
+export {
+  DatePickerInputFormField,
+  DateTimePickerInputFormField,
+  Input,
+  TextInputFormField,
+  PickerInputFormField
+}

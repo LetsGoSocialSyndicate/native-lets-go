@@ -18,6 +18,7 @@ import {
 import { LGButton } from '../common'
 import { IMAGE_OP_NONE } from '../../actions/imageOp'
 import { startEditing } from '../../actions/userAction'
+import { CONTENT_HEIGHT } from '../common/Constants'
 
 
 const getUser = (props) => {
@@ -71,11 +72,14 @@ class Profile extends Component {
     // Transient state of loading image to UI.
     imageLoading: false,
     // Inidicates if profile userpic need to be deleted/added/updated on server
-    profileImageOp: IMAGE_OP_NONE
+    profileImageOp: IMAGE_OP_NONE,
+    aboutBoxHeight: 40
   }
 
   componentDidMount() {
-    console.log('Profile.componentDidMount', this.state)
+    console.log('Profile componentDidMount state', this.state)
+    console.log('Profile componentDidMount props', this.props)
+
     const user = getUser(this.props)
     this.setState({ user, currentImageUrl: getUserpic(user) })
   }
@@ -89,6 +93,13 @@ class Profile extends Component {
     }]
   }
 
+  updateAboutBoxHeight(height) {
+      this.setState({ ...this.state, aboutBoxHeight: height + 40 })
+  }
+  getAboutBoxStyle() {
+    return { ...styles.descriptionTextStyle, height: this.state.aboutBoxHeight }
+  }
+
   render() {
     console.log('Profile.render', this.state)
     if (Object.keys(this.state.user).length === 0) {
@@ -98,14 +109,16 @@ class Profile extends Component {
     const readOnly = isReadOnly(this.props)
     const lastName = user.last_name.charAt(0)
     const age = moment.duration(moment().diff(user.birthday)).years()
+    const onContentSizeChange = e => this.updateAboutBoxHeight(e.nativeEvent.contentSize.height)
+
     const {
       outterContainerStyle,
       nameItemStyle,
       nameTextStyle,
-      descriptionTextStyle,
       itemsCenterFlex,
       editButtonStyle
     } = styles
+    const descriptionTextStyle = this.getAboutBoxStyle()
 
     return (
       <Container style={outterContainerStyle}>
@@ -133,7 +146,9 @@ class Profile extends Component {
             value={user.about}
             editable={!readOnly}
             multiline
-            numberOfLines={10}
+            // numberOfLines={10}
+            onContentSizeChange={onContentSizeChange}
+
           />
         </View>
       </Container>
@@ -144,7 +159,7 @@ class Profile extends Component {
 const styles = {
   outterContainerStyle: {
     backgroundColor: 'transparent',
-    height: 450,
+    height: CONTENT_HEIGHT,
   },
   editButtonStyle: {
     backgroundColor: 'transparent',
@@ -160,9 +175,10 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 20
+    // height: 20
   },
   imageStyle: {
+    marginTop: 30,
     height: 200,
     borderRadius: 100,
     width: 200,
@@ -191,10 +207,8 @@ const styles = {
     color: 'white',
     backgroundColor: '#4380B0',
     borderRadius: 15,
-    height: 80,
     width: 300
    },
-
 }
 
 const mapStateToProps = (state) => {
