@@ -367,7 +367,8 @@ const styles = {
     pickerSelectStylesGender: {
       inputIOS: {
         fontSize: 20,
-        paddingLeft: 8
+        paddingLeft: 9,
+        paddingTop: 5
       },
       placeholderColor: 'hsla(206, 56%, 35%, 0.5)'
     }
