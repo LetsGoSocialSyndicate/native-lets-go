@@ -5,8 +5,6 @@ import moment from 'moment'
 import React from 'react'
 import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
-// import { ActionSheetIOS, TouchableOpacity, Image } from 'react-native'
-
 import { Form, Item } from 'native-base'
 import { DATE_FORMAT } from '../common/Constants'
 import {
@@ -26,34 +24,6 @@ import {
  const BIRTHDAY_FIELD = 'birthday'
  export const PASSWORD_FIELD = 'password'
  export const PASSWORD2_FIELD = 'confirmPassword'
-
-// const renderGenderOps = () => {
-//   return (
-//     <Item
-//       onPress={onGenderPress}
-//       style={styles.itemStyle}
-//     >
-//       <TextInputFormField
-//         // onClick={onGenderPress}
-//         name={GENDER_FIELD}
-//         placeholder='select gender'
-//       />
-//     </Item>
-//   )
-// }
-//
-// const onGenderPress = (e, i) => {
-//   ActionSheetIOS.showActionSheetWithOptions({
-//     options: ['male', 'female'],
-//   },
-//   (buttonIndex) => {
-//     if (buttonIndex === 0) {
-//       // this.props.logoutAction()
-//     } else {
-//       // this.props.logoutAction()
-//     }
-//   })
-// }
 
  const SignupForm = ({ handleSubmit, auth }) => {
   const {
@@ -83,7 +53,6 @@ import {
          maxDate={moment().utc().subtract(18, 'years').format(DATE_FORMAT)}
        />
       </Item>
-      {/* { renderGenderOps() } */}
       <Item style={itemStyle}>
         <PickerInputFormField
           name={GENDER_FIELD}

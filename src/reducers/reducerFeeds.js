@@ -1,27 +1,38 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
-import { FETCH_EVENT_FEEDS, FETCH_EVENT_FEEDS_START,
+import { FETCH_EVENT_FEEDS, FEEDS_ACTION_START, FEEDS_ACTION_FAILED,
   ADD_NEW_EVENT, FETCH_MY_EVENTS, FETCH_MY_ALL_EVENTS, FETCH_OTHER_ALL_EVENTS
 } from '../actions/types'
 
 
 const initialFeedsState = {
+  // TODO: Do we really need both?
+  //       Check if having only 'loading' is good enough.
   isLoading: false,
   isLoaded: false,
+  error: null,
   eventFeeds: {}
 }
 
 function eventFeeds(state = initialFeedsState, action) {
   switch (action.type) {
-  case FETCH_EVENT_FEEDS_START:
+  case FEEDS_ACTION_START:
     //console.log('reducer eventFeeds', state, action)
     return {
       ...state,
       isLoading: true,
-      isLoaded: false
+      isLoaded: false,
+      error: null
     }
-
+    case FEEDS_ACTION_FAILED:
+      //console.log('reducer eventFeeds', state, action)
+      return {
+        ...state,
+        isLoading: false,
+        isLoaded: true,
+        error: action.error,
+      }
   case FETCH_EVENT_FEEDS:
   case FETCH_MY_EVENTS:
   case FETCH_MY_ALL_EVENTS:
@@ -44,6 +55,8 @@ function eventFeeds(state = initialFeedsState, action) {
     newData[action.payload.id] = action.payload
     return {
       ...state,
+      isLoading: false,
+      isLoaded: true,
       eventFeeds: { ...newData }
     }
   default:

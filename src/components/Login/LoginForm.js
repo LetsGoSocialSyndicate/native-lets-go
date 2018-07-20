@@ -7,6 +7,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import { Icon, Item, Form } from 'native-base'
+import { Image, View } from 'react-native'
+
 import { Error, TextInputFormField } from '../common'
 import LoadingButton from '../common/LoadingButton'
 
@@ -17,6 +19,8 @@ const REACT_AUTO_LOGIN_PASSWORD = '123'
 const EMAIL_FIELD = 'email'
 const PASSWORD_FIELD = 'password'
 const submitButton = require('../../assets/buttons/submit.png')
+const userpicIcon = require('../../assets/loginIcons/userpic.png')
+const passwordIcon = require('../../assets/loginIcons/password.png')
 
 // DEBUG: For faster login
 const initialValues = () => {
@@ -33,19 +37,22 @@ const LoginForm = ({ handleSubmit, auth }) => {
     formStyle,
     itemStyle,
     buttonSubmitStyle,
+    iconStyle
   } = styles
 
   return (
     <Form style={formStyle}>
       <Item style={itemStyle}>
-        <Icon active name='user' type='Entypo' />
+        <Image source={userpicIcon} style={iconStyle} />
+        {/* <Icon active name='user' type='Entypo' /> */}
         <TextInputFormField
           name={EMAIL_FIELD}
           placeholder='email'
         />
       </Item>
       <Item style={itemStyle}>
-        <Icon active name='lock' />
+        {/* <Icon active name='lock' /> */}
+        <Image source={passwordIcon} style={iconStyle} />
         <TextInputFormField
           name={PASSWORD_FIELD}
           secureTextEntry
@@ -80,7 +87,14 @@ const styles = {
     marginLeft: 50,
     marginRight: 50,
     marginTop: 20
-  }
+  },
+  iconStyle: {
+    padding: 5,
+    height: 40,
+    width: 40,
+    resizeMode: 'stretch',
+    alignItems: 'center'
+  },
 }
 
 const mapStateToProps = (state) => {

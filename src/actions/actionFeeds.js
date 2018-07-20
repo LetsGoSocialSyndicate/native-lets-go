@@ -1,8 +1,15 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
-import { FETCH_EVENT_FEEDS, ADD_NEW_EVENT,
-  FETCH_MY_EVENTS, FETCH_MY_ALL_EVENTS, FETCH_OTHER_ALL_EVENTS
+ import { Actions } from 'react-native-router-flux'
+import {
+  ADD_NEW_EVENT,
+  FEEDS_ACTION_START,
+  FEEDS_ACTION_FAILED,
+  FETCH_EVENT_FEEDS,
+  FETCH_MY_ALL_EVENTS,
+  FETCH_MY_EVENTS,
+  FETCH_OTHER_ALL_EVENTS
 } from './types'
 import { getRequestOptions } from './actionUtils'
 
@@ -16,17 +23,16 @@ const fetchEventFeeds = (token) => {
   return async (dispatch) => {
     console.log('we are inside the fetch events feed')
     const opts = getRequestOptions('GET', token)
-    const response = await fetch(url, opts)
-    if(response.status === 200){
+    const response = await fetch(url, opts) // eslint-disable-line no-undef
+    if (response.status === 200) {
       const responseJSON = await response.json()
       // console.log('responseJSON', responseJSON)
       dispatch({
         type: FETCH_EVENT_FEEDS,
         payload: responseJSON
       })
-    }
-    else {
-      // error
+    } else {
+      // TODO: handle error
     }
   }
 }
@@ -39,17 +45,16 @@ const fetchMyEventFeeds = (user, hosted, token) => {
     console.log('user', user)
     console.log('token', token)
     console.log('opts', opts)
-    const response = await fetch(url, opts)
-    if(response.status === 200){
+    const response = await fetch(url, opts) // eslint-disable-line no-undef
+    if (response.status === 200) {
       const responseJSON = await response.json()
       // console.log('responseJSON', responseJSON)
       dispatch({
         type: FETCH_MY_EVENTS,
         payload: responseJSON
       })
-    }
-    else {
-      // error
+    } else {
+      // TODO: handle error
     }
   }
 }
@@ -62,17 +67,16 @@ const fetchMyAllEventFeeds = (user, token) => {
   return async (dispatch) => {
     const opts = getRequestOptions('GET', token)
     console.log('opts', opts)
-    const response = await fetch(url, opts)
-    if(response.status === 200){
+    const response = await fetch(url, opts) // eslint-disable-line no-undef
+    if (response.status === 200) {
       const responseJSON = await response.json()
       // console.log('responseJSON', responseJSON)
       dispatch({
         type: FETCH_MY_ALL_EVENTS,
         payload: responseJSON
       })
-    }
-    else {
-      // error
+    } else {
+      // TODO: handle error
     }
   }
 }
@@ -86,7 +90,7 @@ const fetchOtherEventFeeds = (user, token) => {
     const opts = getRequestOptions('GET', token)
     console.log('opts', opts)
     const response = await fetch(url, opts)
-    if(response.status === 200){
+    if (response.status === 200){
       const responseJSON = await response.json()
       // console.log('responseJSON', responseJSON)
       dispatch({
@@ -100,23 +104,24 @@ const fetchOtherEventFeeds = (user, token) => {
   }
 }
 
-const addNewEvent = (newEvent, token, history) => {
+const addNewEvent = (newEvent, token) => {
   console.log('addNewEvent', token)
+  console.log('newEvent -----> ', newEvent)
+
   return async (dispatch) => {
+    dispatch({ type: FEEDS_ACTION_START })
+    //console.log('addNewEvent:', newEvent)
     const url = `${REACT_APP_API_URL}/events`
-    // console.log('url', url)
     const opts = getRequestOptions('POST', token, newEvent)
-    const response = await fetch(url, opts)
-    if(response.status === 200){
-      const responseJSON = await response.json()
-      dispatch({
-        type: ADD_NEW_EVENT,
-        payload: responseJSON
-      })
-      history.push("/")
-    }
-    else {
-      // error
+    const response = await fetch(url, opts) // eslint-disable-line no-undef
+    const responseJSON = await response.json()
+    console.log('addNewEvent response:', response.status, responseJSON)
+    if (response.status === 200) {
+      dispatch({ type: ADD_NEW_EVENT, payload: responseJSON })
+      //TODO: Later redirect to "My activities", not to "Feeds"
+      Actions.activityFeeds()
+    } else {
+      dispatch({ type: FEEDS_ACTION_FAILED, error: responseJSON.message })
     }
   }
 }
@@ -125,19 +130,3 @@ export {
   fetchEventFeeds, addNewEvent,
   fetchMyEventFeeds, fetchMyAllEventFeeds, fetchOtherEventFeeds
 }
-
-// export const initialize = () => {
-//   return async (dispatch) => {
-//     console.log('1. we are in initialize action')
-//     let newMessages = []
-//     const messagesResponse = await fetch(`/api/messages`)
-//     if (messagesResponse.status === 200) {
-//       const messagesJSON = await messagesResponse.json()
-//       newMessages = messagesJSON._embedded.messages
-//     }
-//     dispatch({
-//       type: INITIALIZE,
-//       messages: newMessages
-//     })
-//   }
-// }

@@ -63,6 +63,10 @@ const activityCategories = [
   'Yoga'
 ]
 
+const activityCategoriesKV = activityCategories.map(item => {
+  return { label: item, value: item }
+})
+
 const getActivityImage = (category) => {
   switch (category) {
     case 'Beer':
@@ -108,4 +112,4 @@ const getActivityImage = (category) => {
   }
 }
 
-export { activityCategories, getActivityImage }
+export { activityCategories, activityCategoriesKV, getActivityImage }

@@ -14,7 +14,7 @@ const onSubmit = (action, fields) => {
   action(fields)
 }
 
-const loginTitleImage = require('../../assets/loginTitle.png')
+const loginTitleImage = require('../../assets/loginIcons/loginTitle.png')
 
 const Login = ({ loginAction, resetError }) => {
   const action = (fields) => onSubmit(loginAction, fields)

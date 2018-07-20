@@ -19,6 +19,7 @@ const getRequestOptions = (method, token, body = null) => {
 }
 
 // Useful for debugging.
+// For example to sleep 3 seconds: await delay(3000)
 const delay = ms => {
   return new Promise((resolve) => {
     setTimeout(resolve, ms)
