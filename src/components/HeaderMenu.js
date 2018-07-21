@@ -7,7 +7,7 @@ import { Header, Left, Body, Item, Thumbnail, Right, Button, Text, Icon, ActionS
 import {
   HEADER_HEIGHT, CONTENT_WIDTH
 } from './common/Constants'
-import { logout } from '../actions/authAction'
+import { logout, resetAuthError } from '../actions/authAction'
 const appIconImage = require('../assets/lets-go-icon.png')
 const menuIconImage = require('../assets/menus/three-dot.png')
 const backIconImage = require('../assets/menus/back.png')
@@ -27,6 +27,7 @@ class HeaderMenu extends Component {
     }
   }
   onBackPress = () => {
+    this.props.resetError()
     Actions.pop()
   }
   renderDropdownMenu() {
@@ -115,7 +116,8 @@ const styles = {
 }
 
 const dispatchToProps = (dispatch) => bindActionCreators({
-  logoutAction: logout
+  logoutAction: logout,
+  resetError: resetAuthError
 }, dispatch)
 
 export default connect(null, dispatchToProps)(HeaderMenu)
