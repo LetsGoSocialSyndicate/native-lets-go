@@ -9,6 +9,8 @@ import CreateActivityForm from './CreateActivityForm'
 
 const onSubmit = (action, token, fields) => {
   console.log('CreateActivity.onSubmit:', fields)
+  console.log('TIMES ---> ', fields.start_time, fields.end_time)
+  
   //const error = validate(fields)
   //TODO: validate and handle error, probably need to define errorAction
   action(fields, token)

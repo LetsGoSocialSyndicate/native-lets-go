@@ -1,7 +1,7 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
- import { Actions } from 'react-native-router-flux'
+import { Actions } from 'react-native-router-flux'
 import {
   ADD_NEW_EVENT,
   FEEDS_ACTION_START,
@@ -83,22 +83,19 @@ const fetchMyAllEventFeeds = (user, token) => {
 
 const fetchOtherEventFeeds = (user, token) => {
   console.log('fetchOtherEventFeeds: user', user)
-  console.log('fetchOtherEventFeeds: token', token)
   const url = `${REACT_APP_API_URL}/users/${user.email}/others`
-  console.log('fetchOtherEventFeeds', url)
   return async (dispatch) => {
     const opts = getRequestOptions('GET', token)
     console.log('opts', opts)
-    const response = await fetch(url, opts)
-    if (response.status === 200){
-      const responseJSON = await response.json()
-      // console.log('responseJSON', responseJSON)
+    const response = await fetch(url, opts) // eslint-disable-line no-undef
+    const responseJSON = await response.json()
+    console.log('fetchOtherEventFeeds response:', response.status, responseJSON)
+    if (response.status === 200) {
       dispatch({
         type: FETCH_OTHER_ALL_EVENTS,
         payload: responseJSON
       })
-    }
-    else {
+    } else {
       // error
     }
   }
@@ -106,11 +103,9 @@ const fetchOtherEventFeeds = (user, token) => {
 
 const addNewEvent = (newEvent, token) => {
   console.log('addNewEvent', token)
-  console.log('newEvent -----> ', newEvent)
 
   return async (dispatch) => {
     dispatch({ type: FEEDS_ACTION_START })
-    //console.log('addNewEvent:', newEvent)
     const url = `${REACT_APP_API_URL}/events`
     const opts = getRequestOptions('POST', token, newEvent)
     const response = await fetch(url, opts) // eslint-disable-line no-undef
@@ -119,7 +114,7 @@ const addNewEvent = (newEvent, token) => {
     if (response.status === 200) {
       dispatch({ type: ADD_NEW_EVENT, payload: responseJSON })
       //TODO: Later redirect to "My activities", not to "Feeds"
-      Actions.activityFeeds()
+      Actions.myActivities()
     } else {
       dispatch({ type: FEEDS_ACTION_FAILED, error: responseJSON.message })
     }
@@ -127,6 +122,9 @@ const addNewEvent = (newEvent, token) => {
 }
 
 export {
-  fetchEventFeeds, addNewEvent,
-  fetchMyEventFeeds, fetchMyAllEventFeeds, fetchOtherEventFeeds
+  fetchEventFeeds,
+  addNewEvent,
+  fetchMyEventFeeds,
+  fetchMyAllEventFeeds,
+  fetchOtherEventFeeds
 }

@@ -24,7 +24,9 @@ class ActivityFeeds extends Component {
         .map((event) => {
           return (
             <ActivityFeed
-              activity={ event } key={ event.event_id }/>
+              activity={event}
+              key={event.event_id}
+            />
           )
         })
     )
@@ -32,7 +34,7 @@ class ActivityFeeds extends Component {
 
   render() {
     return (
-      <Container style={ styles.containerStyle }>
+      <Container style={styles.containerStyle}>
         { this.renderActivityFeeds() }
       </Container>
     )

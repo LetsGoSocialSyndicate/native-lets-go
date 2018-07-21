@@ -8,15 +8,10 @@ import RNPickerSelect from 'react-native-picker-select'
 import { Field } from 'redux-form'
 import { Text, TextInput, View } from 'react-native'
 import { DATE_FORMAT, DATETIME_FORMAT } from './Constants'
-import { activityCategories } from '../common/imageUtils'
 
 //If we want to use simple Input (without Redux form)
 const Input = ({ value, onChangeText, placeholder, secureTextEntry }) => {
-  const {
-    inputStyle,
-    containerStyle
-  } = styles
-
+  const { inputStyle, containerStyle } = styles
   return (
     <View style={containerStyle}>
       {/* <Text style={labelStyle}>{label}</Text> */}
@@ -33,14 +28,6 @@ const Input = ({ value, onChangeText, placeholder, secureTextEntry }) => {
   )
 }
 
-const renderCategoryPickerItems = () => {
-  return activityCategories.map(category => {
-    return (
-      <Picker.Item label={category} key={category} value={category} style={styles.pickerItemStyle} />
-    )
-  })
-}
-
 // helper function - we call it from InputFormField
 // every time there is a change in input, onChangeText is called
 // and it dispatches the change to ReduxForm (input.onChange)
@@ -48,7 +35,12 @@ const renderTextInput = (props) => {
   // input is what we get from Field,
   // ...rest - all props from InputFormField and parent components
   const { input, ...rest } = props
-  return <TextInput onChangeText={input.onChange} {...rest} />
+
+  return (
+    <TextInput
+      onChangeText={input.onChange} {...rest}
+    />
+  )
 }
 
 // https://www.npmjs.com/package/react-native-modal-dropdown
@@ -58,20 +50,10 @@ const renderPickerInput = (props) => {
   const { input, ...rest } = props
   const { dropdown, dropdownText, dropdownDropdown } = styles
   return (
-    // <Picker
-    //   // selectedValue="Coffee"
-    //   // style={{ height: 100 }}
-    //   onValueChange={value => console.log('category is ', value)}
-    // >
-    //   {renderCategoryPickerItems()}
-    // </Picker>
-
     <ModalDropdown
      style={dropdown}
      textStyle={dropdownText}
-     // transparent
      dropdownStyle={{ ...dropdownDropdown, backgroundColor: 'transparent', height: 'auto' }}
-     // dropdownTextStyle={{ opacity: 0 }}
      onSelect={(index, value) => input.onChange(value)} {...rest}
     />
   )
@@ -98,15 +80,15 @@ const renderDatePickerInput = (props) => {
         dateText: {
           marginRight: 100,
           color: '#27608b',
-          fontSize: 20,
+          fontSize: 23,
         },
         dateInput: {
           borderWidth: 0
         },
         placeholderText: {
-          marginRight: 100,
-          fontSize: 20,
-          color: 'hsla(206, 56%, 35%, 0.5)'
+          marginRight: 80,
+          fontSize: 23,
+          color: 'hsla(0, 2%, 96%, 0.6)'
         }
       }}
       {...rest}
@@ -132,17 +114,17 @@ const renderDateTimePickerInput = (props) => {
        style={dateTimePickerStyle}
        customStyles={{
           dateText: {
-            marginRight: 40,
+            paddingLeft: 20,
             color: '#27608b',
-            fontSize: 18,
+            fontSize: 20,
           },
           dateInput: {
             borderWidth: 0
           },
           placeholderText: {
-            //marginRight: 100,
+            marginRight: 40,
             fontSize: 20,
-            color: 'hsla(206, 56%, 35%, 0.5)'
+            color: 'hsla(226, 11%, 21%, 0.6)'
           }
         }}
        {...rest}
@@ -203,7 +185,11 @@ const TextInputFormField = ({
   numberOfLne,
   placeholder,
   secureTextEntry }) => {
-  const { inputStyle, labelStyle, containerStyle } = styles
+  const {
+    inputStyle,
+    labelStyle,
+    containerStyle
+  } = styles
   return (
     <View style={containerStyle}>
       <Text style={labelStyle}>{label}</Text>
@@ -212,7 +198,7 @@ const TextInputFormField = ({
         name={name}
         secureTextEntry={secureTextEntry}
         placeholder={placeholder}
-        placeholderTextColor='hsla(206, 56%, 35%, 0.5)'
+        placeholderTextColor='hsla(0, 2%, 96%, 0.6)'
         autoCorrect={false}
         autoCapitalize='none'
         style={inputStyle}
@@ -224,11 +210,13 @@ const TextInputFormField = ({
   )
 }
 
+//for Redux form
 const GenericTextInputFormField = ({ name, ...rest }) => {
   return (
       <Field
         component={renderTextInput}
         name={name}
+        placeholderTextColor='hsla(226, 11%, 21%, 0.6)'
         {...rest}
       />
   )
@@ -238,7 +226,11 @@ const GenericTextInputFormField = ({ name, ...rest }) => {
 const PickerInputFormField = ({
   name, label, options, defaultValue = 'select gender'
 }) => {
-  const { pickerInputStyle1, labelStyle, containerStyle } = styles
+  const {
+    pickerInputStyle1,
+    labelStyle,
+    containerStyle
+  } = styles
   return (
     <View style={containerStyle}>
       <Text style={labelStyle}>{label}</Text>
@@ -248,7 +240,6 @@ const PickerInputFormField = ({
         options={options}
         name={name}
         style={pickerInputStyle1}
-        // transparent
       />
     </View>
   )
@@ -313,7 +304,7 @@ const DateTimePickerInputFormField = ({ name, label, placeholder, minDate, maxDa
 
 const styles = {
   inputStyle: {
-    fontSize: 20,
+    fontSize: 23,
     flex: 2,
     color: '#27608b',
     paddingLeft: 10
@@ -334,8 +325,8 @@ const styles = {
   },
   dropdownText: {
     paddingLeft: 10,
-    fontSize: 20,
-    color: 'hsla(206, 56%, 35%, 0.5)',
+    fontSize: 23,
+    color: 'hsla(0, 2%, 96%, 0.6)',
     backgroundColor: 'transparent'
   },
   dropdownDropdown: {
@@ -351,28 +342,33 @@ const styles = {
   },
   pickerSelectStyles: {
     inputIOS: {
-      marginTop: 10,
+      marginTop: 3,
+      marginBottom: 3,
       fontSize: 20,
-      marginLeft: 60,
+      paddingLeft: 20,
       paddingTop: 8,
       paddingHorizontal: 10,
       paddingBottom: 8,
       borderRadius: 15,
       backgroundColor: '#fff',
       color: '#27608b',
-      width: 200,
+      width: 150,
       height: 40
-    }
+    },
+    placeholderColor: 'hsla(226, 11%, 21%, 0.6)'
   },
-    pickerSelectStylesGender: {
-      inputIOS: {
-        fontSize: 20,
-        paddingLeft: 9,
-        paddingTop: 5
-      },
-      placeholderColor: 'hsla(206, 56%, 35%, 0.5)'
-    }
+  pickerSelectStylesGender: {
+    inputIOS: {
+      fontSize: 20,
+      paddingLeft: 9,
+      paddingTop: 5
+    },
+    placeholderColor: 'hsla(206, 56%, 35%, 0.5)'
+  },
+  genericTextStyle: {
+    paddingLeft: 60,
   }
+}
 
 export {
   DatePickerInputFormField,

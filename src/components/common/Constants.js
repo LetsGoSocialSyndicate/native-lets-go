@@ -5,7 +5,7 @@ import { Dimensions } from 'react-native'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 const TIME_FORMAT = 'HH:mm'
-const DATETIME_FORMAT = `${DATE_FORMAT} ${TIME_FORMAT}`
+const DATETIME_FORMAT = 'DD-MMM ' + TIME_FORMAT
 const HEADER_HEIGHT = 50
 const FOOTER_HEIGHT = 65
 

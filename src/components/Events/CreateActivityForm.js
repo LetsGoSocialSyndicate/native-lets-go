@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { Image } from 'react-native'
-import { Form, Item, H3 } from 'native-base'
+import { Form, Item } from 'native-base'
 import {
   DateTimePickerInputFormField,
   Error,
@@ -17,6 +17,7 @@ import { activityCategoriesKV, getActivityImage } from '../common/imageUtils'
 
 const submitButton = require('../../assets/buttons/submit.png')
 const category = require('../../assets/createActivity/category.png')
+const defaultActivity = require('../../assets/createActivity/defaultActivity.png')
 const start = require('../../assets/createActivity/start.png')
 const end = require('../../assets/createActivity/end.png')
 
@@ -31,7 +32,7 @@ const DESCRIPTION_FIELD = 'description'
 
 const TODAY = new Date()
 const TODAY_PLUS_3 = new Date(TODAY.getTime() + (1000 * 60 * 60 * 72))
-const TODAY_PLUS_3_END = new Date(TODAY.getTime() + (1000 * 60 * 60 * 84))
+//const TODAY_PLUS_3_END = new Date(TODAY.getTime() + (1000 * 60 * 60 * 84))
 
 class CreateActivityForm extends Component {
   state = {
@@ -47,9 +48,14 @@ class CreateActivityForm extends Component {
       timeItemStyle,
       timeTitleItemStyle,
       timeTitlesStyle,
-      h3Style,
       iconStyle,
-      descriptionTextStyle
+      descriptionTextStyle,
+      categoryParentStyle,
+      categoryTitleStyle,
+      column1Style,
+      column2Style,
+      row1,
+      row2
     } = styles
 
     const categoryImage = this.state.categoryImageSource
@@ -57,49 +63,62 @@ class CreateActivityForm extends Component {
           source={this.state.categoryImageSource}
           style={iconStyle}
       />)
-      : null
+      : (<Image
+          source={defaultActivity}
+          style={iconStyle}
+      />)
 
     return (
-    <Form style={formStyle}>
-      <Item style={itemStyle}>
-        <TextInputFormField
-          name={HEADLINE_FIELD}
-          placeholder='headline'
-        />
+      <Form style={formStyle}>
+        <Item style={itemStyle}>
+          <TextInputFormField
+            name={HEADLINE_FIELD}
+            placeholder='headline'
+          />
+        </Item>
+
+        <Item style={itemStyle}>
+          <TextInputFormField
+            name={LOCATION_FIELD}
+            placeholder='location'
+          />
+        </Item>
+
+        <Item style={categoryParentStyle}>
+
+          <Item style={column1Style}>
+            <Item style={row1}>
+              <Image
+                  source={category}
+                  style={categoryTitleStyle}
+              />
+            </Item>
+
+            <Item style={row2}>
+              <PickerSelectInputFormField
+                name={CATEGORY_FIELD}
+                placeholder={{ label: 'select...', value: null }}
+                hideIcon
+                items={activityCategoriesKV}
+                onValueChange={(value) => {
+                  this.setState({
+                    ...this.state,
+                    categoryImageSource: getActivityImage(value)
+                  })
+                }}
+              />
+            </Item>
+        </Item>
+
+        <Item style={column2Style}>
+          {categoryImage}
+        </Item>
       </Item>
-
-      <Item style={itemStyle}>
-        <TextInputFormField
-          name={LOCATION_FIELD}
-          placeholder='location'
-        />
-      </Item>
-
-      {/* <Item style={timeTitleItemStyle}> */}
-        <Image
-            source={category}
-            style={timeTitlesStyle}
-        />
-      {/* </Item> */}
-
-      <PickerSelectInputFormField
-        name={CATEGORY_FIELD}
-        placeholder={{ label: 'select category', value: null }}
-        // hideIcon
-        items={activityCategoriesKV}
-        onValueChange={(value) => {
-          this.setState({
-            ...this.state,
-            categoryImageSource: getActivityImage(value)
-          })
-        }}
-      />
-
-      {categoryImage}
 
       <GenericTextInputFormField
         name={DESCRIPTION_FIELD}
-        placeholder='describe the event...'
+        placeholder='describe...'
+        placeholderColor='hsla(226, 11%, 21%, 0.6)'
         autoCapitalize='none'
         style={descriptionTextStyle}
         multiline
@@ -107,20 +126,20 @@ class CreateActivityForm extends Component {
       />
 
       <Item style={outterStile}>
+
         <Item style={innerStyle}>
           <Item style={timeTitleItemStyle}>
             <Image
                 source={start}
                 style={timeTitlesStyle}
             />
-            {/* <H3 style={h3Style}>start</H3> */}
           </Item>
           <Item style={timeItemStyle}>
             <DateTimePickerInputFormField
               name={ACTIVITY_START_TIME_FIELD}
-              placeholder='start time'
               minDate={TODAY}
               maxDate={TODAY_PLUS_3}
+              placeholder='select...'
             />
           </Item>
         </Item>
@@ -131,14 +150,13 @@ class CreateActivityForm extends Component {
                 source={end}
                 style={timeTitlesStyle}
             />
-            {/* <H3 style={h3Style}>end</H3> */}
           </Item>
           <Item style={timeItemStyle}>
             <DateTimePickerInputFormField
               name={ACTIVITY_END_TIME_FIELD}
-              placeholder='end time'
               minDate={TODAY}
-              maxDate={TODAY_PLUS_3_END}
+              //maxDate={TODAY_PLUS_3_END}
+              placeholder='select...'
             />
           </Item>
         </Item>
@@ -153,7 +171,8 @@ class CreateActivityForm extends Component {
         source={submitButton}
         transparent
       />
-    </Form>)
+    </Form>
+    )
   }
 }
 
@@ -165,8 +184,7 @@ const styles = {
     marginTop: 10
   },
   formStyle: {
-    marginTop: 35,
-    height: 60
+    marginTop: 20,
   },
   itemStyle: {
     marginLeft: 50,
@@ -175,8 +193,8 @@ const styles = {
   },
   outterStile: {
     borderBottomWidth: 0,
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: 50,
+    marginRight: 50,
     flexDirection: 'column'
   },
   innerStyle: {
@@ -188,41 +206,64 @@ const styles = {
     paddingLeft: 0
   },
   timeTitlesStyle: {
-    //padding: 5,
-    height: 30,
-    width: 80,
+    height: 33,
+    width: 100,
     resizeMode: 'stretch',
     alignItems: 'center'
   },
   timeItemStyle: {
-    // marginLeft: 0,
     backgroundColor: '#fff',
     borderRadius: 15,
-    marginRight: 20,
-    marginLeft: 30,
     marginTop: 10,
-    flex: 3
-  },
-  pickerItemStyle: {
-    color: 'red'
+    flex: 1.6
   },
   iconStyle: {
-    height: 32,
+    height: 90,
     width: 90,
     resizeMode: 'center',
   },
   descriptionTextStyle: {
-     marginTop: 20,
-     paddingTop: 10,
-     paddingBottom: 10,
-     paddingLeft: 20,
-     paddingRight: 20,
-     fontSize: 18,
-     // color: 'white',
-     backgroundColor: '#fff',
-     borderRadius: 15,
-     width: 300,
-     height: 80
+    alignSelf: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    fontSize: 20,
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    width: 280,
+    height: 70,
+    color: '#27608b',
+  },
+   categoryParentStyle: {
+    flexDirection: 'row',
+    borderBottomWidth: 0,
+    height: 100,
+    marginTop: 7
+   },
+   column1Style: {
+    flex: 1.6,
+    flexDirection: 'column',
+    borderBottomWidth: 0,
+    paddingLeft: 10
+   },
+   row1: {
+     borderBottomWidth: 0,
+     paddingRight: 50
+   },
+   row2: {
+     borderBottomWidth: 0,
+     marginRight: 10
+   },
+   column2Style: {
+    flex: 1.1,
+    borderBottomWidth: 0,
+  },
+   categoryTitleStyle: {
+     height: 34,
+     width: 100,
    },
 }
 
