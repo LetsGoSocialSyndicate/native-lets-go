@@ -7,11 +7,13 @@ import auth from './reducerAuth'
 import user from './reducerUser'
 import eventFeeds from './reducerFeeds'
 import requestToJoin from './reducerRequest'
+import chat from './reducerChat'
 
 export default combineReducers({
   auth,
   form,
   eventFeeds,
   user,
-  requestToJoin
+  requestToJoin,
+  chat
 })

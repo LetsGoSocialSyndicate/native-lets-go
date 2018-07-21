@@ -8,6 +8,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   LOGOUT,
+  RESET_CHAT,
   SIGNUP_SUCCESS,
   SIGNUP_FAILED,
   AUTH_STARTED,
@@ -139,6 +140,7 @@ const logout = () => {
   return (dispatch) => {
     dispatch({ type: LOGOUT })
     dispatch({ type: RESET_USER })
+    dispatch({ type: RESET_CHAT })
     Actions.login({ type: 'reset' })
   }
 }

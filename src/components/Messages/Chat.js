@@ -4,105 +4,86 @@
 import React, { Component } from 'react'
 import { Container } from 'native-base'
 import { connect } from 'react-redux'
-import SocketIOClient from 'socket.io-client'
 import { GiftedChat } from 'react-native-gifted-chat'
 import {
-  JOIN,
   GET_PREVIOUS_MESSAGES,
   SEND_MESSAGE,
   PREVIOUS_MESSAGES,
-  CHATMATES,
   MESSAGE
 } from './ChatProtocol'
-
-
-// DEBUG: Temporary hardcoded:
-const getChatmateId = userId => {
- return userId === 'a9e6d36c-9ecb-408a-a4e4-e5893fa4154d'
-   ? 'e2aec1a1-60b4-46c0-8fb6-9bb663de862b'
-   : 'a9e6d36c-9ecb-408a-a4e4-e5893fa4154d'
-}
+import {
+  chatActionStart,
+  fetchChatMessages,
+  addChatMessage
+} from '../../actions/actionChat'
 
 class Chat extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      messages: []
-    }
-    console.log('Chat::constructor')
-    // TODO: Use env/const
-    this.socket = SocketIOClient('http://localhost:8001')
-    this.socket.on(MESSAGE, (message) => this.receiveMessage(message))
-    this.socket.on(PREVIOUS_MESSAGES, (messages) => this.receivePreviousMessages(messages))
-    this.socket.on(CHATMATES, (chatmates) => this.receiveChatmates(chatmates))
-  }
-
   componentDidMount() {
-    // TODO: use redux state to fetch conversation.
-    console.log('Chat::componentDidMount', this.props.user)
-    // TODO: Move join to Messages.js
-    this.socket.emit(JOIN, this.props.user.id)
-    this.socket.emit(
-      GET_PREVIOUS_MESSAGES,
-      this.props.user.id,
-      getChatmateId(this.props.user.id)
-    )
+    console.log('Chat::componentDidMount START')
+    const chatmateId = this.props.chatmateId
+    const messages = this.props.chat.messages
+    if (!(chatmateId in messages)) {
+      console.log('Chat::componentDidMount request messages')
+      this.props.chat.socket.on(MESSAGE, (msg) => this.receiveMessage(msg))
+      this.props.chat.socket.on(PREVIOUS_MESSAGES, (msgs) => this.receivePreviousMessages(msgs))
+      this.props.chatActionStartAction()
+      this.props.chat.socket.emit(
+        GET_PREVIOUS_MESSAGES,
+        this.props.user.id,
+        this.props.chatmateId
+      )
+    }
   }
 
-  getChatUser(user) {
+  getChatUser() {
+    const user = this.props.user
     return {
       _id: user.id,
       name: `${user.first_name} ${user.last_name.charAt(0)}`
     }
   }
 
-  receiveChatmates(chatmates) {
-    // TODO: do something
-    console.log('Chat.receiveChatmates:', chatmates)
+  getMessages() {
+    const chatmateId = this.props.chatmateId
+    return this.props.chat.messages[chatmateId]
   }
 
   receiveMessage(message) {
     console.log('Chat.receiveMessage:', message)
-    // TODO: check if locked and put in temporary queue
-    this.storeMessages([message])
+    // TODO: Maybe check if not loading - if yes, put in
+    // internal state until loaded and then append.
+    this.props.addChatMessageAction(this.props.chatmateId, message)
   }
 
   receivePreviousMessages(messages) {
     console.log('Chat.receivePreviousMessages:', messages)
-    // TODO: unlock here
-    this.storeMessages(messages)
+    this.props.fetchChatMessagesAction(this.props.chatmateId, messages)
   }
 
   sendMessages(messages) {
     console.log('Chat.sendMessages:', messages)
-    this.storeMessages(messages)
-    messages.forEach(message =>
-      this.socket.emit(
+    messages.forEach(message => {
+      this.props.addChatMessageAction(this.props.chatmateId, message)
+      this.props.chat.socket.emit(
         SEND_MESSAGE,
-        getChatmateId(this.props.user.id),
+        this.props.chatmateId,
         message
       )
-    )
-  }
-
-  storeMessages(messages) {
-    this.setState(previousState => ({
-      messages: GiftedChat.append(previousState.messages, messages)
-    }))
+    })
   }
 
   render() {
-    const {
-      containerStyle, chatContainer
-    } = styles
-    const chatUser = this.getChatUser(this.props.user)
-    const onSend = (messages) => this.sendMessages(messages)
+    console.log('Chat::render', this.props.chat)
+    const { containerStyle, chatContainer } = styles
+    const chatUser = this.getChatUser()
+    const messages = this.getMessages()
+    const onSend = (msgs) => this.sendMessages(msgs)
     return (
       <Container style={containerStyle}>
         <Container style={chatContainer}>
           <GiftedChat
-            messages={this.state.messages}
+            messages={messages}
             onSend={onSend}
             user={chatUser}
           />
@@ -126,7 +107,11 @@ const styles = {
 }
 
 const mapStateToProps = (state) => {
-  return { user: state.user.user }
+  return { chat: state.chat, user: state.user.user }
 }
-
-export default connect(mapStateToProps)(Chat)
+const actions = {
+  chatActionStartAction: chatActionStart,
+  fetchChatMessagesAction: fetchChatMessages,
+  addChatMessageAction: addChatMessage
+}
+export default connect(mapStateToProps, actions)(Chat)

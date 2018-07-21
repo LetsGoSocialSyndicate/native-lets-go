@@ -359,11 +359,12 @@ const styles = {
   },
   pickerSelectStylesGender: {
     inputIOS: {
-      fontSize: 20,
+      fontSize: 23,
       paddingLeft: 9,
-      paddingTop: 5
+      paddingTop: 5,
+      color: '#27608b',
     },
-    placeholderColor: 'hsla(206, 56%, 35%, 0.5)'
+    placeholderColor: 'hsla(0, 2%, 96%, 0.6)'
   },
   genericTextStyle: {
     paddingLeft: 60,

@@ -22,6 +22,7 @@ import Signup from './components/Signup/Signup'
 import VerifySignup from './components/Signup/VerifySignup'
 // import TempMainScene from './components/TempMainScene'
 import Chat from './components/Messages/Chat'
+import Conversations from './components/Messages/Conversations'
 
 const backButton = (resetError) => {
   resetError()
@@ -108,6 +109,13 @@ const RouterComponent = ({ resetError }) => {
           component={LoggedInLandingScene}
           LandingComponent={Chat}
           title='Chat'
+        />
+        <Scene
+          key='conversations'
+          hideNavBar='true'
+          component={LoggedInLandingScene}
+          LandingComponent={Conversations}
+          title='Conversations'
         />
         <Scene
           key='createActivity'
