@@ -1,14 +1,14 @@
 import React from 'react'
-import { Image, TouchableHighlight } from 'react-native'
+import { Image, TouchableOpacity } from 'react-native'
 
 const ImageButton = ({ handleOnPress, buttonSource }) => {
   return (
-    <TouchableHighlight onPress={ handleOnPress }>
+    <TouchableOpacity onPress={ handleOnPress }>
       <Image
         source={ buttonSource }
         style={ styles.buttonStyle }
       />
-    </TouchableHighlight>
+    </TouchableOpacity>
   )
 }
 
