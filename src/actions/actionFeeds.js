@@ -9,7 +9,8 @@ import {
   FETCH_EVENT_FEEDS,
   FETCH_MY_ALL_EVENTS,
   FETCH_MY_EVENTS,
-  FETCH_OTHER_ALL_EVENTS
+  FETCH_OTHER_ALL_EVENTS,
+  COUNT_MY_ALL_EVENTS
 } from './types'
 import { getRequestOptions } from './actionUtils'
 
@@ -89,7 +90,7 @@ const fetchOtherEventFeeds = (user, token) => {
     console.log('opts', opts)
     const response = await fetch(url, opts) // eslint-disable-line no-undef
     const responseJSON = await response.json()
-    console.log('fetchOtherEventFeeds response:', response.status, responseJSON)
+    // console.log('fetchOtherEventFeeds response:', response.status, responseJSON)
     if (response.status === 200) {
       dispatch({
         type: FETCH_OTHER_ALL_EVENTS,
@@ -97,6 +98,28 @@ const fetchOtherEventFeeds = (user, token) => {
       })
     } else {
       // error
+    }
+  }
+}
+
+const countMyAllEventFeeds = (user, token) => {
+  console.log('countMyAllEventFeeds: user', user)
+  console.log('countMyAllEventFeeds: token', token)
+  const url = `${REACT_APP_API_URL}/users/${user.email}/statistics`
+  console.log('fetchMyAllEventFeeds', url)
+  return async (dispatch) => {
+    const opts = getRequestOptions('GET', token)
+    console.log('opts', opts)
+    const response = await fetch(url, opts) // eslint-disable-line no-undef
+    if (response.status === 200) {
+      const responseJSON = await response.json()
+      console.log('responseJSON', responseJSON)
+      dispatch({
+        type: COUNT_MY_ALL_EVENTS,
+        payload: responseJSON
+      })
+    } else {
+      // TODO: handle error
     }
   }
 }
@@ -126,5 +149,6 @@ export {
   addNewEvent,
   fetchMyEventFeeds,
   fetchMyAllEventFeeds,
-  fetchOtherEventFeeds
+  fetchOtherEventFeeds,
+  countMyAllEventFeeds
 }

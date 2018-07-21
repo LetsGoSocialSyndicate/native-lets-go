@@ -2,7 +2,8 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import { FETCH_EVENT_FEEDS, FEEDS_ACTION_START, FEEDS_ACTION_FAILED,
-  ADD_NEW_EVENT, FETCH_MY_EVENTS, FETCH_MY_ALL_EVENTS, FETCH_OTHER_ALL_EVENTS
+  ADD_NEW_EVENT, FETCH_MY_EVENTS, FETCH_MY_ALL_EVENTS,
+  FETCH_OTHER_ALL_EVENTS, COUNT_MY_ALL_EVENTS
 } from '../actions/types'
 
 
@@ -48,6 +49,13 @@ function eventFeeds(state = initialFeedsState, action) {
       isLoading: false,
       isLoaded: true,
       eventFeeds: mappedKey
+    }
+
+  case COUNT_MY_ALL_EVENTS:
+    console.log(action)
+    return {
+      ...state,
+      statistics: action.statistics
     }
 
   case ADD_NEW_EVENT:
