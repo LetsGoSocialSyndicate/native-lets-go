@@ -4,14 +4,12 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Actions } from 'react-native-router-flux'
-import { View, TouchableHighlight, Image } from 'react-native'
-import { Container } from 'native-base'
+import { ScrollView } from 'react-native'
 import ActivityFeed from './ActivityFeed'
 import { fetchOtherEventFeeds } from '../../actions/actionFeeds'
-
 import { CONTENT_WIDTH } from '../common/Constants'
-const filterButton = require('../../assets/buttons/filter.png')
+
+// const filterButton = require('../../assets/buttons/filter.png')
 
 class ActivityFeeds extends Component {
   componentWillMount() {
@@ -34,9 +32,9 @@ class ActivityFeeds extends Component {
 
   render() {
     return (
-      <Container style={styles.containerStyle}>
+      <ScrollView style={styles.containerStyle}>
         { this.renderActivityFeeds() }
-      </Container>
+      </ScrollView>
     )
   }
 }
