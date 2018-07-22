@@ -17,16 +17,20 @@ import { CONTENT_HEIGHT } from '../common/Constants'
 
 
 const getUser = (props) => {
-  return props.forOtherUser
-    ? props.user.otherUser
+  console.log('inside getUser', props.otherUserInfo)
+
+  return props.otherUserInfo
+    ? props.otherUserInfo
     : props.user.user
 }
 
-const getUserpic = (user) => {
-  return user && 'images' in user && user.images.length > 0
+const getUserpic = (user) => (
+  user.user_image_url ?
+    user.user_image_url :
+    user && 'images' in user && user.images.length > 0
     ? user.images[0].image_url
     : ''
-}
+)
 
 const ImageView = ({ imageUrl }) => {
   const { imageStyle } = styles
@@ -84,7 +88,7 @@ class Profile extends Component {
 
           <TextInput
             style={descriptionTextStyle}
-            value={user.about}
+            value={user.about ? user.about : user.user_about}
             editable={false}
             multiline
           />

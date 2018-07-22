@@ -22,7 +22,8 @@ class ActivityFeed extends Component {
     this.props.handleRequest(event_id, user_id, this.props.auth.token)
   }
   onProfilePicturePress = () => {
-    Actions.profile({ origin: 'ActivityFeed' })
+    console.log('this.props.activity', this.props.activity)
+    Actions.profile({ origin: 'ActivityFeed', otherUserInfo: this.props.activity, forOtherUser: true })
   }
   onActivityPicturePress = () => {
     Actions.viewActivity({ origin: 'ActivityFeed', activity: this.props.activity })
