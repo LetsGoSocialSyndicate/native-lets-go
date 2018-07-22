@@ -9,12 +9,10 @@ import {
   EDIT_USER_CANCEL,
   SAVE_USER_START,
   SAVE_USER_SUCCESS,
-  SAVE_USER_FAILED
+  SAVE_USER_FAILED,
+  REACT_APP_API_URL
 } from './types'
 import { IMAGE_OP_NONE } from './imageOp'
-
-// import { REACT_APP_API_URL } from 'react-native-dotenv'
-const REACT_APP_API_URL = 'http://localhost:8000'
 
 const fetchOtherUser = (id, token) => {
   return async (dispatch) => {

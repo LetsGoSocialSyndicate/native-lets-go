@@ -10,12 +10,10 @@ import {
   FETCH_MY_ALL_EVENTS,
   FETCH_MY_EVENTS,
   FETCH_OTHER_ALL_EVENTS,
-  COUNT_MY_ALL_EVENTS
+  COUNT_MY_ALL_EVENTS,
+  REACT_APP_API_URL
 } from './types'
 import { getRequestOptions } from './actionUtils'
-
-// import { REACT_APP_API_URL } from 'react-native-dotenv'
-const REACT_APP_API_URL = 'http://localhost:8000'
 
 const fetchEventFeeds = (token) => {
   console.log('fetchEventFeeds', REACT_APP_API_URL)

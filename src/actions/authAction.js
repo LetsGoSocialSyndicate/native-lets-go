@@ -13,11 +13,9 @@ import {
   SIGNUP_SUCCESS,
   SIGNUP_FAILED,
   AUTH_STARTED,
-  RESET_AUTH_ERROR
+  RESET_AUTH_ERROR,
+  REACT_APP_API_URL
 } from './types'
-
-// import { REACT_APP_API_URL } from 'react-native-dotenv'
-const REACT_APP_API_URL = 'http://localhost:8000'
 
 const doLogin = (dispatch, user, token, isOtherUser) => {
   dispatch({ type: FETCH_USER, user, isOtherUser })

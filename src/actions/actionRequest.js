@@ -1,12 +1,10 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
 import {
   REQUEST_SUBMIT,
-  HOST_VIEW_REQUEST
+  HOST_VIEW_REQUEST,
+  REACT_APP_API_URL
 } from './types'
 import { getRequestOptions } from './actionUtils'
-
-// import { REACT_APP_API_URL } from 'react-native-dotenv'
-const REACT_APP_API_URL = 'http://localhost:8000'
 
 const handleRequest = (e_id, u_id, token) => {
   console.log('i am here in the handleRequest')
