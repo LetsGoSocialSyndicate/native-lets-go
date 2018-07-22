@@ -18,7 +18,7 @@ const fetchOtherUser = (id, token) => {
     const opts = getRequestOptions('GET', token)
     const response = await fetch(url, opts) // eslint-disable-line no-undef
     const responseJSON = await response.json()
-    console.log('fetchOtherUser:response:', response.status, responseJSON)
+    // console.log('fetchOtherUser:response:', response.status, responseJSON)
     if (response.status === 200) {
       dispatch({
         type: FETCH_USER,
@@ -34,12 +34,12 @@ const fetchOtherUser = (id, token) => {
 const updateProfile = (newUserInfo, userId, token, images = []) => {
   return async (dispatch) => {
     dispatch({ type: SAVE_USER_START })
-    console.log('updateProfile:request:', userId, newUserInfo, images)
+    // console.log('updateProfile:request:', userId, newUserInfo, images)
     let url = `${REACT_APP_API_URL}/users/${userId}`
     let opts = getRequestOptions('PATCH', token, newUserInfo)
     let response = await fetch(url, opts) // eslint-disable-line no-undef
     let responseJSON = await response.json()
-    console.log('updateProfile:response:', response.status, responseJSON)
+    // console.log('updateProfile:response:', response.status, responseJSON)
     if (response.status !== 200) {
       dispatch({ type: SAVE_USER_FAILED, error: responseJSON.message })
       return
@@ -53,7 +53,7 @@ const updateProfile = (newUserInfo, userId, token, images = []) => {
     opts = getRequestOptions('PATCH', token, { images })
     response = await fetch(url, opts) // eslint-disable-line no-undef
     responseJSON = await response.json()
-    console.log('updateProfileImage:response:', response.status, responseJSON)
+    // console.log('updateProfileImage:response:', response.status, responseJSON)
     if (response.status === 200) {
       dispatch({ type: SAVE_USER_SUCCESS, user: responseJSON })
     } else {

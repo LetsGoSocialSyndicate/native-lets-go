@@ -26,13 +26,13 @@ const doLogin = (dispatch, user, token, isOtherUser) => {
 const loginSubmit = (fields) => {
   return async (dispatch) => {
     dispatch({ type: AUTH_STARTED })
-    console.log('loginSubmit:', fields)
+    // console.log('loginSubmit:', fields)
     const url = `${REACT_APP_API_URL}/login`
     const opts = getRequestOptions('POST', null, fields)
     try {
       const response = await fetch(url, opts) // eslint-disable-line no-undef
       const responseJSON = await response.json()
-      console.log('loginSubmit response:', response.status, responseJSON)
+      // console.log('loginSubmit response:', response.status, responseJSON)
       if (response.status === 200) {
         doLogin(dispatch, responseJSON.user, responseJSON.token, false)
       } else {
@@ -52,7 +52,7 @@ const signupSubmit = (fields) => {
     try {
       const response = await fetch(url, opts) // eslint-disable-line no-undef
       const responseJSON = await response.json()
-      console.log('signupSubmit response:', response.status, responseJSON)
+      // console.log('signupSubmit response:', response.status, responseJSON)
       if (response.status === 200) {
         dispatch({ type: SIGNUP_SUCCESS, email: fields.email })
         Actions.verifySignup()
@@ -72,7 +72,7 @@ const verifyAccount = (token, route) => {
     try {
     const response = await fetch(url) // eslint-disable-line no-undef
     const responseJSON = await response.json()
-    console.log('verifyAccount response:', response.status, responseJSON)
+    // console.log('verifyAccount response:', response.status, responseJSON)
     if (response.status === 200) {
       doLogin(dispatch, responseJSON.user, responseJSON.token, false)
     } else {
@@ -92,7 +92,7 @@ const verifyCode = (code, email, password = null) => {
     try {
       const response = await fetch(url, opts) // eslint-disable-line no-undef
       const responseJSON = await response.json()
-      console.log('verifyCode response:', response.status, responseJSON)
+      // console.log('verifyCode response:', response.status, responseJSON)
       if (response.status === 200) {
         doLogin(dispatch, responseJSON.user, responseJSON.token, false)
       } else {
@@ -112,7 +112,7 @@ const sendCodeForPassword = (email) => {
     try {
       const response = await fetch(url, opts) // eslint-disable-line no-undef
       const responseJSON = await response.json()
-      console.log('sendCodeForPassword:response:', response.status, responseJSON)
+      // console.log('sendCodeForPassword:response:', response.status, responseJSON)
       // SIGNUP_SUCCESS/SIGNUP_FAILED actions can be reused in this case too.
       if (response.status === 200) {
         dispatch({ type: SIGNUP_SUCCESS, email })

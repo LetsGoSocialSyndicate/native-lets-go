@@ -7,10 +7,10 @@ import {
 import { getRequestOptions } from './actionUtils'
 
 const handleRequest = (e_id, u_id, token) => {
-  console.log('i am here in the handleRequest')
+  // console.log('i am here in the handleRequest')
   return async (dispatch) => {
-    console.log('this is event id', e_id)
-    console.log('this is user id', u_id)
+    // console.log('this is event id', e_id)
+    // console.log('this is user id', u_id)
 
     const url = `${REACT_APP_API_URL}/events/request/${e_id}`
     const opts = getRequestOptions('POST', token)
