@@ -17,8 +17,6 @@ import { CONTENT_HEIGHT } from '../common/Constants'
 
 
 const getUser = (props) => {
-  console.log('inside getUser', props.otherUserInfo)
-
   return props.otherUserInfo
     ? props.otherUserInfo
     : props.user.user
@@ -43,10 +41,18 @@ const ImageView = ({ imageUrl }) => {
 }
 
 const EditButton = ({ forOtherUser }) => {
-  if (forOtherUser) {
-    return null
-  }
   const { editButtonStyle } = styles
+
+  if (forOtherUser) {
+    return (
+      <Container style={editButtonStyle}>
+        <LGButton
+          onPress={() => Actions.chat({ origin: 'Profile' })}
+          buttonText="msg"
+        />
+      </Container>
+    )
+  }
   return (
     <Container style={editButtonStyle}>
       <LGButton
