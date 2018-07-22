@@ -4,8 +4,6 @@
 import {
   FETCH_USER,
   RESET_USER,
-  EDIT_USER_START,
-  EDIT_USER_CANCEL,
   SAVE_USER_START,
   SAVE_USER_SUCCESS,
   SAVE_USER_FAILED
@@ -14,7 +12,6 @@ import {
 const INITIAL_STATE = {
   user: {},
   otherUser: {},
-  isReadOnly: true,
   error: null,
   updating: false,
 }
@@ -27,26 +24,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         user: action.isOtherUser ? state.user : action.user,
         otherUser: action.isOtherUser ? action.user : state.otherUser,
-        isReadOnly: true,
         error: null
     }
     case RESET_USER: //type
       console.log('user reducer:', action, state)
       return INITIAL_STATE
-    case EDIT_USER_START: //type
-      console.log('user reducer:', action, state)
-      return {
-        ...state,
-        isReadOnly: false,
-        error: null
-    }
-    case EDIT_USER_CANCEL: //type
-      console.log('user reducer:', action, state)
-      return {
-        ...state,
-        isReadOnly: true,
-        error: null
-    }
     case SAVE_USER_START: //type
       console.log('user reducer:', action, state)
       return {
@@ -58,7 +40,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         user: action.user,
-        isReadOnly: true,
         error: null,
         updating: false
     }
@@ -66,7 +47,6 @@ export default (state = INITIAL_STATE, action) => {
       console.log('user reducer:', action, state)
       return {
         ...state,
-        isReadOnly: true,
         error: action.error,
         updating: false
     }

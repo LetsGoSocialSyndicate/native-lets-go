@@ -5,8 +5,6 @@ import { getRequestOptions } from './actionUtils'
 
 import {
   FETCH_USER,
-  EDIT_USER_START,
-  EDIT_USER_CANCEL,
   SAVE_USER_START,
   SAVE_USER_SUCCESS,
   SAVE_USER_FAILED,
@@ -64,16 +62,4 @@ const updateProfile = (newUserInfo, userId, token, images = []) => {
   }
 }
 
-const startEditing = () => {
-  return (dispatch) => {
-    dispatch({ type: EDIT_USER_START })
-  }
-}
-
-const cancelEditing = () => {
-  return (dispatch) => {
-    dispatch({ type: EDIT_USER_CANCEL })
-  }
-}
-
-export { fetchOtherUser, updateProfile, startEditing, cancelEditing }
+export { fetchOtherUser, updateProfile }

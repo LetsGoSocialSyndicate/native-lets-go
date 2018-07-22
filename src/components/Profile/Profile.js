@@ -4,20 +4,15 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
 import {
-  ActivityIndicator,
   Image,
   TextInput,
-  TouchableOpacity,
   View } from 'react-native'
 import {
   Container,
-  Card,
   Item,
   Text,
 } from 'native-base'
 import { LGButton } from '../common'
-import { IMAGE_OP_NONE } from '../../actions/imageOp'
-import { startEditing } from '../../actions/userAction'
 import { CONTENT_HEIGHT } from '../common/Constants'
 
 
@@ -27,128 +22,71 @@ const getUser = (props) => {
     : props.user.user
 }
 
-const isReadOnly = (props) => {
-  return props.forOtherUser || props.user.isReadOnly
-}
-
 const getUserpic = (user) => {
   return user && 'images' in user && user.images.length > 0
     ? user.images[0].image_url
     : ''
 }
 
-const getUserpicId = (user) => {
-  return user && 'images' in user && user.images.length > 0
-    ? user.images[0].id
-    : null
-}
-
-const LoadingImageButton = ({ loading, imageUrl }) => {
-  if (loading) {
-    return (
-      <View>
-        <ActivityIndicator size={'large'} />
-      </View>
-    )
-  }
+const ImageView = ({ imageUrl }) => {
   const { imageStyle } = styles
   const source = imageUrl ? { uri: imageUrl } : null
-
   return (
-    <TouchableOpacity>
       <View>
         <Image style={imageStyle} source={source} />
       </View>
-    </TouchableOpacity>
   )
 }
 
+const EditButton = ({ forOtherUser }) => {
+  if (forOtherUser) {
+    return null
+  }
+  const { editButtonStyle } = styles
+  return (
+    <Container style={editButtonStyle}>
+      <LGButton
+        onPress={() => Actions.profileEdit({ origin: 'Profile' })}
+        buttonText="edit"
+      />
+    </Container>
+  )
+}
 class Profile extends Component {
-  state = {
-    // Currently shown (possibly modified) profile details in UI.
-    user: {},
-    // Currently shown profile userpic in UI.
-    currentImageUrl: '',
-    // Transient state of loading image to UI.
-    imageLoading: false,
-    // Inidicates if profile userpic need to be deleted/added/updated on server
-    profileImageOp: IMAGE_OP_NONE,
-    aboutBoxHeight: 40
-  }
-
-  componentDidMount() {
-    console.log('Profile componentDidMount state', this.state)
-    console.log('Profile componentDidMount props', this.props)
-
-    const user = getUser(this.props)
-    this.setState({ user, currentImageUrl: getUserpic(user) })
-  }
-
-  buildImageRequest() {
-    // For now returning array of 1 - we allow only 1 profile userpic
-    return [{
-       op: this.state.profileImageOp,
-       id: getUserpicId(this.state.user),
-       image_url: this.state.currentImageUrl
-    }]
-  }
-
-  updateAboutBoxHeight(height) {
-      this.setState({ ...this.state, aboutBoxHeight: height + 40 })
-  }
-  getAboutBoxStyle() {
-    return { ...styles.descriptionTextStyle, height: this.state.aboutBoxHeight }
-  }
 
   render() {
-    console.log('Profile.render', this.state)
-    if (Object.keys(this.state.user).length === 0) {
-      return <Card />
-    }
-    const user = this.state.user
-    const readOnly = isReadOnly(this.props)
-    const lastName = user.last_name.charAt(0)
+    console.log('Profile.render', this.props)
+
+    const user = getUser(this.props)
+    const firstName = user.first_name.toUpperCase()
+    const lastName = user.last_name.charAt(0).toUpperCase()
     const age = moment.duration(moment().diff(user.birthday)).years()
-    const onContentSizeChange = e => this.updateAboutBoxHeight(e.nativeEvent.contentSize.height)
 
     const {
       outterContainerStyle,
       nameItemStyle,
       nameTextStyle,
       itemsCenterFlex,
-      editButtonStyle
+      descriptionTextStyle
     } = styles
-    const descriptionTextStyle = this.getAboutBoxStyle()
 
     return (
       <Container style={outterContainerStyle}>
-        <Container style={editButtonStyle}>
-          <LGButton
-            onPress={() => Actions.profileEdit()}
-            buttonText="edit"
-          />
-        </Container>
+        <EditButton forOtherUser={this.props.forOtherUser} />
         <View style={itemsCenterFlex}>
-
-          <LoadingImageButton
-            loading={this.state.imageLoading}
-            imageUrl={this.state.currentImageUrl}
-          />
+          <ImageView imageUrl={getUserpic(user)} />
 
           <Item style={nameItemStyle}>
             <Text style={nameTextStyle}>
-              {user.first_name.toUpperCase()} {lastName.toUpperCase()}, {age}
+              {firstName} {lastName}, {age}
             </Text>
           </Item>
 
           <TextInput
             style={descriptionTextStyle}
             value={user.about}
-            editable={!readOnly}
+            editable={false}
             multiline
-            // numberOfLines={10}
-            onContentSizeChange={onContentSizeChange}
-
           />
         </View>
       </Container>
@@ -212,11 +150,6 @@ const styles = {
 }
 
 const mapStateToProps = (state) => {
-  return { user: state.user, auth: state.auth }
+  return { user: state.user }
 }
-
-const actions = {
-  // fetchOtherUserAction: fetchOtherUser,
-  startEditingAction: startEditing,
-}
-export default connect(mapStateToProps, actions)(Profile)
+export default connect(mapStateToProps)(Profile)

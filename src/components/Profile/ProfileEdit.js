@@ -5,19 +5,13 @@ import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
 import { showImagePicker } from 'react-native-image-picker'
 import DatePicker from 'react-native-datepicker'
-import {
-  Image,
-  View,
-  TextInput,
-  ActivityIndicator,
-  TouchableOpacity,
-  TouchableHighlight
- } from 'react-native'
+import { TextInput, View } from 'react-native'
 import { Container, Card, Form, Item } from 'native-base'
-import { cancelEditing, updateProfile } from '../../actions/userAction'
+import { updateProfile } from '../../actions/userAction'
 import { DATE_FORMAT, CONTENT_HEIGHT } from '../common/Constants'
 import { Input } from '../common'
 import { IMAGE_OP_NONE, IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
+import LoadingButton from '../common/LoadingButton'
 
 const defaultUser = require('../../assets/default.png')
 //TODO: change later to real DONE button
@@ -27,8 +21,6 @@ const FIRST_NAME_FIELD = 'firstName'
 const LAST_NAME_FIELD = 'lastName'
 const BIRTHDAY_FIELD = 'birthday'
 
-const getUser = (props) => props.user.user
-// const isReadOnly = (props) => props.user.isReadOnly
 const getFileExtension = (filename) => {
   return filename.split('.').pop().toLowerCase()
 }
@@ -45,26 +37,6 @@ const getUserpicId = (user) => {
     : null
 }
 
-const LoadingImageButton = ({ loading, onPress, imageUrl }) => {
-  if (loading) {
-    return (
-      <View>
-        <ActivityIndicator size={'large'} />
-      </View>
-    )
-  }
-  const { imageStyle } = styles
-  const source = imageUrl ? { uri: imageUrl } : null
-
-  return (
-    <TouchableOpacity onPress={onPress}>
-      <View>
-        <Image style={imageStyle} source={source} />
-      </View>
-    </TouchableOpacity>
-  )
-}
-
 class ProfileEdit extends Component {
   state = {
     user: {},
@@ -75,8 +47,41 @@ class ProfileEdit extends Component {
   }
 
   componentDidMount() {
-    const user = getUser(this.props)
+    const user = this.getUser()
     this.setState({ user, currentImageUrl: getUserpic(user) })
+  }
+
+  getUser() {
+    return this.props.user.user
+  }
+
+  getImageSource() {
+    const currentImageUrl = this.state.currentImageUrl
+    return currentImageUrl ? { uri: currentImageUrl } : null
+  }
+
+  getAboutBoxStyle() {
+    return { ...styles.descriptionTextStyle, height: this.state.aboutBoxHeight }
+  }
+
+  updateAboutBoxHeight(height) {
+      this.setState({ ...this.state, aboutBoxHeight: height + 40 })
+  }
+
+  saveAbout(about) {
+    this.setState({ ...this.state, user: { ...this.state.user, about } })
+  }
+
+  saveFirstName(first_name) {  // eslint-disable-line camelcase
+    this.setState({ ...this.state, user: { ...this.state.user, first_name } })
+  }
+
+  saveLastName(last_name) { // eslint-disable-line camelcase
+    this.setState({ ...this.state, user: { ...this.state.user, last_name } })
+  }
+
+  saveBirthday(birthday) {
+    this.setState({ ...this.state, user: { ...this.state.user, birthday } })
   }
 
   buildImageRequest() {
@@ -110,32 +115,8 @@ class ProfileEdit extends Component {
     })
   }
 
-  saveAbout(about) {
-    this.setState({ ...this.state, user: { ...this.state.user, about } })
-  }
-  updateAboutBoxHeight(height) {
-      this.setState({ ...this.state, aboutBoxHeight: height + 40 })
-  }
-  getAboutBoxStyle() {
-    return { ...styles.descriptionTextStyle, height: this.state.aboutBoxHeight }
-  }
-  saveFirstName(first_name) {
-    console.log('Inside saveFirstName:', first_name)
-    console.log('Inside saveFirstName state:', this.state)
-
-    this.setState({ ...this.state, user: { ...this.state.user, first_name } })
-  }
-
-  saveLastName(last_name) {
-    this.setState({ ...this.state, user: { ...this.state.user, last_name } })
-  }
-
-  saveBirthday(birthday) {
-    this.setState({ ...this.state, user: { ...this.state.user, birthday } })
-  }
-
   constructSubmitButton() {
-    const originalUser = getUser(this.props)
+    const originalUser = this.getUser()
     const onSave = () => {
       let imageRequest = []
       if (this.state.profileImageOp !== IMAGE_OP_NONE) {
@@ -146,8 +127,7 @@ class ProfileEdit extends Component {
           .then(() => {
             // After the server update completes we need to update
             // internal state with fetched user data.
-            const updatedUser = getUser(this.props)
-            console.log('updatedUser---->', updatedUser)
+            const updatedUser = this.getUser()
             this.setState({
               ...this.state,
               user: updatedUser,
@@ -157,23 +137,19 @@ class ProfileEdit extends Component {
           })
           .then(() => {
               console.log('UPDATED STATE: ', this.state)
-              // TODO: Need proper rerender here
-              // Actions.pop({ refresh: {} })
-              // Actions.refresh()
-              // pop and refresh are not working. This is workaround,
-              // but it will have problems with BACK.
-              // PARENT --> Profile --> ProfileEdit --> Profile.
-              // And should be: PARENT --> Profile
-              Actions.profile()
+              // In order to force refresh, we need to provide refresh state
+              // different than previous. Using current millis as unique value
+              // does the work.
+              Actions.pop({ refresh: { test: moment().valueOf() } })
             })
     }
     return (
-      <TouchableHighlight onPress={onSave}>
-        <Image
-          source={submitButton}
-          style={styles.buttonSubmitStyle}
-        />
-      </TouchableHighlight>
+      <LoadingButton
+        loading={this.props.user.updating}
+        onPress={onSave}
+        source={submitButton}
+        imageStyle={styles.buttonSubmitStyle}
+      />
     )
   }
 
@@ -191,23 +167,25 @@ render() {
   const onImagePress = () => this.selectImage()
   const button = this.constructSubmitButton()
   const onContentSizeChange = e => this.updateAboutBoxHeight(e.nativeEvent.contentSize.height)
+
   const {
     outterContainerStyle,
     itemsCenterFlex,
     formStyle,
     itemStyle,
-    datePickerStyle
+    datePickerStyle,
+    imageStyle
   } = styles
   const descriptionTextStyle = this.getAboutBoxStyle()
 
   return (
     <Container style={outterContainerStyle}>
       <View style={itemsCenterFlex}>
-
-        <LoadingImageButton
+        <LoadingButton
           loading={this.state.imageLoading}
           onPress={onImagePress}
-          imageUrl={this.state.currentImageUrl}
+          source={this.getImageSource()}
+          imageStyle={imageStyle}
         />
 
         <Form style={formStyle}>
@@ -215,7 +193,6 @@ render() {
             <Input
             name={FIRST_NAME_FIELD}
             value={user.first_name}
-            //placeholder={user.first_name}
             onChangeText={saveFirstName}
             />
           </Item>
@@ -224,7 +201,6 @@ render() {
             <Input
              name={LAST_NAME_FIELD}
              value={user.last_name}
-             //placeholder={user.last_name}
              onChangeText={saveLastName}
             />
           </Item>
@@ -234,7 +210,6 @@ render() {
               name={BIRTHDAY_FIELD}
               maxDate={moment().utc().subtract(17, 'years').format(DATE_FORMAT)}
               onDateChange={saveBirthday}
-              //value={birthday}
               placeholder={birthday}
               mode='date'
               format={DATE_FORMAT}
@@ -330,13 +305,11 @@ const styles = {
      width: 200,
    },
 }
+
 const mapStateToProps = (state) => {
   return { user: state.user, auth: state.auth }
 }
-
 const actions = {
-  cancelEditingAction: cancelEditing,
   updateProfileAction: updateProfile,
 }
-
 export default connect(mapStateToProps, actions)(ProfileEdit)

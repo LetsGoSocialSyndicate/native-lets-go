@@ -2,23 +2,27 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import React from 'react'
-import { Image } from 'react-native'
-import { Button, Spinner } from 'native-base'
+import { Image, TouchableOpacity } from 'react-native'
+import { Spinner } from 'native-base'
 
 const LoadingButton = (args) => {
-  const { loading, children, spinnerStyle, source, ...rest } = args
+  const { loading, source, ...rest } = args
+  let { imageStyle } = args
   if (loading) {
-    return <Spinner style={spinnerStyle} color='red' />
+    return <Spinner color='red' />
+  }
+  if (!imageStyle) {
+    imageStyle = styles.imageStyle
   }
   return (
-    <Button {...rest}>
-      <Image source={source} style={styles.buttonSubmitImageStyle} />
-    </Button>
+    <TouchableOpacity {...rest}>
+      <Image source={source} style={imageStyle} />
+    </TouchableOpacity>
   )
 }
 
 const styles = {
-  buttonSubmitImageStyle: {
+  imageStyle: {
     width: 150,
     height: 50,
     alignSelf: 'center',
