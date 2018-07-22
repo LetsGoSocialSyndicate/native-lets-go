@@ -66,7 +66,9 @@ class ChatDeamon extends Component {
     const markAsUnread =
       Actions.currentScene !== 'chat' ||
       this.props.chat.lastChatmateId !== message.user._id
-    this.props.addChatMessageAction(message.user._id, markAsUnread, message)
+    this.props.addChatMessageAction(
+      message.user._id, true /* isIncoming */, markAsUnread, message
+    )
   }
 
   receivePreviousMessages(chatmateId, messages) {

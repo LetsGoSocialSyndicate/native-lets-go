@@ -53,7 +53,12 @@ class Chat extends Component {
   sendMessages(messages) {
     console.log('Chat.sendMessages:', messages)
     messages.forEach(message => {
-      this.props.addChatMessageAction(this.props.chatmateId, false, message)
+      this.props.addChatMessageAction(
+        this.props.chatmateId,
+        false,  // isIncoming
+        false,  // markAsUnread
+        message
+      )
       this.props.chat.socket.emit(
         SEND_MESSAGE,
         this.props.chatmateId,

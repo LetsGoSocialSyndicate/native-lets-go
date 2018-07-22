@@ -168,7 +168,7 @@ export default (state = INITIAL_STATE, action) => {
         messages
       }
     }
-    case ADD_CHAT_MESSAGE: { // type, chatmateId, isIncoming, message
+    case ADD_CHAT_MESSAGE: { // type, chatmateId, isIncoming, markAsUnread, message
       console.log('messages reducer:', action, state)
 
       const lastMessageTimestamp = timestamp(action.message.createdAt)
@@ -197,7 +197,7 @@ export default (state = INITIAL_STATE, action) => {
             isIncoming: action.isIncoming
           }
         }
-        const unreadCount = action.isIncoming
+        const unreadCount = action.markAsUnread
           ? chatmate.unreadCount + 1 : chatmate.unreadCount
         chatmates[action.chatmateId] = {
           ...chatmate,
