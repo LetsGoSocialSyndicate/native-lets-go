@@ -4,8 +4,8 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { View, Image } from 'react-native'
-import { Text, Container } from 'native-base'
+import { View, Image, ScrollView } from 'react-native'
+import { Text } from 'native-base'
 
 import { CONTENT_WIDTH, CONTENT_HEIGHT } from '../common/Constants'
 import MyActivity from './MyActivity'
@@ -32,9 +32,9 @@ class MyActivities extends Component {
 
   render() {
     return (
-      <Container style={ styles.containerStyle }>
+      <ScrollView style={ styles.containerStyle }>
         { this.renderActivityFeeds() }
-      </Container>
+      </ScrollView>
     )
   }
 }
