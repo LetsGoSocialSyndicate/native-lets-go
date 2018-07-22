@@ -12,18 +12,27 @@ import {
   JOIN_CHAT_SUCCESS,
   FETCH_CHAT_MESSAGES_SUCCESS,
   ADD_CHAT_MESSAGE,
-  GOTO_CHAT
+  GOTO_CHAT,
+  REACT_APP_API_URL
 } from '../actions/types'
-
-// import { REACT_APP_CHAT_URL } from 'react-native-dotenv'
-const REACT_APP_CHAT_URL = 'http://localhost:8001'
 
 const INITIAL_STATE = {
   socket: null,
-  // object where keys are chatmateIds and
-  // values are chatmate objects:
-  //   {_id, name, avatar, messagesFetched, unreadCount, lastMessageTimestamp}
-  //   where lastMessageTimestamp is millis since epoch.
+  // object where keys are chatmateIds and values are chatmate objects:
+  //   {
+  //     _id,
+  //     name,            // Abbrevation, for example: Vladimir P
+  //     avatar,          // url/uri to image
+  //     messagesFetched, // boolean, true if previous messages already fetched
+  //     unreadCount,     // number of unread messages
+  //     lastMessage      // properties of last message
+  //   }
+  // lastMessage is also an object:
+  //   {
+  //     timestamp,   // (millis since epoch) of last sent/received messages
+  //     snippet,     // possibly shortened last message
+  //     isIncoming,  // whether this message is incoming or outgoing
+  //   }
   chatmates: {},
   // object where keys are chatmateIds and
   // values are arrays of messages: { _id, text, createdAt, user}
@@ -34,6 +43,8 @@ const INITIAL_STATE = {
   hasUnread: false,
   lastChatmateId: null
 }
+
+const MAX_SNIPPET_CHARS = 30
 
 const removeDuplicates = array => {
   const ids = {}
@@ -46,11 +57,23 @@ const removeDuplicates = array => {
   })
 }
 
-const timestamp = (createdAt) => moment(createdAt).valueOf()
+const timestamp = (createdAt) => {
+  return createdAt ? moment(createdAt).valueOf() : 0
+}
+
 const merge = (lhs, rhs) => {
   return removeDuplicates(lhs.concat(rhs)).sort(
     (a, b) => timestamp(b.createdAt) - timestamp(a.createdAt)
   )
+}
+
+const trimMessage = message => {
+  if (!message) {
+    return ''
+  }
+  return message.length > MAX_SNIPPET_CHARS
+    ? message.slice(0, MAX_SNIPPET_CHARS - 3) + '...' // eslint-disable-line prefer-template
+    : message
 }
 
 const hasUnreadMessages = chatmates => {
@@ -65,7 +88,7 @@ export default (state = INITIAL_STATE, action) => {
       console.log('messages reducer:', action, state)
       return {
         ...state,
-        socket: SocketIOClient(REACT_APP_CHAT_URL)
+        socket: SocketIOClient(REACT_APP_API_URL)
       }
     }
     case RESET_CHAT: { // type
@@ -94,10 +117,16 @@ export default (state = INITIAL_STATE, action) => {
       const chatmates = {}
       action.chatmates.forEach(chatmate => {
         chatmates[chatmate._id] = {
-          ...chatmate,
+          _id: chatmate._id,
+          name: chatmate.name,
+          avatar: chatmate.avatar,
           messagesFetched: false,
           unreadCount: 0,
-          lastMessageTimestamp: 0
+          lastMessage: {
+            timestamp: timestamp(chatmate.lastMessage.createdAt),
+            snippet: trimMessage(chatmate.lastMessage.text),
+            isIncoming: chatmate.lastMessage.isIncoming
+          }
         }
       })
       return {
@@ -110,25 +139,27 @@ export default (state = INITIAL_STATE, action) => {
     case FETCH_CHAT_MESSAGES_SUCCESS: { // type, chatmateId, messages (array)
       console.log('messages reducer:', action, state)
 
-      const lastMessageTimestamp = Math.max(...action.messages.map(
-        message => timestamp(message.createdAt)
-      ))
-      // Mark the chatmate that he got previous messages from server
-      // and update the last message timestamp.
-      const chatmates = { ...state.chatmates }
-      const chatmate = chatmates[action.chatmateId]
-      chatmates[action.chatmateId] = {
-        ...chatmate,
-        messagesFetched: true,
-        lastMessageTimestamp:
-          Math.max(lastMessageTimestamp, chatmate.lastMessageTimestamp)
-      }
-
       // Merge previous and current messages by time.
       const messages = { ...state.messages }
       const previousMessages = action.chatmateId in messages
         ? messages[action.chatmateId] : []
       messages[action.chatmateId] = merge(previousMessages, action.messages)
+
+      // Mark the chatmate that he got previous messages from server
+      // and update the last message.
+      const chatmates = { ...state.chatmates }
+      const chatmate = chatmates[action.chatmateId]
+      const latestMessage = messages[action.chatmateId][0]
+      const isIncoming = latestMessage.user._id === action.chatmateId
+      chatmates[action.chatmateId] = {
+        ...chatmate,
+        messagesFetched: true,
+        lastMessage: {
+          timestamp: timestamp(latestMessage.createdAt),
+          snippet: trimMessage(latestMessage.text),
+          isIncoming
+        }
+      }
 
       return {
         ...state,
@@ -137,7 +168,7 @@ export default (state = INITIAL_STATE, action) => {
         messages
       }
     }
-    case ADD_CHAT_MESSAGE: { // type, chatmateId, markUnread, message
+    case ADD_CHAT_MESSAGE: { // type, chatmateId, isIncoming, message
       console.log('messages reducer:', action, state)
 
       const lastMessageTimestamp = timestamp(action.message.createdAt)
@@ -149,18 +180,29 @@ export default (state = INITIAL_STATE, action) => {
            ...action.message.user,
            messagesFetched: false,
            unreadCount: 0,
-           lastMessageTimestamp
+           lastMessage: {
+             timestamp: lastMessageTimestamp,
+             snippet: trimMessage(action.message.text),
+             isIncoming: action.isIncoming
+           }
          }
-      }
-
-      // Update chatmate unread message count.
-      if (action.markUnread) {
+      } else {
+        // For existing messages, update last message and unread count.
         const chatmate = chatmates[action.chatmateId]
+        let lastMessage = chatmate.lastMessage
+        if (lastMessageTimestamp > lastMessage.timestamp) {
+          lastMessage = {
+            timestamp: lastMessageTimestamp,
+            snippet: trimMessage(action.message.text),
+            isIncoming: action.isIncoming
+          }
+        }
+        const unreadCount = action.isIncoming
+          ? chatmate.unreadCount + 1 : chatmate.unreadCount
         chatmates[action.chatmateId] = {
           ...chatmate,
-          unreadCount: chatmate.unreadCount + 1,
-          lastMessageTimestamp:
-            Math.max(lastMessageTimestamp, chatmate.lastMessageTimestamp)
+          unreadCount,
+          lastMessage,
         }
       }
 

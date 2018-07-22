@@ -2,22 +2,32 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
  /* eslint-disable no-underscore-dangle */
+import moment from 'moment'
 import React, { Component } from 'react'
 import { Button, Container, List, ListItem, Spinner, Thumbnail } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import { Text } from 'react-native'
 import { gotoChat } from '../../actions/actionChat'
+import { DATETIME_SHORT_FORMAT } from '../common/Constants'
 
 const hasUnreadMessages = (chatmates, chatmateId) => {
   return chatmateId in chatmates && chatmates[chatmateId].unreadCount > 0
+}
+
+const formatLastMessageInfo = item => {
+  // return item.lastMessage.snippet
+  const source = item.lastMessage.isIncoming
+    ? 'last received at' : 'last sent at'
+  const timestamp = moment(item.lastMessage.timestamp).format(DATETIME_SHORT_FORMAT)
+  return `${source} ${timestamp}`
 }
 
 class Conversations extends Component {
   render() {
     const chat = this.props.chat
     console.log('Conversations::render', chat)
-    const { containerStyle, buttonStyle, listItemStyle, avatarStyle } = styles
+    const { containerStyle, buttonStyle, listItemStyle, textStyle } = styles
     if (chat.loading) {
       return (
         <Container style={containerStyle}>
@@ -38,15 +48,16 @@ class Conversations extends Component {
       return (
         <ListItem style={actualListItemStyle} avatar>
           <Button style={buttonStyle} onPress={() => onPress(item._id)}>
-            <Thumbnail style={avatarStyle} source={{ uri: item.avatar }} />
-            <Text>{item.name}</Text>
+            <Thumbnail source={{ uri: item.avatar }} />
+            <Text style={textStyle}>{item.name}</Text>
+            <Text style={textStyle}>{formatLastMessageInfo(item)}</Text>
           </Button>
         </ListItem>
       )
     }
     console.log('chat.chatmates', chat.chatmates)
     const chatmates = Object.values(chat.chatmates).sort(
-      (a, b) => b.lastMessageTimestamp - a.lastMessageTimestamp
+      (a, b) => b.lastMessage.timestamp - a.lastMessage.timestamp
     )
     return (
       <Container style={containerStyle}>
@@ -72,8 +83,8 @@ const styles = {
     borderWidth: 2,
     backgroundColor: 'transparent',
   },
-  avatarStyle: {
-    marginRight: 20
+  textStyle: {
+    marginLeft: 20
   }
 }
 

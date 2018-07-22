@@ -34,9 +34,9 @@ const fetchChatMessages = (chatmateId, messages) => {
   }
 }
 
-const addChatMessage = (chatmateId, markUnread, message) => {
+const addChatMessage = (chatmateId, isIncoming, message) => {
   return (dispatch) => {
-    dispatch({ type: ADD_CHAT_MESSAGE, chatmateId, markUnread, message })
+    dispatch({ type: ADD_CHAT_MESSAGE, chatmateId, isIncoming, message })
   }
 }
 
