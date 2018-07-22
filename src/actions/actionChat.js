@@ -2,19 +2,13 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import {
-  SET_CHAT_SOCKET,
   CHAT_ACTION_START,
   CHAT_ACTION_FAILED,
   JOIN_CHAT_SUCCESS,
   FETCH_CHAT_MESSAGES_SUCCESS,
-  ADD_CHAT_MESSAGE
+  ADD_CHAT_MESSAGE,
+  GOTO_CHAT
 } from './types'
-
-const setChatSocket = (socket) => {
-  return (dispatch) => {
-    dispatch({ type: SET_CHAT_SOCKET, socket })
-  }
-}
 
 const chatActionStart = () => {
   return (dispatch) => {
@@ -40,17 +34,22 @@ const fetchChatMessages = (chatmateId, messages) => {
   }
 }
 
-const addChatMessage = (chatmateId, message) => {
+const addChatMessage = (chatmateId, markUnread, message) => {
   return (dispatch) => {
-    dispatch({ type: ADD_CHAT_MESSAGE, chatmateId, message })
+    dispatch({ type: ADD_CHAT_MESSAGE, chatmateId, markUnread, message })
   }
 }
 
+const gotoChat = (chatmateId) => {
+  return (dispatch) => {
+    dispatch({ type: GOTO_CHAT, chatmateId })
+  }
+}
 export {
-  setChatSocket,
   chatActionStart,
   chatActionFailed,
   joinChat,
   fetchChatMessages,
-  addChatMessage
+  addChatMessage,
+  gotoChat
 }

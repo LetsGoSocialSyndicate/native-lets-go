@@ -3,10 +3,9 @@
  */
 import React from 'react'
 import { connect } from 'react-redux'
-import AppContainer from '../AppContainer'
-import ActivityFeeds from '../Events/ActivityFeeds'
-// import TempMainScene from '../TempMainScene'
-import Login from '../Login/Login'
+import AppContainer from './AppContainer'
+import ActivityFeeds from './Events/ActivityFeeds'
+import Login from './Login/Login'
 
 const LandingScene = (props) => {
   // This is weird, but LandingComponent has to be capitalized!!!
@@ -15,7 +14,6 @@ const LandingScene = (props) => {
   props.name, props.origin, auth.isUserLoggedIn, requiredLoginState)
   if (auth.isUserLoggedIn && !requiredLoginState) {
     return <ActivityFeeds {...rest} />
-    // return <TempMainScene {...rest} />
   }
   if (!auth.isUserLoggedIn && requiredLoginState) {
     return <Login {...rest} />

@@ -8,7 +8,7 @@ import { resetAuthError } from './actions/authAction'
 import {
   LoggedInLandingScene,
   LoggedOutLandingScene
-} from './components/common/LandingScene'
+} from './components/LandingScene'
 import ActivityFeeds from './components/Events/ActivityFeeds'
 import CreateActivity from './components/Events/CreateActivity'
 import ForgotPassword from './components/Login/ForgotPassword'
@@ -20,7 +20,6 @@ import Profile from './components/Profile/Profile'
 import ProfileEdit from './components/Profile/ProfileEdit'
 import Signup from './components/Signup/Signup'
 import VerifySignup from './components/Signup/VerifySignup'
-// import TempMainScene from './components/TempMainScene'
 import Chat from './components/Messages/Chat'
 import Conversations from './components/Messages/Conversations'
 
@@ -40,13 +39,6 @@ const RouterComponent = ({ resetError }) => {
           LandingComponent={Login}
           initial
         />
-        {/* <Scene
-          key='tempMainScene'
-          component={LoggedInLandingScene}
-          LandingComponent={TempMainScene}
-          hideNavBar='true'
-          title='Temp Main Scene'
-        /> */}
         <Scene
           key='activityFeeds'
           component={LoggedInLandingScene}

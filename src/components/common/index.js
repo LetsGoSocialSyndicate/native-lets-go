@@ -12,6 +12,5 @@
  export * from './Header' // OLD
  export * from './Spinner' // OLD
  export * from './TextField' // OLD
- export * from './LandingScene'
  export * from './ImageButton'
  export * from './IconMenu'

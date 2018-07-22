@@ -3,12 +3,19 @@ import { Button, Thumbnail } from 'native-base'
 
 class IconMenu extends Component {
   render() {
-    const { buttonStyle, thumbnailStyle } = styles
+    let { buttonStyle, thumbnailStyle } = styles
+    if (this.props.special) {
+      thumbnailStyle = {
+        ...thumbnailStyle,
+        borderColor: 'black',
+        borderWidth: 2
+      }
+    }
     return (
-      <Button style={ buttonStyle } onPress={ this.props.onPress }>
+      <Button style={buttonStyle} onPress={this.props.onPress}>
         <Thumbnail
-          style={ thumbnailStyle }
-          source={ this.props.source }
+          style={thumbnailStyle}
+          source={this.props.source}
         />
       </Button>
     )

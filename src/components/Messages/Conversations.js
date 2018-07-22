@@ -1,76 +1,57 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
+ /* eslint-disable no-underscore-dangle */
 import React, { Component } from 'react'
 import { Button, Container, List, ListItem, Spinner, Thumbnail } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import { Text } from 'react-native'
-import SocketIOClient from 'socket.io-client'
-import { JOIN, CHATMATES } from './ChatProtocol'
-import {
-  setChatSocket,
-  chatActionStart,
-  joinChat
-} from '../../actions/actionChat'
+import { gotoChat } from '../../actions/actionChat'
 
-// import { REACT_APP_CHAT_URL } from 'react-native-dotenv'
-const REACT_APP_CHAT_URL = 'http://localhost:8001'
+const hasUnreadMessages = (chatmates, chatmateId) => {
+  return chatmateId in chatmates && chatmates[chatmateId].unreadCount > 0
+}
 
 class Conversations extends Component {
-
-  componentDidMount() {
-    console.log('Conversations::componentDidMount START')
-    let socket = null
-    if (!this.props.chat.socket) {
-      console.log('Conversations::componentDidMount create socket')
-      socket = SocketIOClient(REACT_APP_CHAT_URL)
-      this.props.setChatSocketAction(socket)
-    } else {
-      socket = this.props.chat.socket
-    }
-    if (!this.props.chat.joined) {
-      console.log('Conversations::componentDidMount join chat')
-      socket.on(
-        CHATMATES,
-        chatmates => this.receiveChatmates(chatmates)
-      )
-      this.props.chatActionStartAction()
-      socket.emit(JOIN, this.props.user.id)
-    }
-  }
-
-  receiveChatmates(chatmates) {
-    console.log('Conversations::receiveChatmates')
-    this.props.joinChatAction(chatmates)
-  }
-
   render() {
-    console.log('Conversations::render', this.props.chat)
-    const { containerStyle, buttonStyle, avatarStyle } = styles
-    if (this.props.chat.loading) {
+    const chat = this.props.chat
+    console.log('Conversations::render', chat)
+    const { containerStyle, buttonStyle, listItemStyle, avatarStyle } = styles
+    if (chat.loading) {
       return (
         <Container style={containerStyle}>
           <Spinner color='red' />
         </Container>
       )
     }
+
+    const onPress = (chatmateId) => {
+      this.props.gotoChatAction(chatmateId)
+      Actions.chat({ chatmateId })
+    }
+
     const renderRow = item => {
-      const chatmateId = item._id // eslint-disable-line no-underscore-dangle
+      const actualListItemStyle = hasUnreadMessages(chat.chatmates, item._id)
+        ? { ...listItemStyle, borderColor: 'black' }
+        : listItemStyle
       return (
-        <ListItem avatar>
-          <Button style={buttonStyle} onPress={() => Actions.chat({ chatmateId })}>
+        <ListItem style={actualListItemStyle} avatar>
+          <Button style={buttonStyle} onPress={() => onPress(item._id)}>
             <Thumbnail style={avatarStyle} source={{ uri: item.avatar }} />
             <Text>{item.name}</Text>
           </Button>
         </ListItem>
       )
     }
-    console.log('this.props.chat.chatmates', this.props.chat.chatmates)
+    console.log('chat.chatmates', chat.chatmates)
+    const chatmates = Object.values(chat.chatmates).sort(
+      (a, b) => b.lastMessageTimestamp - a.lastMessageTimestamp
+    )
     return (
       <Container style={containerStyle}>
         <List
-          dataArray={this.props.chat.chatmates}
+          dataArray={chatmates}
           renderRow={renderRow}
         />
       </Container>
@@ -84,7 +65,11 @@ const styles = {
     marginTop: 30
   },
   buttonStyle: {
+    backgroundColor: 'transparent',
+  },
+  listItemStyle: {
     borderColor: 'white',
+    borderWidth: 2,
     backgroundColor: 'transparent',
   },
   avatarStyle: {
@@ -96,8 +81,6 @@ const mapStateToProps = (state) => {
   return { chat: state.chat, user: state.user.user }
 }
 const actions = {
-  setChatSocketAction: setChatSocket,
-  chatActionStartAction: chatActionStart,
-  joinChatAction: joinChat
+  gotoChatAction: gotoChat
 }
 export default connect(mapStateToProps, actions)(Conversations)

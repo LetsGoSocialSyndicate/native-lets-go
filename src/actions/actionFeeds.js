@@ -1,4 +1,4 @@
-/*
+  /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import { Actions } from 'react-native-router-flux'
@@ -125,9 +125,8 @@ const countMyAllEventFeeds = (user, token) => {
 }
 
 const addNewEvent = (newEvent, token) => {
-  console.log('addNewEvent', token)
-
   return async (dispatch) => {
+    console.log('addNewEvent', newEvent)
     dispatch({ type: FEEDS_ACTION_START })
     const url = `${REACT_APP_API_URL}/events`
     const opts = getRequestOptions('POST', token, newEvent)
@@ -144,11 +143,18 @@ const addNewEvent = (newEvent, token) => {
   }
 }
 
+const setFeedsActionError = (error) => {
+  return (dispatch) => {
+    dispatch({ type: FEEDS_ACTION_FAILED, error })
+  }
+}
+
 export {
   fetchEventFeeds,
   addNewEvent,
   fetchMyEventFeeds,
   fetchMyAllEventFeeds,
   fetchOtherEventFeeds,
-  countMyAllEventFeeds
+  countMyAllEventFeeds,
+  setFeedsActionError
 }

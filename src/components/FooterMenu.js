@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
+import { connect } from 'react-redux'
 import { Footer, FooterTab } from 'native-base'
 import { IconMenu } from './common'
 import { FOOTER_HEIGHT, CONTENT_WIDTH } from './common/Constants'
@@ -23,7 +24,11 @@ class FooterMenu extends Component {
               it will take you to chat with selected user
           */}
           <IconMenu source={addEventImage} onPress={() => Actions.createActivity()} />
-          <IconMenu source={myMessagesImage} onPress={() => Actions.conversations()} />
+          <IconMenu
+            source={myMessagesImage}
+            special={this.props.chat.hasUnread}
+            onPress={() => Actions.conversations()}
+          />
           <IconMenu source={myProfileImage} onPress={() => Actions.profile()} />
         </FooterTab>
       </Footer>
@@ -41,4 +46,8 @@ const styles = {
     // paddingBottom: 0
   }
 }
-export default FooterMenu
+
+const mapStateToProps = (state) => {
+  return { chat: state.chat }
+}
+export default connect(mapStateToProps)(FooterMenu)

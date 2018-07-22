@@ -23,12 +23,12 @@ const end = require('../../assets/createActivity/end.png')
 
 // NOTE: The field name (i.e. values of these constants)
 //       need to match server side fields (routes/events.js, POST).
-const HEADLINE_FIELD = 'title'
-const LOCATION_FIELD = 'location'
-const CATEGORY_FIELD = 'category'
-const ACTIVITY_START_TIME_FIELD = 'start_time'
-const ACTIVITY_END_TIME_FIELD = 'end_time'
-const DESCRIPTION_FIELD = 'description'
+export const HEADLINE_FIELD = 'title'
+export const LOCATION_FIELD = 'location'
+export const CATEGORY_FIELD = 'category'
+export const ACTIVITY_START_TIME_FIELD = 'start_time'
+export const ACTIVITY_END_TIME_FIELD = 'end_time'
+export const DESCRIPTION_FIELD = 'description'
 
 const TODAY = new Date()
 const TODAY_PLUS_3 = new Date(TODAY.getTime() + (1000 * 60 * 60 * 72))

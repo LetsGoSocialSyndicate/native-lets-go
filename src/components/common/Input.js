@@ -7,7 +7,7 @@ import ModalDropdown from 'react-native-modal-dropdown'
 import RNPickerSelect from 'react-native-picker-select'
 import { Field } from 'redux-form'
 import { Text, TextInput, View } from 'react-native'
-import { DATE_FORMAT, DATETIME_FORMAT } from './Constants'
+import { DATE_FORMAT, DATETIME_SHORT_FORMAT } from './Constants'
 
 //If we want to use simple Input (without Redux form)
 const Input = ({ value, onChangeText, placeholder, secureTextEntry }) => {
@@ -101,13 +101,12 @@ const renderDateTimePickerInput = (props) => {
   //...rest - all props from PickerInputFormField and parent components
   const { input, ...rest } = props
   const { dateTimePickerStyle } = styles
-
   return (
     <DatePicker
        onDateChange={input.onChange}
        date={input.value}
        mode='datetime'
-       format={DATETIME_FORMAT}
+       format={DATETIME_SHORT_FORMAT}
        confirmBtnText='Confirm'
        cancelBtnText='Cancel'
        showIcon={false}

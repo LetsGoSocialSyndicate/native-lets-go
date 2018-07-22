@@ -8,6 +8,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   LOGOUT,
+  INITIALIZE_CHAT,
   RESET_CHAT,
   SIGNUP_SUCCESS,
   SIGNUP_FAILED,
@@ -17,6 +18,12 @@ import {
 
 // import { REACT_APP_API_URL } from 'react-native-dotenv'
 const REACT_APP_API_URL = 'http://localhost:8000'
+
+const doLogin = (dispatch, user, token, isOtherUser) => {
+  dispatch({ type: FETCH_USER, user, isOtherUser })
+  dispatch({ type: INITIALIZE_CHAT })
+  dispatch({ type: LOGIN_SUCCESS, token })
+}
 
 const loginSubmit = (fields) => {
   return async (dispatch) => {
@@ -29,12 +36,7 @@ const loginSubmit = (fields) => {
       const responseJSON = await response.json()
       console.log('loginSubmit response:', response.status, responseJSON)
       if (response.status === 200) {
-        dispatch({
-          type: FETCH_USER,
-          user: responseJSON.user,
-          isOtherUser: false
-        })
-        dispatch({ type: LOGIN_SUCCESS, token: responseJSON.token })
+        doLogin(dispatch, responseJSON.user, responseJSON.token, false)
       } else {
         dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
       }
@@ -74,12 +76,7 @@ const verifyAccount = (token, route) => {
     const responseJSON = await response.json()
     console.log('verifyAccount response:', response.status, responseJSON)
     if (response.status === 200) {
-      dispatch({
-        type: FETCH_USER,
-        user: responseJSON.user,
-        isOtherUser: false
-      })
-      dispatch({ type: LOGIN_SUCCESS, token: responseJSON.token })
+      doLogin(dispatch, responseJSON.user, responseJSON.token, false)
     } else {
       dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
     }
@@ -99,12 +96,7 @@ const verifyCode = (code, email, password = null) => {
       const responseJSON = await response.json()
       console.log('verifyCode response:', response.status, responseJSON)
       if (response.status === 200) {
-        dispatch({
-          type: FETCH_USER,
-          user: responseJSON.user,
-          isOtherUser: false
-        })
-        dispatch({ type: LOGIN_SUCCESS, token: responseJSON.token })
+        doLogin(dispatch, responseJSON.user, responseJSON.token, false)
       } else {
         dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
       }

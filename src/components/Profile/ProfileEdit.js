@@ -65,7 +65,7 @@ const LoadingImageButton = ({ loading, onPress, imageUrl }) => {
   )
 }
 
-class Profile extends Component {
+class ProfileEdit extends Component {
   state = {
     user: {},
     currentImageUrl: '',
@@ -339,4 +339,4 @@ const actions = {
   updateProfileAction: updateProfile,
 }
 
-export default connect(mapStateToProps, actions)(Profile)
+export default connect(mapStateToProps, actions)(ProfileEdit)

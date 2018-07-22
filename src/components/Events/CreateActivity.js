@@ -1,23 +1,58 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
+import moment from 'moment'
 import React from 'react'
 import { connect } from 'react-redux'
-import { addNewEvent } from '../../actions/actionFeeds'
-import CreateActivityForm from './CreateActivityForm'
+import { addNewEvent, setFeedsActionError } from '../../actions/actionFeeds'
+import CreateActivityForm, {
+  ACTIVITY_START_TIME_FIELD,
+  ACTIVITY_END_TIME_FIELD
+} from './CreateActivityForm'
+import { DATETIME_SHORT_FORMAT, DATETIME_FORMAT } from '../common/Constants'
 
+const COMBINED_DATETIME_FORMAT = `YYYY ${DATETIME_SHORT_FORMAT}`
 
-const onSubmit = (action, token, fields) => {
-  console.log('CreateActivity.onSubmit:', fields)
-  console.log('TIMES ---> ', fields.start_time, fields.end_time)
-  
-  //const error = validate(fields)
-  //TODO: validate and handle error, probably need to define errorAction
-  action(fields, token)
+const formatFullDate = partialDate => {
+  const fullDate = moment(`${moment().format('YYYY')} ${partialDate}`, COMBINED_DATETIME_FORMAT)
+  let currentYear = Number(moment().format('YYYY'))
+  const currentMonth = Number(moment().format('MM'))
+  const requestedMonth = Number(fullDate.format('MM'))
+  // This works under assumption that you cannot schedule event more than 1 year ahead
+  if (requestedMonth < currentMonth) {
+    currentYear += 1
+  }
+  return moment(`${currentYear} ${partialDate}`, COMBINED_DATETIME_FORMAT).format(DATETIME_FORMAT)
 }
 
-const CreateActivity = ({ auth, addNewEventAction }) => {
-  const action = (fields) => onSubmit(addNewEventAction, auth.token, fields)
+const validate = (fields) => {
+  let error = null
+  const start = moment(fields[ACTIVITY_START_TIME_FIELD])
+  const end = moment(fields[ACTIVITY_END_TIME_FIELD])
+  if (start > end) {
+    error = 'Wrong end date.'
+  }
+  return error
+}
+
+const formatFields = (fields) => {
+  const start_time = formatFullDate(fields.start_time) // eslint-disable-line camelcase
+  const end_time = formatFullDate(fields.end_time) // eslint-disable-line camelcase
+  return { ...fields, start_time, end_time }
+}
+const onSubmit = (action, errorAction, token, fields) => {
+  const updatedFields = formatFields(fields)
+  console.log('CreateActivity.onSubmit:', updatedFields)
+  const error = validate(updatedFields)
+  if (error) {
+    errorAction(error)
+  } else {
+    action(updatedFields, token)
+  }
+}
+
+const CreateActivity = ({ auth, addNewEventAction, setFeedsErrorAction }) => {
+  const action = (fields) => onSubmit(addNewEventAction, setFeedsErrorAction, auth.token, fields)
   return (<CreateActivityForm onSubmit={action} />)
 }
 
@@ -25,6 +60,7 @@ const mapStateToProps = (state) => {
   return { auth: state.auth }
 }
 const actions = {
-  addNewEventAction: addNewEvent
+  addNewEventAction: addNewEvent,
+  setFeedsErrorAction: setFeedsActionError
 }
 export default connect(mapStateToProps, actions)(CreateActivity)
