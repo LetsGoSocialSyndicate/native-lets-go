@@ -15,21 +15,23 @@ const myProfileImage = require('../assets/menus/My_Profile_Icon.png')
 
 class FooterMenu extends Component {
   render() {
+    const { currentScene } = Actions
     const { footerStyle } = styles
     const messagesImage = this.props.chat.hasUnread ?
       UnreadMessagesImage : myMessagesImage
     return (
       <Footer style={footerStyle}>
         <FooterTab >
-          <IconMenu source={homeImage} onPress={() => Actions.login()} />
-          <IconMenu source={myEventsImage} onPress={() => Actions.myActivities()} />
-          <IconMenu source={addEventImage} onPress={() => Actions.createActivity()} />
+          <IconMenu source={homeImage} active={currentScene === 'login'} onPress={() => Actions.login()} />
+          <IconMenu source={myEventsImage} active={currentScene === 'myActivities'} onPress={() => Actions.myActivities()} />
+          <IconMenu source={addEventImage} active={currentScene === 'createActivity'} onPress={() => Actions.createActivity()} />
           <IconMenu
             source={messagesImage}
+            active={currentScene === 'conversations'}
             special={this.props.chat.hasUnread}
             onPress={() => Actions.conversations()}
           />
-          <IconMenu source={myProfileImage} onPress={() => Actions.profile()} />
+          <IconMenu source={myProfileImage} active={currentScene === 'profile'} onPress={() => Actions.profile()} />
         </FooterTab>
       </Footer>
     )

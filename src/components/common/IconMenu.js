@@ -3,14 +3,28 @@ import { Button, Thumbnail } from 'native-base'
 
 
 class IconMenu extends Component {
+  renderThumbnailStyle(props) {
+    const { thumbnailStyle } = styles
+    if (props.active) {
+      return (
+        <Thumbnail
+          style={{ ...thumbnailStyle, opacity: 1.0 }}
+          source={props.source}
+        />
+      )
+    } return (
+      <Thumbnail
+        style={thumbnailStyle}
+        source={this.props.source}
+      />
+    )
+  }
+
   render() {
-    const { buttonStyle, thumbnailStyle } = styles
+    const { buttonStyle } = styles
     return (
       <Button style={buttonStyle} onPress={this.props.onPress}>
-        <Thumbnail
-          style={thumbnailStyle}
-          source={this.props.source}
-        />
+        {this.renderThumbnailStyle(this.props)}
       </Button>
     )
   }
@@ -33,7 +47,8 @@ const styles = {
     paddingLeft: 0,
     paddingRight: 0,
     marginTop: 0,
-    marginBottom: 0
+    marginBottom: 0,
+    opacity: 0.4
   }
 }
 
