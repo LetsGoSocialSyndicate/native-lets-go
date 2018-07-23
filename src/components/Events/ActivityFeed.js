@@ -9,7 +9,7 @@ import { Image, View, TouchableOpacity } from 'react-native'
 import { Text, Card, CardItem, Item, Body, Container } from 'native-base'
 import moment from 'moment'
 import { ImageButton } from '../common'
-import { SEND_JOIN_REQUEST } from '../common/Constants'
+import { SEND_JOIN_REQUEST } from '../Messages/ChatProtocol'
 import { getActivityImage } from '../common/imageUtils'
 
 import { handleRequest } from '../../actions/actionRequest'
