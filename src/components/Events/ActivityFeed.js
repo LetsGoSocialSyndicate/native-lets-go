@@ -18,19 +18,6 @@ const requestToJoinButton = require('../../assets/buttons/request_to_join.png')
 const backgroundImage = require('../../assets/assets_5.28-06.png')
 import { CONTENT_WIDTH, DATETIME_FORMAT } from '../common/Constants'
 
-/*
-:
-createdAt: Sun Jul 22 2018 18:36:54 GMT-0600 (Mountain Daylight Time) {}
-text:"This is a test message"
-user:
-avatar:"https://akilezwebsolutions.com/wp-content/uploads/avatar-7.png"
-name:"Sukmi L"
-_id:"747478d5-c17f-46a5-89ac-b44b5fdf2045"
-__proto__
-:
-Object
-_id:"4b9d9901-4795-4f6e-ad2f-008a5eb3e3a9"*/
-
 class ActivityFeed extends Component {
   onPressRequestToJoin = () => {
     const { user_id, event_id } = this.props.activity
@@ -57,7 +44,6 @@ class ActivityFeed extends Component {
       chatmateId,
       message
     )
-    // Actions.chat({ chatmateId })
   }
   onProfilePicturePress = () => {
     console.log('this.props.activity', this.props.activity)
