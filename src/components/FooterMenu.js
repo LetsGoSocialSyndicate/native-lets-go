@@ -9,23 +9,23 @@ const homeImage = require('../assets/menus/Home_Icon.png')
 const addEventImage = require('../assets/menus/Add_Event_Icon.png')
 const myEventsImage = require('../assets/menus/My_Events_Icon.png')
 const myMessagesImage = require('../assets/menus/My_Messages_Icon.png')
+const UnreadMessagesImage = require('../assets/menus/Unread_Messages_Icon.png')
 const myProfileImage = require('../assets/menus/My_Profile_Icon.png')
+
 
 class FooterMenu extends Component {
   render() {
     const { footerStyle } = styles
+    const messagesImage = this.props.chat.hasUnread ?
+      UnreadMessagesImage : myMessagesImage
     return (
       <Footer style={footerStyle}>
         <FooterTab >
           <IconMenu source={homeImage} onPress={() => Actions.login()} />
           <IconMenu source={myEventsImage} onPress={() => Actions.myActivities()} />
-          {/*
-              TODO: Later navigate to Messages first and then
-              it will take you to chat with selected user
-          */}
           <IconMenu source={addEventImage} onPress={() => Actions.createActivity()} />
           <IconMenu
-            source={myMessagesImage}
+            source={messagesImage}
             special={this.props.chat.hasUnread}
             onPress={() => Actions.conversations()}
           />

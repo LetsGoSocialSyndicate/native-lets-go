@@ -150,17 +150,21 @@ export default (state = INITIAL_STATE, action) => {
       // and update the last message.
       const chatmates = { ...state.chatmates }
       const chatmate = chatmates[action.chatmateId]
-      const latestMessage = messages[action.chatmateId][0]
-      const isIncoming = latestMessage.user._id === action.chatmateId
-      chatmates[action.chatmateId] = {
-        ...chatmate,
-        messagesFetched: true,
-        lastMessage: {
+      let lastMessage = chatmate ? chatmate.lastMessage : null
+      if (messages[action.chatmateId].length > 0) {
+        const latestMessage = messages[action.chatmateId][0]
+        const isIncoming = latestMessage.user._id === action.chatmateId
+        lastMessage = {
           timestamp: timestamp(latestMessage.createdAt),
           snippet: trimMessage(latestMessage.text),
           isIncoming,
           type: latestMessage.type
         }
+      }
+      chatmates[action.chatmateId] = {
+        ...chatmate,
+        messagesFetched: true,
+        lastMessage
       }
 
       return {
@@ -193,7 +197,7 @@ export default (state = INITIAL_STATE, action) => {
         // For existing messages, update last message and unread count.
         const chatmate = chatmates[action.chatmateId]
         let lastMessage = chatmate.lastMessage
-        if (lastMessageTimestamp > lastMessage.timestamp) {
+        if (!lastMessage || lastMessageTimestamp > lastMessage.timestamp) {
           lastMessage = {
             timestamp: lastMessageTimestamp,
             snippet: trimMessage(action.message.text),

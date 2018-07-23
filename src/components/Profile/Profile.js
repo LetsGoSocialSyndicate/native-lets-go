@@ -22,6 +22,12 @@ const getUser = (props) => {
     : props.user.user
 }
 
+const getUserId = (props) => {
+  return props.otherUserInfo
+    ? props.otherUserInfo.user_id
+    : props.user.user.id
+}
+
 const getUserpic = (user) => (
   user.user_image_url ?
     user.user_image_url :
@@ -40,14 +46,15 @@ const ImageView = ({ imageUrl }) => {
   )
 }
 
-const EditButton = ({ forOtherUser }) => {
+const EditButton = ({ forOtherUser, userId }) => {
   const { editButtonStyle } = styles
 
   if (forOtherUser) {
+    //console.log('EditButton:', userId)
     return (
       <Container style={editButtonStyle}>
         <LGButton
-          onPress={() => Actions.chat({ origin: 'Profile' })}
+          onPress={() => Actions.chat({ origin: 'Profile', chatmateId: userId })}
           buttonText="msg"
         />
       </Container>
@@ -65,12 +72,15 @@ const EditButton = ({ forOtherUser }) => {
 class Profile extends Component {
 
   render() {
-    console.log('Profile.render', this.props)
+    console.log('Profile.props -->', this.props)
+    console.log('Profile.state --> ', this.state)
 
-    const user = getUser(this.props)
+    const user = getUser(this.props) // This will not work properly, will fix it
+    const userId = getUserId(this.props)
     const firstName = user.first_name.toUpperCase()
     const lastName = user.last_name.charAt(0).toUpperCase()
     const age = moment.duration(moment().diff(user.birthday)).years()
+    //console.log('Profile.render user:', user)
 
     const {
       outterContainerStyle,
@@ -82,7 +92,7 @@ class Profile extends Component {
 
     return (
       <Container style={outterContainerStyle}>
-        <EditButton forOtherUser={this.props.forOtherUser} />
+        <EditButton forOtherUser={this.props.forOtherUser} userId={userId} />
         <View style={itemsCenterFlex}>
           <ImageView imageUrl={getUserpic(user)} />
 
@@ -160,6 +170,10 @@ const styles = {
 }
 
 const mapStateToProps = (state) => {
-  return { user: state.user }
+  return {
+    user: state.user,
+    eventFeeds: state.eventFeeds.eventFeeds,
+    statistics: state.eventFeeds.statistics
+  }
 }
 export default connect(mapStateToProps)(Profile)

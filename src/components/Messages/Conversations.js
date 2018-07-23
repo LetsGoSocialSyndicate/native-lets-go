@@ -57,32 +57,33 @@ class Conversations extends Component {
     }
 
     const renderRow = item => {
-      const actualListItemStyle = hasUnreadMessages(chat.chatmates, item._id)
-        ? { ...listItemStyle, borderColor: 'black' }
-        : listItemStyle
+      const actualText1ItemStyle = hasUnreadMessages(chat.chatmates, item._id)
+        ? { ...text1Style, fontWeight: 'bold' }
+        : text1Style
+      const actualText2ItemStyle = hasUnreadMessages(chat.chatmates, item._id)
+        ? { ...text2Style, fontWeight: 'bold' }
+        : text2Style
       return (
-        <ListItem style={actualListItemStyle} avatar>
+        <ListItem style={listItemStyle} avatar>
           <ImageBackground
             source={darkBackgroundImage}
             style={{ width: CONTENT_WIDTH + 30, height: 100, left: -30 }}
           >
             <Button style={buttonStyle} onPress={() => onPress(item._id)}>
-              {/* <View style={categoryParentStyle}> */}
-                <View style={column1Style}>
-                  <Thumbnail
-                    source={{ uri: item.avatar }}
-                    style={imageStyle}
-                  />
+              <View style={column1Style}>
+                <Thumbnail
+                  source={{ uri: item.avatar }}
+                  style={imageStyle}
+                />
+              </View>
+              <View style={column2Style}>
+                <View style={row1}>
+                  <Text style={actualText1ItemStyle}>{item.name}</Text>
                 </View>
-                <View style={column2Style}>
-                  <View style={row1}>
-                    <Text style={text1Style}>{item.name}</Text>
-                  </View>
-                  <View style={row2}>
-                    <Text style={text2Style}>{formatLastMessageInfo(item)}</Text>
-                  </View>
+                <View style={row2}>
+                  <Text style={actualText2ItemStyle}>{formatLastMessageInfo(item)}</Text>
                 </View>
-              {/* </View> */}
+              </View>
             </Button>
           </ImageBackground>
         </ListItem>
@@ -114,73 +115,35 @@ const styles = {
   listItemStyle: {
     marginTop: 1,
     flexDirection: 'row',
-    // borderTopWidth: 1,
-    // borderLeftWidth: 1,
-    // borderRightWidth: 1,
-    // borderColor: 'tomato',
-  },
-  categoryParentStyle: {
-   // borderBottomWidth: 1,
-   // borderTopWidth: 1,
-   // borderLeftWidth: 1,
-   // borderRightWidth: 1,
-   // borderColor: 'tomato',
-   // height: 100,
-   // marginTop: 7
   },
   column1Style: {
-   flex: 1,
-   height: 100,
-   alignItems: 'center',
-
-   paddingLeft: 30,
-   paddingTop: 37,
-   flexDirection: 'column',
-   // borderBottomWidth: 1,
-   // borderTopWidth: 1,
-   // borderLeftWidth: 1,
-   // borderRightWidth: 1,
-   // borderColor: 'blue'
-   // borderBottomWidth: 0,
-   // paddingLeft: 10
+    flex: 1,
+    height: 100,
+    alignItems: 'center',
+    paddingLeft: 30,
+    paddingTop: 37,
+    flexDirection: 'column',
   },
   column2Style: {
-   flex: 3,
-   height: 100,
-   paddingLeft: 30,
-   paddingTop: 40,
-   // borderBottomWidth: 1,
-   // borderTopWidth: 1,
-   // borderLeftWidth: 1,
-   // borderRightWidth: 1,
-   // borderColor: 'green'
- },
- row1: {
-   // borderBottomWidth: 1,
-   // borderTopWidth: 1,
-   // borderLeftWidth: 1,
-   // borderRightWidth: 1,
-   // borderColor: 'magenta',
-   marginBottom: 2
- },
- row2: {
-   // borderBottomWidth: 1,
-   // borderTopWidth: 1,
-   // borderLeftWidth: 1,
-   // borderRightWidth: 1,
-   borderColor: 'orange'
-   // marginRight: 10
- },
- imageStyle: {
-   //marginTop: 30,
-   height: 80,
-   borderRadius: 40,
-   width: 80,
-   borderColor: 'white',
-   borderWidth: 5
- },
+    flex: 3,
+    height: 100,
+    paddingLeft: 30,
+    paddingTop: 40,
+  },
+  row1: {
+    marginBottom: 2
+  },
+  row2: {
+    borderColor: 'orange'
+  },
+  imageStyle: {
+    height: 80,
+    borderRadius: 40,
+    width: 80,
+    borderColor: 'white',
+    borderWidth: 5
+  },
   text1Style: {
-    //marginLeft: 20
     color: '#fff',
     fontSize: 23,
     letterSpacing: 2

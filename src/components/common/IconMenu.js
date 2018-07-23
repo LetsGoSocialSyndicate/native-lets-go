@@ -1,16 +1,10 @@
 import React, { Component } from 'react'
 import { Button, Thumbnail } from 'native-base'
 
+
 class IconMenu extends Component {
   render() {
-    let { buttonStyle, thumbnailStyle } = styles
-    if (this.props.special) {
-      thumbnailStyle = {
-        ...thumbnailStyle,
-        borderColor: 'black',
-        borderWidth: 2
-      }
-    }
+    const { buttonStyle, thumbnailStyle } = styles
     return (
       <Button style={buttonStyle} onPress={this.props.onPress}>
         <Thumbnail

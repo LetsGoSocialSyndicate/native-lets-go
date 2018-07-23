@@ -13,7 +13,8 @@ const initialFeedsState = {
   isLoading: false,
   isLoaded: false,
   error: null,
-  eventFeeds: {}
+  eventFeeds: {},
+  statistics: null
 }
 
 function eventFeeds(state = initialFeedsState, action) {

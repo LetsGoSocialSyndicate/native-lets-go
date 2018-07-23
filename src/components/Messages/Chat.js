@@ -22,7 +22,9 @@ const hasMessagesFetched = (chatmates, chatmateId) => {
 class Chat extends Component {
 
   componentDidMount() {
-    console.log('Chat::componentDidMount START')
+    console.log(
+      'Chat::componentDidMount START', this.props.chatmateId, this.props.chat
+    )
     const chat = this.props.chat
     const user = this.props.user
     const chatmateId = this.props.chatmateId
