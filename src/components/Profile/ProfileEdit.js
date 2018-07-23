@@ -295,7 +295,7 @@ const styles = {
      paddingBottom: 10,
      paddingLeft: 20,
      paddingRight: 20,
-     fontSize: 18,
+     fontSize: 16,
      color: 'white',
      backgroundColor: '#4380B0',
      borderRadius: 15,
