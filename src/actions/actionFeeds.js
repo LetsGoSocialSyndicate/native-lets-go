@@ -138,8 +138,7 @@ const addNewEvent = (newEvent, token) => {
       //TODO: Later redirect to "My activities", not to "Feeds"
       Actions.myActivities()
     } else {
-      const error =
-        responseJSON.message ? responseJSON.message : 'Failed to add new event'
+      const error = responseJSON.message || 'Failed to add new event'
       dispatch({ type: FEEDS_ACTION_ERROR, error })
       //dispatch(reset('createActivityForm'))
     }
