@@ -48,7 +48,7 @@ const styles = {
     paddingRight: 0,
     marginTop: 0,
     marginBottom: 0,
-    opacity: 0.4
+    opacity: 0.5
   }
 }
 
