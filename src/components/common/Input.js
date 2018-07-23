@@ -78,16 +78,16 @@ const renderDatePickerInput = (props) => {
       style={datePickerStyle}
       customStyles={{
         dateText: {
-          marginRight: 100,
+          marginRight: 120,
           color: '#27608b',
-          fontSize: 23,
+          fontSize: 20,
         },
         dateInput: {
           borderWidth: 0
         },
         placeholderText: {
-          marginRight: 80,
-          fontSize: 23,
+          marginRight: 100,
+          fontSize: 20,
           color: 'hsla(0, 2%, 96%, 0.6)'
         }
       }}
@@ -303,7 +303,7 @@ const DateTimePickerInputFormField = ({ name, label, placeholder, minDate, maxDa
 
 const styles = {
   inputStyle: {
-    fontSize: 23,
+    fontSize: 20,
     flex: 2,
     color: '#27608b',
     paddingLeft: 10
@@ -324,7 +324,7 @@ const styles = {
   },
   dropdownText: {
     paddingLeft: 10,
-    fontSize: 23,
+    fontSize: 20,
     color: 'hsla(0, 2%, 96%, 0.6)',
     backgroundColor: 'transparent'
   },
@@ -358,7 +358,7 @@ const styles = {
   },
   pickerSelectStylesGender: {
     inputIOS: {
-      fontSize: 23,
+      fontSize: 20,
       paddingLeft: 9,
       paddingTop: 5,
       color: '#27608b',

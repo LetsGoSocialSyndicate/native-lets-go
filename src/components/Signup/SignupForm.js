@@ -57,7 +57,15 @@ import {
         <PickerSelectInputFormFieldGender
           name={GENDER_FIELD}
           placeholder={{ label: 'select gender', value: null }}
-          items={[{ label: 'male', value: 'male', key: 'male' }, { label: 'female', value: 'female', key: 'female' }]}
+          items={[
+            { label: 'male',
+              value: 'male',
+              key: 'male'
+            },
+            { label: 'female',
+              value: 'female',
+              key: 'female'
+            }]}
           hideIcon
           hideDoneBar
         />

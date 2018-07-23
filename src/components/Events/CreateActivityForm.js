@@ -38,6 +38,9 @@ class CreateActivityForm extends Component {
   state = {
     categoryImageSource: null
   }
+  onExit() {
+    console.log('CreateActivityForm::onExit')
+  }
   render() {
     const {
       buttonSubmitStyle,
