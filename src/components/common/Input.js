@@ -363,6 +363,9 @@ const styles = {
       paddingTop: 5,
       color: '#27608b',
     },
+    modalViewBottom: {
+      backgroundColor: 'white'
+    },
     placeholderColor: 'hsla(0, 2%, 96%, 0.6)'
   },
   genericTextStyle: {
