@@ -153,7 +153,7 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-w  },
+  },
   imageStyle: {
     marginTop: 40,
     height: 200,
