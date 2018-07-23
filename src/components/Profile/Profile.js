@@ -92,6 +92,7 @@ class Profile extends Component {
     console.log('Profile.props -->', this.props)
     console.log('Profile.state --> ', this.state)
     console.log('My activities --> ', this.props.eventFeeds)
+    const { forOtherUser } = this.props
 
     const user = getUser(this.props) // This will not work properly, will fix it
     const userId = getUserId(this.props)
