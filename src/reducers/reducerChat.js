@@ -125,7 +125,8 @@ export default (state = INITIAL_STATE, action) => {
           lastMessage: {
             timestamp: timestamp(chatmate.lastMessage.createdAt),
             snippet: trimMessage(chatmate.lastMessage.text),
-            isIncoming: chatmate.lastMessage.isIncoming
+            type: chatmate.lastMessage.type,
+            isIncoming: chatmate.lastMessage.isIncoming,
           }
         }
       })
@@ -157,7 +158,8 @@ export default (state = INITIAL_STATE, action) => {
         lastMessage: {
           timestamp: timestamp(latestMessage.createdAt),
           snippet: trimMessage(latestMessage.text),
-          isIncoming
+          isIncoming,
+          type: latestMessage.type
         }
       }
 
@@ -183,7 +185,8 @@ export default (state = INITIAL_STATE, action) => {
            lastMessage: {
              timestamp: lastMessageTimestamp,
              snippet: trimMessage(action.message.text),
-             isIncoming: action.isIncoming
+             isIncoming: action.isIncoming,
+             type: action.message.type
            }
          }
       } else {
@@ -194,7 +197,8 @@ export default (state = INITIAL_STATE, action) => {
           lastMessage = {
             timestamp: lastMessageTimestamp,
             snippet: trimMessage(action.message.text),
-            isIncoming: action.isIncoming
+            isIncoming: action.isIncoming,
+            type: action.message.type
           }
         }
         const unreadCount = action.markAsUnread
