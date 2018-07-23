@@ -9,17 +9,55 @@ import { Image, View, TouchableOpacity } from 'react-native'
 import { Text, Card, CardItem, Item, Body, Container } from 'native-base'
 import moment from 'moment'
 import { ImageButton } from '../common'
+import { SEND_JOIN_REQUEST } from '../common/Constants'
 import { getActivityImage } from '../common/imageUtils'
 
 import { handleRequest } from '../../actions/actionRequest'
+import { addChatMessage } from '../../actions/actionChat'
 const requestToJoinButton = require('../../assets/buttons/request_to_join.png')
 const backgroundImage = require('../../assets/assets_5.28-06.png')
-import { CONTENT_WIDTH } from '../common/Constants'
+import { CONTENT_WIDTH, DATETIME_FORMAT } from '../common/Constants'
+
+/*
+:
+createdAt: Sun Jul 22 2018 18:36:54 GMT-0600 (Mountain Daylight Time) {}
+text:"This is a test message"
+user:
+avatar:"https://akilezwebsolutions.com/wp-content/uploads/avatar-7.png"
+name:"Sukmi L"
+_id:"747478d5-c17f-46a5-89ac-b44b5fdf2045"
+__proto__
+:
+Object
+_id:"4b9d9901-4795-4f6e-ad2f-008a5eb3e3a9"*/
 
 class ActivityFeed extends Component {
   onPressRequestToJoin = () => {
     const { user_id, event_id } = this.props.activity
     this.props.handleRequest(event_id, user_id, this.props.auth.token)
+    const chatmateId = this.props.activity.event_posted_by
+    const message = {
+      user: {
+        avatar: this.props.user.images[0].image_url,
+        name: `${this.props.user.first_name} ${this.props.user.last_name}`,
+        _id: this.props.user.id
+      },
+      createdAt: moment().format(DATETIME_FORMAT),
+      text: `Request to join '${this.props.activity.event_title}'`,
+      _id: chatmateId
+    }
+    this.props.addChatMessageAction(
+      chatmateId,
+      false,  // isIncoming
+      false,  // markAsUnread
+      message
+    )
+    this.props.chat.socket.emit(
+      SEND_JOIN_REQUEST,
+      chatmateId,
+      message
+    )
+    // Actions.chat({ chatmateId })
   }
   onProfilePicturePress = () => {
     console.log('this.props.activity', this.props.activity)
@@ -130,11 +168,12 @@ const styles = {
 }
 
 const mapStateToProps = (state) => {
-  return { auth: state.auth }
+  return { auth: state.auth, user: state.user.user, chat: state.chat }
 }
 
 const dispatchToProps = (dispatch) => bindActionCreators({
-  handleRequest
+  handleRequest,
+  addChatMessageAction: addChatMessage
 }, dispatch)
 
 export default connect(mapStateToProps, dispatchToProps)(ActivityFeed)
