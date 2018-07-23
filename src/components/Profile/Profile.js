@@ -143,7 +143,7 @@ const styles = {
   },
   messageButtonStyle: {
     backgroundColor: 'transparent',
-    marginTop: 20,
+    marginTop: 15,
     width: 140,
     height: 40,
     zIndex: 100
@@ -166,7 +166,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 5,
-    height: 70,
+    height: 50,
     borderColor: 'transparent'
    },
   nameTextStyle: {
