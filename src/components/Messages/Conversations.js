@@ -29,7 +29,7 @@ const formatLastMessageInfo = item => {
 class Conversations extends Component {
   render() {
     const chat = this.props.chat
-    console.log('Conversations::render', chat)
+    // console.log('Conversations::render', chat)
     const {
       containerStyle,
       buttonStyle,
@@ -58,11 +58,15 @@ class Conversations extends Component {
 
     const renderRow = item => {
       const actualText1ItemStyle = hasUnreadMessages(chat.chatmates, item._id)
-        ? { ...text1Style, fontWeight: 'bold' }
+        ? { ...text1Style, fontWeight: 'bold', color: '#6CC7EF' }
         : text1Style
       const actualText2ItemStyle = hasUnreadMessages(chat.chatmates, item._id)
         ? { ...text2Style, fontWeight: 'bold' }
         : text2Style
+      const actualImageStyle = hasUnreadMessages(chat.chatmates, item._id)
+          ? { ...imageStyle, borderColor: '#6CC7EF' }
+          : imageStyle
+
       return (
         <ListItem style={listItemStyle} avatar>
           <ImageBackground
@@ -73,7 +77,7 @@ class Conversations extends Component {
               <View style={column1Style}>
                 <Thumbnail
                   source={{ uri: item.avatar }}
-                  style={imageStyle}
+                  style={actualImageStyle}
                 />
               </View>
               <View style={column2Style}>
@@ -89,10 +93,12 @@ class Conversations extends Component {
         </ListItem>
       )
     }
-    console.log('chat.chatmates', chat.chatmates)
-    const chatmates = Object.values(chat.chatmates).sort(
-      (a, b) => b.lastMessage.timestamp - a.lastMessage.timestamp
-    )
+    // console.log('chat.chatmates', chat.chatmates)
+    const chatmates = Object.values(chat.chatmates)
+      // Drop chatmates which have no messages
+      .filter(chatmate => Boolean(chatmate.lastMessage))
+      // Sort by last message time, newer first.
+      .sort((a, b) => b.lastMessage.timestamp - a.lastMessage.timestamp)
     return (
       <Container style={containerStyle}>
         <List

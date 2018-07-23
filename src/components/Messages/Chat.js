@@ -3,7 +3,7 @@
  */
  /* eslint-disable no-underscore-dangle */
 import React, { Component } from 'react'
-import { Container } from 'native-base'
+import { Container, Spinner } from 'native-base'
 import { connect } from 'react-redux'
 import { GiftedChat } from 'react-native-gifted-chat'
 import {
@@ -71,7 +71,15 @@ class Chat extends Component {
   }
 
   render() {
-    console.log('Chat::render', this.props.chatmateId, this.props.chat)
+    // console.log('Chat::render', this.props.chatmateId, this.props.chat)
+    if (!hasMessagesFetched(this.props.chat.chatmates, this.props.chatmateId)) {
+      return (
+        <Container style={containerStyle}>
+          <Spinner color='red' />
+        </Container>
+      )
+    }
+
     const { containerStyle, chatContainer } = styles
     const chatUser = this.getChatUser()
     const messages = this.getMessages()

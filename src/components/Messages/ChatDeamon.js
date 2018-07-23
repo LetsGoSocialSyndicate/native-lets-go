@@ -71,9 +71,9 @@ class ChatDeamon extends Component {
     )
   }
 
-  receivePreviousMessages(chatmateId, messages) {
-    console.log('ChatDeamon.receivePreviousMessages:', chatmateId, messages)
-    this.props.fetchChatMessagesAction(chatmateId, messages)
+  receivePreviousMessages(chatmate, messages) {
+    console.log('ChatDeamon.receivePreviousMessages:', chatmate, messages)
+    this.props.fetchChatMessagesAction(chatmate, messages)
   }
 
   render() {

@@ -1,7 +1,11 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
-import { getRequestOptions } from './actionUtils'
+import {
+  getRequestOptions,
+  getRequestOptionsForMultipart,
+  addImageToFormData
+} from './actionUtils'
 
 import {
   FETCH_USER,
@@ -50,10 +54,14 @@ const updateProfile = (newUserInfo, userId, token, images = []) => {
       return
     }
     url = `${REACT_APP_API_URL}/users/${userId}/images`
-    opts = getRequestOptions('PATCH', token, { images })
+    // opts = getRequestOptions('PATCH', token, { images })
+    const data = new FormData()
+    images.forEach((image, index) => addImageToFormData(data, image, index))
+    opts = getRequestOptionsForMultipart('POST', token, data)
+    console.log('updateProfileImage:request:', opts)
     response = await fetch(url, opts) // eslint-disable-line no-undef
     responseJSON = await response.json()
-    // console.log('updateProfileImage:response:', response.status, responseJSON)
+    console.log('updateProfileImage:response:', response.status, responseJSON)
     if (response.status === 200) {
       dispatch({ type: SAVE_USER_SUCCESS, user: responseJSON })
     } else {

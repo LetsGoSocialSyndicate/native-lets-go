@@ -1,6 +1,8 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
+import ImageResizer from 'react-native-image-resizer'
+
 const beerWhite = require('../../assets/activities/BeerWhite.png')
 const boardGameWhite = require('../../assets/activities/BoardGameWhite.png')
 const campingWhite = require('../../assets/activities/CampingWhite.png')
@@ -93,4 +95,21 @@ const getActivityImage = (category) => {
   }
 }
 
-export { activityCategories, activityCategoriesKV, getActivityImage }
+const MAX_IMAGE_HEIGHT = 400
+const MAX_IMAGE_WIDTH = 400
+const MAX_IMAGE_SIZE = MAX_IMAGE_HEIGHT * MAX_IMAGE_WIDTH
+
+// Returns Promise with uri to resized image
+const downsizeImage = (uri, format, width, height) => {
+  if (height * width <= MAX_IMAGE_SIZE) {
+    return Promise.resolve(uri)
+  }
+  const compressFormat = format && format.toLowerCase() === 'png' ? 'PNG' : 'JPEG'
+  return ImageResizer.createResizedImage(
+    uri, MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT, compressFormat, 80
+  ).then(response => {
+    console.log('downsizeImage:', response)
+    return [response.uri, compressFormat.toLowerCase()]
+  })
+}
+export { activityCategories, activityCategoriesKV, getActivityImage, downsizeImage }

@@ -28,9 +28,9 @@ const joinChat = (chatmates) => {
   }
 }
 
-const fetchChatMessages = (chatmateId, messages) => {
+const fetchChatMessages = (chatmate, messages) => {
   return (dispatch) => {
-    dispatch({ type: FETCH_CHAT_MESSAGES_SUCCESS, chatmateId, messages })
+    dispatch({ type: FETCH_CHAT_MESSAGES_SUCCESS, chatmate, messages })
   }
 }
 

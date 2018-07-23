@@ -41,7 +41,7 @@ function eventFeeds(state = initialFeedsState, action) {
   case FETCH_MY_EVENTS:
   case FETCH_MY_ALL_EVENTS:
   case FETCH_OTHER_ALL_EVENTS: {
-    // console.log('reducer eventFeeds', state, action)
+    console.log('reducer eventFeeds', state, action)
     const mappedKey = action.payload.reduce((acc, feed) => {
       acc[feed.event_id] = { ...feed }
       return acc
@@ -55,13 +55,14 @@ function eventFeeds(state = initialFeedsState, action) {
     }
   }
   case COUNT_MY_ALL_EVENTS:
-    console.log(action)
+    console.log('reducer eventFeeds', state, action)
     return {
       ...state,
       statistics: action.statistics
     }
 
   case ADD_NEW_EVENT: {
+    console.log('reducer eventFeeds', state, action)
     const newData = { ...state.eventFeeds }
     newData[action.payload.id] = action.payload
     return {

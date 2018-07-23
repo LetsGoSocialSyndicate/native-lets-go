@@ -1,6 +1,7 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
 import moment from 'moment'
 import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
 import {
@@ -14,6 +15,7 @@ import {
 } from 'native-base'
 import { LGButton } from '../common'
 import { CONTENT_HEIGHT } from '../common/Constants'
+import { fetchMyAllEventFeeds } from '../../actions/actionFeeds'
 
 
 const getUser = (props) => {
@@ -28,13 +30,14 @@ const getUserId = (props) => {
     : props.user.user.id
 }
 
-const getUserpic = (user) => (
-  user.user_image_url ?
-    user.user_image_url :
-    user && 'images' in user && user.images.length > 0
+const getUserpic = (user) => {
+  if (user.user_image_url) {
+    return user.user_image_url
+  }
+  return user && 'images' in user && user.images.length > 0
     ? user.images[0].image_url
     : ''
-)
+}
 
 const ImageView = ({ imageUrl }) => {
   const { imageStyle } = styles
@@ -69,7 +72,12 @@ const EditButton = ({ forOtherUser, userId, style }) => {
     </Container>
   )
 }
+
 class Profile extends Component {
+  componentDidMount() {
+    console.log('Profile.componentDidMount', this.props)
+    this.props.fetchMyAllEventFeeds(this.props.user.user, this.props.auth.token)
+  }
 
     renderEditButton(userId, forOtherUser, style) {
       if (forOtherUser) return
@@ -83,13 +91,13 @@ class Profile extends Component {
   render() {
     console.log('Profile.props -->', this.props)
     console.log('Profile.state --> ', this.state)
-    const { forOtherUser } = this.props
+    console.log('My activities --> ', this.props.eventFeeds)
+
     const user = getUser(this.props) // This will not work properly, will fix it
     const userId = getUserId(this.props)
     const firstName = user.first_name.toUpperCase()
     const lastName = user.last_name.charAt(0).toUpperCase()
     const age = moment.duration(moment().diff(user.birthday)).years()
-    //console.log('Profile.render user:', user)
 
     const {
       outterContainerStyle,
@@ -190,9 +198,16 @@ const styles = {
 
 const mapStateToProps = (state) => {
   return {
+    ...state.eventFeeds,
     user: state.user,
-    eventFeeds: state.eventFeeds.eventFeeds,
+    auth: state.auth,
+    // eventFeeds: state.eventFeeds.eventFeeds,
     statistics: state.eventFeeds.statistics
   }
 }
-export default connect(mapStateToProps)(Profile)
+
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  fetchMyAllEventFeeds
+}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)

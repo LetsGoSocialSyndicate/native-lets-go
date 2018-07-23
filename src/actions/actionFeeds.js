@@ -60,23 +60,20 @@ const fetchMyEventFeeds = (user, hosted, token) => {
 }
 
 const fetchMyAllEventFeeds = (user, token) => {
-  // console.log('fetchMyAllEventFeeds: user', user)
-  // console.log('fetchMyAllEventFeeds: token', token)
+  console.log('fetchMyAllEventFeeds: user', user)
+  console.log('fetchMyAllEventFeeds: token', token)
   const url = `${REACT_APP_API_URL}/users/${user.email}/all`
-  // console.log('fetchMyAllEventFeeds', url)
+  console.log('fetchMyAllEventFeeds', url)
   return async (dispatch) => {
     const opts = getRequestOptions('GET', token)
-    // console.log('opts', opts)
     const response = await fetch(url, opts) // eslint-disable-line no-undef
+    const responseJSON = await response.json()
+    console.log('fetchMyAllEventFeeds response:', response.status, responseJSON)
     if (response.status === 200) {
-      const responseJSON = await response.json()
-      // console.log('responseJSON', responseJSON)
-      dispatch({
-        type: FETCH_MY_ALL_EVENTS,
-        payload: responseJSON
-      })
+      dispatch({ type: FETCH_MY_ALL_EVENTS, payload: responseJSON })
     } else {
-      // TODO: handle error
+      const error = responseJSON.message || 'Failed to load events'
+      dispatch({ type: FEEDS_ACTION_ERROR, error })
     }
   }
 }

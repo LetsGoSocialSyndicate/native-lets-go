@@ -10,6 +10,7 @@ import { Container, Card, Form, Item } from 'native-base'
 import { updateProfile } from '../../actions/userAction'
 import { DATE_FORMAT, CONTENT_HEIGHT } from '../common/Constants'
 import { Input } from '../common'
+import { downsizeImage } from '../common/imageUtils'
 import { IMAGE_OP_NONE, IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
 import LoadingButton from '../common/LoadingButton'
 
@@ -41,6 +42,7 @@ class ProfileEdit extends Component {
   state = {
     user: {},
     currentImageUrl: '',
+    imageExt: '',
     imageLoading: false,
     profileImageOp: IMAGE_OP_NONE,
     aboutBoxHeight: 40
@@ -89,28 +91,35 @@ class ProfileEdit extends Component {
     return [{
        op: this.state.profileImageOp,
        id: getUserpicId(this.state.user),
-       image_url: this.state.currentImageUrl
+       image_url: this.state.currentImageUrl,
+       image_ext: this.state.imageExt
     }]
   }
 
   selectImage() {
-   this.setState({ ...this.state, imageLoading: true })
-   showImagePicker({}, (response) => {
-     if (response.didCancel) {
-       this.setState({
-         ...this.state,
-         imageLoading: false
-       })
-     } else {
-       // Profile userpic was modified - added or updated.
-       const op = getUserpicId(this.state.user) ? IMAGE_OP_UPDATE : IMAGE_OP_ADD
-       const ext = getFileExtension(response.fileName)
-       this.setState({
-         ...this.state,
-         imageLoading: false,
-         currentImageUrl: `data:image/${ext};base64,${response.data}`,
-         profileImageOp: op
-       })
+    this.setState({ ...this.state, imageLoading: true })
+    showImagePicker({}, (response) => {
+      console.log('Profile.selectImage:', response)
+      if (response.didCancel) {
+        this.setState({
+          ...this.state,
+          imageLoading: false
+        })
+      } else {
+        // Profile userpic was modified - added or updated.
+        const op = getUserpicId(this.state.user) ? IMAGE_OP_UPDATE : IMAGE_OP_ADD
+        const imageExt = getFileExtension(response.fileName)
+        downsizeImage(response.uri, imageExt, response.width, response.height)
+        .then(([uri, ext]) => {
+          this.setState({
+            ...this.state,
+            imageLoading: false,
+            // currentImageUrl: `data:image/${ext};base64,${response.data}`,
+            currentImageUrl: uri,
+            imageExt: ext,
+            profileImageOp: op,
+          })
+        })
       }
     })
   }
