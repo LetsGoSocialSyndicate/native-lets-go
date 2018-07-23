@@ -46,22 +46,22 @@ const ImageView = ({ imageUrl }) => {
   )
 }
 
-const EditButton = ({ forOtherUser, userId }) => {
-  const { editButtonStyle } = styles
+const EditButton = ({ forOtherUser, userId, style }) => {
+  // const { editButtonStyle } = styles
 
   if (forOtherUser) {
     //console.log('EditButton:', userId)
     return (
-      <Container style={editButtonStyle}>
+      <Container style={style}>
         <LGButton
           onPress={() => Actions.chat({ origin: 'Profile', chatmateId: userId })}
-          buttonText="msg"
+          buttonText="message"
         />
       </Container>
     )
   }
   return (
-    <Container style={editButtonStyle}>
+    <Container style={style}>
       <LGButton
         onPress={() => Actions.profileEdit({ origin: 'Profile' })}
         buttonText="edit"
@@ -71,10 +71,19 @@ const EditButton = ({ forOtherUser, userId }) => {
 }
 class Profile extends Component {
 
+    renderEditButton(userId, forOtherUser, style) {
+      if (forOtherUser) return
+      return <EditButton forOtherUser={forOtherUser} style={style} userId={userId} />
+    }
+    renderMessageButton(userId, forOtherUser, style) {
+      if (!forOtherUser) return
+      return <EditButton forOtherUser={forOtherUser} style={style} userId={userId} />
+    }
+
   render() {
     console.log('Profile.props -->', this.props)
     console.log('Profile.state --> ', this.state)
-
+    const { forOtherUser } = this.props
     const user = getUser(this.props) // This will not work properly, will fix it
     const userId = getUserId(this.props)
     const firstName = user.first_name.toUpperCase()
@@ -87,12 +96,13 @@ class Profile extends Component {
       nameItemStyle,
       nameTextStyle,
       itemsCenterFlex,
-      descriptionTextStyle
+      descriptionTextStyle,
+      editButtonStyle,
+      messageButtonStyle
     } = styles
 
     return (
       <Container style={outterContainerStyle}>
-        <EditButton forOtherUser={this.props.forOtherUser} userId={userId} />
         <View style={itemsCenterFlex}>
           <ImageView imageUrl={getUserpic(user)} />
 
@@ -108,6 +118,10 @@ class Profile extends Component {
             editable={false}
             multiline
           />
+
+          {this.renderEditButton(userId, forOtherUser, editButtonStyle)}
+          {this.renderMessageButton(userId, forOtherUser, messageButtonStyle)}
+
         </View>
       </Container>
     )
@@ -122,9 +136,15 @@ const styles = {
   editButtonStyle: {
     backgroundColor: 'transparent',
     position: 'absolute',
-    right: 30,
+    right: 20,
     top: 20,
     width: 90,
+    zIndex: 100
+  },
+  messageButtonStyle: {
+    backgroundColor: 'transparent',
+    marginTop: 20,
+    width: 140,
     height: 40,
     zIndex: 100
   },
@@ -133,10 +153,9 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    // height: 20
-  },
+w  },
   imageStyle: {
-    marginTop: 30,
+    marginTop: 40,
     height: 200,
     borderRadius: 100,
     width: 200,
@@ -157,11 +176,11 @@ const styles = {
     textAlign: 'center'
   },
   descriptionTextStyle: {
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 8,
+    paddingBottom: 8,
     paddingLeft: 20,
     paddingRight: 20,
-    fontSize: 18,
+    fontSize: 16,
     color: 'white',
     backgroundColor: '#4380B0',
     borderRadius: 15,
