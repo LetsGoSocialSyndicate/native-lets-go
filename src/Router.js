@@ -2,9 +2,10 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import React from 'react'
-import { Actions, Router, Scene } from 'react-native-router-flux'
+import { Router, Scene } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import { resetAuthError } from './actions/authAction'
+import { leavingCreateActivity } from './actions/actionFeeds'
 import {
   LoggedInLandingScene,
   LoggedOutLandingScene
@@ -23,12 +24,7 @@ import VerifySignup from './components/Signup/VerifySignup'
 import Chat from './components/Messages/Chat'
 import Conversations from './components/Messages/Conversations'
 
-const backButton = (resetError) => {
-  resetError()
-  Actions.pop()
-}
-
-const RouterComponent = ({ resetError }) => {
+const RouterComponent = ({ resetAuthErrorAction, leavingCreateActivityAction }) => {
   return (
     <Router>
       <Scene key='root'>
@@ -37,95 +33,92 @@ const RouterComponent = ({ resetError }) => {
           hideNavBar='true'
           component={LoggedOutLandingScene}
           LandingComponent={Login}
+          onExit={resetAuthErrorAction}
           initial
         />
         <Scene
           key='activityFeeds'
+          hideNavBar='true'
           component={LoggedInLandingScene}
           LandingComponent={ActivityFeeds}
-          hideNavBar='true'
         />
         <Scene
+          title='Signup'
           key='signup'
           hideNavBar='true'
           component={LoggedOutLandingScene}
           LandingComponent={Signup}
-          title='Signup'
-          // Have to override onLeft in order for onBack to work.
-          onLeft={() => {}}
-          onBack={() => backButton(resetError)}
+          onExit={resetAuthErrorAction}
         />
         <Scene
           key='verifySignup'
           hideNavBar='true'
           component={LoggedOutLandingScene}
           LandingComponent={VerifySignup}
-          onLeft={() => {}}
-          onBack={() => backButton(resetError)}
+          onExit={resetAuthErrorAction}
         />
         <Scene
+          title='Password Recovery'
           key='forgotPassword'
           hideNavBar='true'
           component={LoggedOutLandingScene}
           LandingComponent={ForgotPassword}
-          title='Password Recovery'
-          onLeft={() => {}}
-          onBack={() => backButton(resetError)}
+          onExit={resetAuthErrorAction}
         />
         <Scene
+          title='New Password'
           key='newPassword'
           hideNavBar='true'
           component={LoggedOutLandingScene}
           LandingComponent={NewPassword}
-          title='New Password'
-          onLeft={() => {}}
-          onBack={() => backButton(resetError)}
+          onExit={resetAuthErrorAction}
         />
         <Scene
+          title='Profile'
           key='profile'
           hideNavBar='true'
           component={LoggedInLandingScene}
           LandingComponent={Profile}
-          title='Profile'
         />
         <Scene
+          title='Profile'
           key='profileEdit'
           hideNavBar='true'
           component={LoggedInLandingScene}
           LandingComponent={ProfileEdit}
-          title='Profile'
         />
         <Scene
+          title='Chat'
           key='chat'
           hideNavBar='true'
           component={LoggedInLandingScene}
           LandingComponent={Chat}
-          title='Chat'
         />
         <Scene
+          title='Conversations'
           key='conversations'
           hideNavBar='true'
           component={LoggedInLandingScene}
           LandingComponent={Conversations}
-          title='Conversations'
         />
         <Scene
           key='createActivity'
           hideNavBar='true'
           component={LoggedInLandingScene}
           LandingComponent={CreateActivity}
+          onExit={leavingCreateActivityAction}
         />
         <Scene
           key='viewActivity'
+          hideNavBar='true'
           component={LoggedInLandingScene}
           LandingComponent={ViewActivity}
-          hideNavBar='true'
         />
         <Scene
           key='myActivities'
+          hideNavBar='true'
           component={LoggedInLandingScene}
           LandingComponent={MyActivities}
-          hideNavBar='true'
         />
       </Scene>
     </Router>
@@ -133,6 +126,7 @@ const RouterComponent = ({ resetError }) => {
 }
 
 const actions = {
-  resetError: resetAuthError
+  resetAuthErrorAction: resetAuthError,
+  leavingCreateActivityAction: leavingCreateActivity
 }
 export default connect(null, actions)(RouterComponent)

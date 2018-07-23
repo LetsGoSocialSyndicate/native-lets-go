@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import { Actions } from 'react-native-router-flux'
 import { ActionSheetIOS, TouchableOpacity, Image } from 'react-native'
 import { Header, Left, Body, Item, Thumbnail, Right, Button } from 'native-base'
-import { logout, resetAuthError } from '../actions/authAction'
+import { logout } from '../actions/authAction'
 import { HEADER_HEIGHT, CONTENT_WIDTH } from './common/Constants'
 
 const appIconImage = require('../assets/lets-go-icon.png')
@@ -27,7 +27,6 @@ class HeaderMenu extends Component {
     })
   }
   onBackPress = () => {
-    this.props.resetError()
     // In order to force refresh, we need to provide refresh state
     // different than previous. Using current millis as unique value
     // does the work.
@@ -115,8 +114,7 @@ const styles = {
 }
 
 const dispatchToProps = (dispatch) => bindActionCreators({
-  logoutAction: logout,
-  resetError: resetAuthError
+  logoutAction: logout
 }, dispatch)
 
 export default connect(null, dispatchToProps)(HeaderMenu)

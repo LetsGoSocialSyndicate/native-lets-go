@@ -2,10 +2,11 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import { Actions } from 'react-native-router-flux'
+import { reset } from 'redux-form'
 import {
   ADD_NEW_EVENT,
   FEEDS_ACTION_START,
-  FEEDS_ACTION_FAILED,
+  FEEDS_ACTION_ERROR,
   FETCH_EVENT_FEEDS,
   FETCH_MY_ALL_EVENTS,
   FETCH_MY_EVENTS,
@@ -126,24 +127,35 @@ const addNewEvent = (newEvent, token) => {
   return async (dispatch) => {
     // console.log('addNewEvent', newEvent)
     dispatch({ type: FEEDS_ACTION_START })
+    // dispatch(reset('createActivityForm'))
     const url = `${REACT_APP_API_URL}/events`
     const opts = getRequestOptions('POST', token, newEvent)
     const response = await fetch(url, opts) // eslint-disable-line no-undef
     const responseJSON = await response.json()
-    // console.log('addNewEvent response:', response.status, responseJSON)
+    console.log('addNewEvent response:', response.status, responseJSON)
     if (response.status === 200) {
       dispatch({ type: ADD_NEW_EVENT, payload: responseJSON })
       //TODO: Later redirect to "My activities", not to "Feeds"
       Actions.myActivities()
     } else {
-      dispatch({ type: FEEDS_ACTION_FAILED, error: responseJSON.message })
+      const error =
+        responseJSON.message ? responseJSON.message : 'Failed to add new event'
+      dispatch({ type: FEEDS_ACTION_ERROR, error })
+      //dispatch(reset('createActivityForm'))
     }
   }
 }
 
 const setFeedsActionError = (error) => {
   return (dispatch) => {
-    dispatch({ type: FEEDS_ACTION_FAILED, error })
+    dispatch({ type: FEEDS_ACTION_ERROR, error })
+  }
+}
+
+const leavingCreateActivity = () => {
+  return (dispatch) => {
+    dispatch({ type: FEEDS_ACTION_ERROR, error: null })
+    dispatch(reset('createActivityForm'))
   }
 }
 
@@ -154,5 +166,6 @@ export {
   fetchMyAllEventFeeds,
   fetchOtherEventFeeds,
   countMyAllEventFeeds,
-  setFeedsActionError
+  setFeedsActionError,
+  leavingCreateActivity
 }

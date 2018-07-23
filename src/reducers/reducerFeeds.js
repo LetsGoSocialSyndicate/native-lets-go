@@ -1,7 +1,7 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
-import { FETCH_EVENT_FEEDS, FEEDS_ACTION_START, FEEDS_ACTION_FAILED,
+import { FETCH_EVENT_FEEDS, FEEDS_ACTION_START, FEEDS_ACTION_ERROR,
   ADD_NEW_EVENT, FETCH_MY_EVENTS, FETCH_MY_ALL_EVENTS,
   FETCH_OTHER_ALL_EVENTS, COUNT_MY_ALL_EVENTS
 } from '../actions/types'
@@ -27,7 +27,7 @@ function eventFeeds(state = initialFeedsState, action) {
       error: null
     }
   }
-  case FEEDS_ACTION_FAILED: {
+  case FEEDS_ACTION_ERROR: {
     console.log('reducer eventFeeds', state, action)
     return {
       ...state,

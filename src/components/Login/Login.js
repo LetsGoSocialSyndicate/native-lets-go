@@ -4,7 +4,7 @@ import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import { Image } from 'react-native'
 import { Container } from 'native-base'
-import { loginSubmit, resetAuthError } from '../../actions/authAction'
+import { loginSubmit } from '../../actions/authAction'
 import LoginForm from './LoginForm'
 import { LGButton } from '../common'
 import { CONTENT_HEIGHT } from '../common/Constants'
@@ -16,7 +16,7 @@ const onSubmit = (action, fields) => {
 
 const loginTitleImage = require('../../assets/loginIcons/loginTitle.png')
 
-const Login = ({ loginAction, resetError }) => {
+const Login = ({ loginAction }) => {
   const action = (fields) => onSubmit(loginAction, fields)
   const {
     buttonsContainer,
@@ -39,14 +39,12 @@ const Login = ({ loginAction, resetError }) => {
       <Container style={buttonsContainer}>
         <LGButton
           onPress={() => {
-            resetError()
             Actions.forgotPassword({ origin: 'Login' })
           }}
           buttonText="forgot password?"
         />
         <LGButton
           onPress={() => {
-            resetError()
             Actions.signup({ origin: 'Login' })
           }}
           buttonText="signup"
@@ -80,6 +78,5 @@ const styles = {
 
 const actions = {
   loginAction: loginSubmit,
-  resetError: resetAuthError
 }
 export default connect(null, actions)(Login)

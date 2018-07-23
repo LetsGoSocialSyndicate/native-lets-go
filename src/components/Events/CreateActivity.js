@@ -2,12 +2,13 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import moment from 'moment'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { addNewEvent, setFeedsActionError } from '../../actions/actionFeeds'
 import CreateActivityForm, {
   ACTIVITY_START_TIME_FIELD,
-  ACTIVITY_END_TIME_FIELD
+  ACTIVITY_END_TIME_FIELD,
+  DESCRIPTION_FIELD
 } from './CreateActivityForm'
 import { DATETIME_SHORT_FORMAT, DATETIME_FORMAT } from '../common/Constants'
 
@@ -51,9 +52,15 @@ const onSubmit = (action, errorAction, token, fields) => {
   }
 }
 
-const CreateActivity = ({ auth, addNewEventAction, setFeedsErrorAction }) => {
-  const action = (fields) => onSubmit(addNewEventAction, setFeedsErrorAction, auth.token, fields)
-  return (<CreateActivityForm onSubmit={action} />)
+class CreateActivity extends Component {
+  onExit() {
+    console.log('CreateActivity::onExit')
+  }
+  render() {
+    const { auth, addNewEventAction, setFeedsErrorAction } = this.props
+    const action = (fields) => onSubmit(addNewEventAction, setFeedsErrorAction, auth.token, fields)
+    return (<CreateActivityForm onSubmit={action} />)
+  }
 }
 
 const mapStateToProps = (state) => {
