@@ -14,7 +14,12 @@ import {
   COUNT_MY_ALL_EVENTS,
   REACT_APP_API_URL
 } from './types'
-import { getRequestOptions } from './actionUtils'
+import { IMAGE_OP_NONE } from './imageOp'
+import {
+  getRequestOptions,
+  getRequestOptionsForMultipart,
+  addImageToFormData
+} from './actionUtils'
 
 const fetchEventFeeds = (token) => {
   // console.log('fetchEventFeeds', REACT_APP_API_URL)
@@ -104,6 +109,7 @@ const countMyAllEventFeeds = (user, token) => {
   const url = `${REACT_APP_API_URL}/users/${user.email}/statistics`
   // console.log('fetchMyAllEventFeeds', url)
   return async (dispatch) => {
+    dispatch({ type: FEEDS_ACTION_START })
     const opts = getRequestOptions('GET', token)
     // console.log('opts', opts)
     const response = await fetch(url, opts) // eslint-disable-line no-undef
@@ -155,6 +161,32 @@ const leavingCreateActivity = () => {
   }
 }
 
+const updateEventImages = (userId, eventId, token, images = []) => {
+  return async (dispatch) => {
+    const imageCount = images.filter(image => image.op !== IMAGE_OP_NONE).length
+    if (imageCount <= 0) {
+      return
+    }
+    // dispatch({ type: SAVE_USER_START })
+    // console.log('updateProfile:request:', userId, newUserInfo, images)
+    const url = `${REACT_APP_API_URL}/users/${userId}/${eventId}/images`
+    // opts = getRequestOptions('PATCH', token, { images })
+    const data = new FormData()
+    images.forEach((image, index) => addImageToFormData(data, image, index))
+    const opts = getRequestOptionsForMultipart('POST', token, data)
+    console.log('updateEventImages:request:', opts)
+    const response = await fetch(url, opts) // eslint-disable-line no-undef
+    const responseJSON = await response.json()
+    console.log('updateEventImages:response:', response.status, responseJSON)
+    if (response.status === 200) {
+      dispatch({ type: FETCH_MY_ALL_EVENTS, payload: responseJSON })
+    } else {
+      const error = responseJSON.message || 'Failed to load events'
+      dispatch({ type: FEEDS_ACTION_ERROR, error })
+    }
+  }
+}
+
 export {
   fetchEventFeeds,
   addNewEvent,
@@ -163,5 +195,6 @@ export {
   fetchOtherEventFeeds,
   countMyAllEventFeeds,
   setFeedsActionError,
-  leavingCreateActivity
+  leavingCreateActivity,
+  updateEventImages
 }

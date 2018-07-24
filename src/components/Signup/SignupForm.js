@@ -29,7 +29,8 @@ import {
   const {
    buttonSubmitStyle,
    formStyle,
-   itemStyle
+   itemStyle,
+   errorItemStyle,
   } = styles
   return (
     <Form style={formStyle}>
@@ -90,9 +91,13 @@ import {
            placeholder='confirm password'
          />
       </Item>
-      <Error
-        error={auth.error}
-      />
+
+      <Item style={errorItemStyle}>
+        <Error
+          error={auth.error}
+        />
+      </Item>
+
       <LoadingButton
         loading={auth.loading}
         onPress={handleSubmit}
@@ -119,6 +124,13 @@ import {
      marginLeft: 50,
      marginRight: 50,
      marginTop: 10
+   },
+   errorItemStyle: {
+     borderBottomWidth: 0,
+     marginLeft: 50,
+     marginRight: 50,
+     marginTop: 10,
+     justifyContent: 'center'
    },
  }
 

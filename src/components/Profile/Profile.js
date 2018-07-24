@@ -1,22 +1,24 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
 import moment from 'moment'
 import React, { Component } from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
 import {
   Image,
   TextInput,
-  View } from 'react-native'
+  View,
+  ScrollView
+} from 'react-native'
 import {
   Container,
   Item,
   Text,
+  Thumbnail
 } from 'native-base'
 import { LGButton } from '../common'
 import { CONTENT_HEIGHT } from '../common/Constants'
-import { fetchMyAllEventFeeds } from '../../actions/actionFeeds'
-
+import ProfileActivitiesContainer from './ProfileActivitiesContainer'
+import Moments from './Moments'
 
 const getUser = (props) => {
   return props.otherUserInfo
@@ -72,12 +74,12 @@ const EditButton = ({ forOtherUser, userId, style }) => {
     </Container>
   )
 }
+const timenow = moment()
+console.log('TIMENOW is ', timenow)
+
 
 class Profile extends Component {
-  componentDidMount() {
-    console.log('Profile.componentDidMount', this.props)
-    this.props.fetchMyAllEventFeeds(this.props.user.user, this.props.auth.token)
-  }
+
 
     renderEditButton(userId, forOtherUser, style) {
       if (forOtherUser) return
@@ -89,9 +91,6 @@ class Profile extends Component {
     }
 
   render() {
-    console.log('Profile.props -->', this.props)
-    console.log('Profile.state --> ', this.state)
-    console.log('My activities --> ', this.props.eventFeeds)
     const { forOtherUser } = this.props
 
     const user = getUser(this.props) // This will not work properly, will fix it
@@ -107,11 +106,12 @@ class Profile extends Component {
       itemsCenterFlex,
       descriptionTextStyle,
       editButtonStyle,
-      messageButtonStyle
+      messageButtonStyle,
+      userImageSmall,
     } = styles
 
     return (
-      <Container style={outterContainerStyle}>
+      <ScrollView style={outterContainerStyle}>
         <View style={itemsCenterFlex}>
           <ImageView imageUrl={getUserpic(user)} />
 
@@ -132,7 +132,18 @@ class Profile extends Component {
           {this.renderMessageButton(userId, forOtherUser, messageButtonStyle)}
 
         </View>
-      </Container>
+        <Item
+          bordered
+          style={{ justifyContent: 'center' }}
+        >
+           <Thumbnail
+            style={userImageSmall}
+            source={{ uri: user.images[0].image_url }}
+           />
+        </Item>
+        <ProfileActivitiesContainer />
+        <Moments />
+      </ScrollView>
     )
   }
 }
@@ -195,20 +206,19 @@ const styles = {
     borderRadius: 15,
     width: 300
    },
+   userImageSmall: {
+     width: 55,
+     height: 55,
+     borderColor: '#fff',
+     borderWidth: 3,
+     position: 'absolute'
+   },
 }
 
 const mapStateToProps = (state) => {
   return {
-    ...state.eventFeeds,
-    user: state.user,
-    auth: state.auth,
-    // eventFeeds: state.eventFeeds.eventFeeds,
-    statistics: state.eventFeeds.statistics
+    user: state.user
   }
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  fetchMyAllEventFeeds
-}, dispatch)
-
-export default connect(mapStateToProps, mapDispatchToProps)(Profile)
+export default connect(mapStateToProps)(Profile)
