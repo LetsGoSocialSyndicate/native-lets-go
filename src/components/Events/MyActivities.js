@@ -17,6 +17,13 @@ class MyActivities extends Component {
   }
 
   renderActivityFeeds() {
+    if (Object.values(this.props.eventFeeds).length === 0) {
+      return (
+        <Text style={ styles.textStyle }>
+          View your upcoming activities here
+        </Text>
+      )
+    }
     return (
       Object.values(this.props.eventFeeds)
         .map((event) => {
@@ -47,6 +54,14 @@ const styles = {
     marginLeft: 0,
     width: CONTENT_WIDTH,
     height: CONTENT_HEIGHT
+  },
+  textStyle: {
+    color: '#FFF',
+    letterSpacing: 2,
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginLeft: 20,
+    marginTop: 20
   }
 }
 

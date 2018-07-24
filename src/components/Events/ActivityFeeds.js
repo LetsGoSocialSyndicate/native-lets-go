@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { ScrollView } from 'react-native'
+import { Text } from 'native-base'
 import ActivityFeed from './ActivityFeed'
 import { fetchOtherEventFeeds } from '../../actions/actionFeeds'
 import { CONTENT_WIDTH } from '../common/Constants'
@@ -17,6 +18,13 @@ class ActivityFeeds extends Component {
   }
 
   renderActivityFeeds() {
+    if (Object.values(this.props.eventFeeds).length === 0) {
+      return (
+        <Text style={ styles.textStyle }>
+          There are no upcoming activities
+        </Text>
+      )
+    }
     return (
       Object.values(this.props.eventFeeds)
         .map((event) => {
@@ -45,6 +53,14 @@ const styles = {
     backgroundColor: 'transparent',
     marginTop: 10,
     width: CONTENT_WIDTH
+  },
+  textStyle: {
+    color: '#FFF',
+    letterSpacing: 2,
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginLeft: 20,
+    marginTop: 20
   }
 }
 
