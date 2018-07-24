@@ -71,6 +71,25 @@ class OneMoment extends Component {
     })
   }
 
+  renderEditImage(props) {
+    console.log('renderEditImage props', props)
+    const { editIconStyle } = styles
+    if (props.user.id !== props.activity.user_id) {
+      return (
+        <Image
+          style={{ ...editIconStyle, opacity: 0 }}
+          source={editButton}
+        />
+      )
+    }
+    return (
+      <Image
+      style={editIconStyle}
+      source={editButton}
+      />
+  )
+  }
+
   render() {
   const { event_title, event_category } = this.props.activity
   const eventImage = getActivityImage(event_category)
@@ -94,10 +113,7 @@ class OneMoment extends Component {
 
 
           <TouchableOpacity onPress={onImagePress}>
-            <Image
-              style={editIconStyle}
-              source={editButton}
-            />
+            {this.renderEditImage(this.props)}
           </TouchableOpacity>
 
           {this.getCaptain()}
@@ -141,11 +157,17 @@ const styles = {
   },
   imageCaptainStyle: {
     height: 30,
-    width: 30
+    width: 30,
+    position: 'relative',
+    left: 160,
+    bottom: 135
   },
   editIconStyle: {
     height: 30,
-    width: 30
+    width: 30,
+    position: 'relative',
+    left: 160,
+    top: 15
   },
   eventTitleStyle: {
     color: '#fff',
