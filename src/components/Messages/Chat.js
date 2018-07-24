@@ -3,13 +3,17 @@
  */
  /* eslint-disable no-underscore-dangle */
 import React, { Component } from 'react'
-import { Container, Spinner } from 'native-base'
+import { View } from 'react-native'
+import { Container, Spinner, Tab, Tabs, Text } from 'native-base'
 import { connect } from 'react-redux'
 import { GiftedChat } from 'react-native-gifted-chat'
 import {
   GET_PREVIOUS_MESSAGES,
   SEND_MESSAGE
 } from './ChatProtocol'
+import {
+  CONTENT_WIDTH
+} from '../common/Constants'
 import {
   chatActionStart,
   addChatMessage
@@ -18,6 +22,8 @@ import {
 const hasMessagesFetched = (chatmates, chatmateId) => {
   return chatmateId in chatmates && chatmates[chatmateId].messagesFetched
 }
+
+const tabsWidth = CONTENT_WIDTH - 20
 
 class Chat extends Component {
 
@@ -70,6 +76,20 @@ class Chat extends Component {
     })
   }
 
+  renderRequestTab(requests) {
+    const { requestContainerStyle, textStyle, messageTextStyle } = styles
+    if (requests && requests.length > 0) {
+      return (
+        <Text style={ textStyle }>{ requests.length }</Text>
+      )
+    }
+    return (
+      <View style={ requestContainerStyle }>
+        <Text style={ messageTextStyle }>There are no requests pending</Text>
+      </View>
+    )
+  }
+
   render() {
     // console.log('Chat::render', this.props.chatmateId, this.props.chat)
     if (!hasMessagesFetched(this.props.chat.chatmates, this.props.chatmateId)) {
@@ -80,19 +100,29 @@ class Chat extends Component {
       )
     }
 
-    const { containerStyle, chatContainer } = styles
+    const { containerStyle, chatContainer, tabsStyle } = styles
     const chatUser = this.getChatUser()
     const messages = this.getMessages().filter((msg) => msg.type === 'directChat')
+    const requests = this.getMessages().filter((msg) => msg.type === 'joinRequest' &&
+      msg.user._id !== this.props.user.id)
+
     const onSend = (msgs) => this.sendMessages(msgs)
 
     return (
       <Container style={containerStyle}>
         <Container style={chatContainer}>
-          <GiftedChat
-            messages={messages}
-            onSend={onSend}
-            user={chatUser}
-          />
+          <Tabs >
+            <Tab heading="Direct Chat" style={tabsStyle}>
+              <GiftedChat
+                messages={messages}
+                onSend={onSend}
+                user={chatUser}
+              />
+            </Tab>
+            <Tab heading="Requests" style={tabsStyle}>
+              { this.renderRequestTab(requests) }
+            </Tab>
+          </Tabs>
         </Container>
       </Container>
     )
@@ -105,11 +135,35 @@ const styles = {
   },
   chatContainer: {
     backgroundColor: 'transparent',
-    width: 300,
+    width: tabsWidth,
     alignSelf: 'center',
-    marginTop: 50,
+    marginTop: 35,
     marginBottom: 150
   },
+  tabsStyle: {
+    backgroundColor: 'transparent',
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderLeftColor: '#FFF',
+    borderRightColor: '#FFF',
+    borderBottomColor: '#FFF'
+  },
+  requestContainerStyle: {
+    marginTop: 10,
+    marginLeft: 10
+  },
+  textStyle: {
+    color: '#FFF',
+    letterSpacing: 2,
+    fontSize: 12,
+  },
+  messageTextStyle: {
+    color: '#FFF',
+    letterSpacing: 2,
+    fontSize: 14,
+    fontWeight: 'bold'
+  }
 }
 
 const mapStateToProps = (state) => {
