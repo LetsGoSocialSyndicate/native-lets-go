@@ -13,8 +13,8 @@ import { Error, TextInputFormField } from '../common'
 import LoadingButton from '../common/LoadingButton'
 
 //Tanya - DEBUG: uncomment this
-const REACT_AUTO_LOGIN_USER = 'panich.photos3@gmail.com'
-const REACT_AUTO_LOGIN_PASSWORD = '123'
+const REACT_AUTO_LOGIN_USER = 'slledru+3@gmail.com'
+const REACT_AUTO_LOGIN_PASSWORD = 'test'
 
 const EMAIL_FIELD = 'email'
 const PASSWORD_FIELD = 'password'
