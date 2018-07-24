@@ -19,6 +19,7 @@ class FooterMenu extends Component {
     const { footerStyle } = styles
     const messagesImage = this.props.chat.hasUnread ?
       UnreadMessagesImage : myMessagesImage
+      console.log(currentScene)
     return (
       <Footer style={footerStyle}>
         <FooterTab >
@@ -27,7 +28,7 @@ class FooterMenu extends Component {
           <IconMenu source={addEventImage} active={currentScene === 'createActivity'} onPress={() => Actions.createActivity()} />
           <IconMenu
             source={messagesImage}
-            active={currentScene === 'conversations'}
+            active={currentScene === 'conversations' || currentScene === 'chat'}
             special={this.props.chat.hasUnread}
             onPress={() => Actions.conversations()}
           />
