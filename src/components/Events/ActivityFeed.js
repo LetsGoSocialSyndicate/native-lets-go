@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { Image, View, TouchableOpacity } from 'react-native'
 import { Text, Card, CardItem, Item, Body, Container } from 'native-base'
 import moment from 'moment'
+import uuid from 'uuid'
 import { ImageButton } from '../common'
 import { SEND_JOIN_REQUEST } from '../Messages/ChatProtocol'
 import { getActivityImage } from '../common/imageUtils'
@@ -31,7 +32,7 @@ class ActivityFeed extends Component {
       },
       createdAt: moment().format(DATETIME_FORMAT),
       text: `Request to join '${this.props.activity.event_title}'`,
-      _id: chatmateId
+      _id: uuid()
     }
     this.props.addChatMessageAction(
       chatmateId,
