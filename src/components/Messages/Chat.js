@@ -193,11 +193,9 @@ const styles = {
   },
   tabStyle: {
     backgroundColor: 'transparent',
-    height: 30
   },
   activeTabStyle: {
     backgroundColor: 'transparent',
-    height: 33
   },
   tabTextStyle: {
     color: '#367588',
