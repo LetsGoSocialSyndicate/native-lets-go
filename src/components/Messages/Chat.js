@@ -127,8 +127,7 @@ class Chat extends Component {
     const { containerStyle, chatContainer, tabsStyle } = styles
     const chatUser = this.getChatUser()
     const messages = this.getMessages().filter((msg) => msg.type === 'directChat')
-    const requests = this.getMessages().filter((msg) => msg.type === 'joinRequest' &&
-      msg.user._id !== this.props.user.id)
+    const requests = this.getMessages().filter((msg) => msg.type === 'joinRequest')
 
 
     return (
