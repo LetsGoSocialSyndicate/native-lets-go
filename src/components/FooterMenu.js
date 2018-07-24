@@ -31,7 +31,7 @@ class FooterMenu extends Component {
             special={this.props.chat.hasUnread}
             onPress={() => Actions.conversations()}
           />
-          <IconMenu source={myProfileImage} active={currentScene === 'profile'} onPress={() => Actions.profile()} />
+          <IconMenu source={myProfileImage} active={currentScene.includes('profile')} onPress={() => Actions.profile()} />
         </FooterTab>
       </Footer>
     )
