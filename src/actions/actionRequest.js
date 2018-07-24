@@ -2,7 +2,9 @@
 import {
   REQUEST_SUBMIT,
   HOST_VIEW_REQUEST,
-  REACT_APP_API_URL
+  REACT_APP_API_URL,
+  ACCEPT_REQUEST_TO_JOIN,
+  REJECT_REQUEST_TO_JOIN
 } from './types'
 import { getRequestOptions } from './actionUtils'
 
@@ -32,6 +34,20 @@ const hostViewRequest = (history) => {
   }
 }
 
+const acceptRequest = (e_id, u_id, token) => {
+  return (dispatch) => {
+    dispatch({ type: ACCEPT_REQUEST_TO_JOIN })
+  }
+}
+
+const rejectRequest = (e_id, u_id, token) => {
+  return (dispatch) => {
+    dispatch({ type: REJECT_REQUEST_TO_JOIN })
+  }
+}
+
 export {
-  handleRequest
+  handleRequest,
+  acceptRequest,
+  rejectRequest
 }

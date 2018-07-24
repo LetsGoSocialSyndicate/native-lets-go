@@ -18,6 +18,7 @@ import {
   chatActionStart,
   addChatMessage
 } from '../../actions/actionChat'
+import JoinRequest from './JoinRequest'
 
 const hasMessagesFetched = (chatmates, chatmateId) => {
   return chatmateId in chatmates && chatmates[chatmateId].messagesFetched
@@ -76,11 +77,34 @@ class Chat extends Component {
     })
   }
 
+  renderChatTab(messages, chatUser) {
+    const { requestContainerStyle, messageTextStyle } = styles
+    const onSend = (msgs) => this.sendMessages(msgs)
+    if (messages && messages.length > 0) {
+      return (
+        <GiftedChat
+          messages={messages}
+          onSend={onSend}
+          user={chatUser}
+        />
+      )
+    }
+    return (
+      <View style={ requestContainerStyle }>
+        <Text style={ messageTextStyle }>There are no chat messages</Text>
+      </View>
+    )
+  }
   renderRequestTab(requests) {
     const { requestContainerStyle, textStyle, messageTextStyle } = styles
     if (requests && requests.length > 0) {
       return (
-        <Text style={ textStyle }>{ requests.length }</Text>
+        <View style={ requestContainerStyle }>
+          { requests.map((req, i, array) => {
+            const isLast = i === array.length - 1
+            return ( <JoinRequest key={ req._id } request={ req } isLast={ isLast }/> )
+          })}
+        </View>
       )
     }
     return (
@@ -106,18 +130,13 @@ class Chat extends Component {
     const requests = this.getMessages().filter((msg) => msg.type === 'joinRequest' &&
       msg.user._id !== this.props.user.id)
 
-    const onSend = (msgs) => this.sendMessages(msgs)
 
     return (
       <Container style={containerStyle}>
         <Container style={chatContainer}>
           <Tabs >
             <Tab heading="Direct Chat" style={tabsStyle}>
-              <GiftedChat
-                messages={messages}
-                onSend={onSend}
-                user={chatUser}
-              />
+              { this.renderChatTab(messages, chatUser) }
             </Tab>
             <Tab heading="Requests" style={tabsStyle}>
               { this.renderRequestTab(requests) }
