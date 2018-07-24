@@ -34,7 +34,7 @@ class ChatDeamon extends Component {
   initialize() {
     const chat = this.props.chat
     const user = this.props.user
-    //console.log('ChatDeamon::initialize START', chat)
+    // console.log('ChatDeamon::initialize START', chat)
     // console.log('ChatDeamon::initialize joined', chat.joined)
     // console.log('ChatDeamon::initialize loading', chat.loading)
     if (!chat.socket) {

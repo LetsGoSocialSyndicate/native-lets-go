@@ -58,7 +58,7 @@ function eventFeeds(state = initialFeedsState, action) {
     console.log('reducer eventFeeds', state, action)
     return {
       ...state,
-      statistics: action.statistics
+      statistics: action.payload.statistics
     }
 
   case ADD_NEW_EVENT: {

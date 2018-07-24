@@ -53,7 +53,7 @@ class Conversations extends Component {
 
     const onPress = (chatmateId) => {
       this.props.gotoChatAction(chatmateId)
-      Actions.chat({ chatmateId })
+      Actions.chat({ origin: 'Conversations', chatmateId })
     }
 
     const renderRow = item => {
