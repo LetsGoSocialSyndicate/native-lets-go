@@ -288,7 +288,7 @@ const styles = {
     width: 150,
     height: 50,
     alignSelf: 'center',
-    marginTop: 20
+    marginTop: 15
   },
   formStyle: {
     height: 350
@@ -299,9 +299,9 @@ const styles = {
     marginTop: 10
   },
   descriptionTextStyle: {
-     marginTop: 20,
-     paddingTop: 10,
-     paddingBottom: 10,
+     marginTop: 16,
+     paddingTop: 8,
+     paddingBottom: 8,
      paddingLeft: 20,
      paddingRight: 20,
      fontSize: 16,
