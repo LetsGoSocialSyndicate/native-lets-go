@@ -62,7 +62,8 @@ const styles = {
     backgroundColor: 'transparent',
     marginLeft: 80,
     marginRight: 80,
-    marginBottom: 70
+    marginBottom: 70,
+    marginTop: 60
   },
   titleStyle: {
     width: null,
@@ -71,6 +72,7 @@ const styles = {
   },
   titleContainerStyle: {
     marginTop: 80,
+    marginBottom: 60,
     backgroundColor: 'transparent',
   }
 }

@@ -78,7 +78,7 @@ const styles = {
     width: 150,
     height: 50,
     alignSelf: 'center',
-    marginTop: 30,
+    marginTop: 35,
   },
   formStyle: {
     height: 240,
