@@ -124,7 +124,10 @@ class Chat extends Component {
       )
     }
 
-    const { containerStyle, chatContainer, tabsStyle } = styles
+    const {
+      containerStyle, chatContainer, tabsStyle,
+      tabStyle, activeTabStyle, tabTextStyle, tabActiveTextStyle
+    } = styles
     const chatUser = this.getChatUser()
     const messages = this.getMessages().filter((msg) => msg.type === 'directChat')
     const requests = this.getMessages().filter((msg) => msg.type === 'joinRequest')
@@ -133,11 +136,17 @@ class Chat extends Component {
     return (
       <Container style={containerStyle}>
         <Container style={chatContainer}>
-          <Tabs >
-            <Tab heading="Direct Chat" style={tabsStyle}>
+          <Tabs tabBarUnderlineStyle={{backgroundColor: '#367588'}}>
+            <Tab heading="Direct Chat" style={tabsStyle}
+              tabStyle={ tabStyle } textStyle={ tabTextStyle }
+              activeTabStyle={ activeTabStyle } activeTextStyle={ tabActiveTextStyle }
+              >
               { this.renderChatTab(messages, chatUser) }
             </Tab>
-            <Tab heading="Requests" style={tabsStyle}>
+            <Tab heading="Requests" style={tabsStyle}
+              tabStyle={ tabStyle } textStyle={ tabTextStyle }
+              activeTabStyle={ activeTabStyle } activeTextStyle={ tabActiveTextStyle }
+              >
               { this.renderRequestTab(requests) }
             </Tab>
           </Tabs>
@@ -178,6 +187,25 @@ const styles = {
   },
   messageTextStyle: {
     color: '#FFF',
+    letterSpacing: 2,
+    fontSize: 14,
+    fontWeight: 'bold'
+  },
+  tabStyle: {
+    backgroundColor: 'transparent',
+    height: 30
+  },
+  activeTabStyle: {
+    backgroundColor: 'transparent',
+    height: 33
+  },
+  tabTextStyle: {
+    color: '#367588',
+    letterSpacing: 2,
+    fontSize: 12,
+  },
+  tabActiveTextStyle: {
+    color: '#367588',
     letterSpacing: 2,
     fontSize: 14,
     fontWeight: 'bold'
