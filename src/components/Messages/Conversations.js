@@ -99,6 +99,13 @@ class Conversations extends Component {
       .filter(chatmate => Boolean(chatmate.lastMessage))
       // Sort by last message time, newer first.
       .sort((a, b) => b.lastMessage.timestamp - a.lastMessage.timestamp)
+    if (chatmates.length === 0) {
+      return (
+        <Text style={ styles.noChatTextStyle }>
+          There are no messages or requests to join my activities
+        </Text>
+      )
+    }
     return (
       <Container style={containerStyle}>
         <List
@@ -157,6 +164,14 @@ const styles = {
   text2Style: {
     color: '#fff',
     fontSize: 20
+  },
+  noChatTextStyle: {
+    color: '#FFF',
+    letterSpacing: 2,
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginLeft: 20,
+    marginTop: 40
   }
 }
 
