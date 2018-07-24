@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, TouchableOpacity } from 'react-native'
+import { Image, ImageBackground, View, TouchableOpacity } from 'react-native'
 import { Text, Item } from 'native-base'
 import { showImagePicker } from 'react-native-image-picker'
 
@@ -13,6 +13,7 @@ import { IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
 
 const captain = require('../../assets/captain.png')
 const editButton = require('../../assets/buttons/editbutton.png')
+const darkBackgroundImage = require('../../assets/assets_5.28-06.png')
 
 const getFileExtension = (filename) => {
   return filename.split('.').pop().toLowerCase()
@@ -22,14 +23,9 @@ class OneMoment extends Component {
   getCaptain() {
     const { imageCaptainStyle } = styles
     let source = null
-    console.log('this.props.activity.posted_by', this.props.activity.event_posted_by)
-    console.log('this.props.user.id', this.props.user.id)
-
     if (this.props.activity.event_posted_by === this.props.user.id) {
       source = captain
     }
-    console.log('source', source)
-
     return (
       <View>
         <Image
@@ -83,7 +79,6 @@ class OneMoment extends Component {
   const {
     containerStyle,
     eventSectionStyle,
-    organizerSectionStyle,
     eventTitleStyle,
     eventImageStyle,
     editIconStyle
@@ -91,14 +86,12 @@ class OneMoment extends Component {
 
   return (
       <View style={containerStyle}>
-        <View style={organizerSectionStyle}>
-          {/* <TouchableOpacity>
-            <Image style={profileImageStyle} source={{ uri: user_image_url }} />
-          </TouchableOpacity> */}
-        </View>
+        <Item bordered />
+
         <View style={eventSectionStyle}>
-          <Text style={eventTitleStyle}>{event_title}</Text>
+
           <Image style={eventImageStyle} source={eventImage} />
+
 
           <TouchableOpacity onPress={onImagePress}>
             <Image
@@ -107,10 +100,17 @@ class OneMoment extends Component {
             />
           </TouchableOpacity>
 
-
           {this.getCaptain()}
-
+          <ImageBackground
+            source={darkBackgroundImage}
+            style={{ width: CONTENT_WIDTH, height: 70}}
+          >
+          {/* <View style={eventInfoStyle}> */}
+            <Text style={eventTitleStyle}>{event_title}</Text>
+          {/* </View> */}
+          </ImageBackground>
         </View>
+
         <Item bordered />
       </View>
     )
@@ -121,20 +121,13 @@ const styles = {
   containerStyle: {
     width: CONTENT_WIDTH,
     backgroundColor: 'transparent',
-  },
-  organizerSectionStyle: {
-    flexDirection: 'row'
+    marginBottom: 8
   },
   eventSectionStyle: {
     marginTop: 10,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  eventInfoStyle: {
-    marginTop: 20,
-    marginLeft: 10,
-    flexDirection: 'column'
   },
 
   eventImageStyle: {
@@ -147,14 +140,17 @@ const styles = {
     borderWidth: 4
   },
   imageCaptainStyle: {
-    //zIndex: 100,
-    //position: 'absolute',
     height: 30,
     width: 30
   },
   editIconStyle: {
     height: 30,
     width: 30
+  },
+  eventTitleStyle: {
+    color: '#fff',
+    paddingLeft: 20,
+    fontSize: 20
   }
 }
 

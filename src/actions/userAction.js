@@ -8,16 +8,17 @@ import {
 } from './actionUtils'
 
 import {
-  FETCH_USER,
-  SAVE_USER_START,
+  FETCH_USER_SUCCESS,
+  USER_ACTION_START,
   SAVE_USER_SUCCESS,
-  SAVE_USER_FAILED,
+  USER_ACTION_FAILED,
   REACT_APP_API_URL
 } from './types'
 import { IMAGE_OP_NONE } from './imageOp'
 
 const fetchOtherUser = (id, token) => {
   return async (dispatch) => {
+    dispatch({ type: USER_ACTION_START })
     const url = `${REACT_APP_API_URL}/users/${id}`
     const opts = getRequestOptions('GET', token)
     const response = await fetch(url, opts) // eslint-disable-line no-undef
@@ -25,19 +26,20 @@ const fetchOtherUser = (id, token) => {
     // console.log('fetchOtherUser:response:', response.status, responseJSON)
     if (response.status === 200) {
       dispatch({
-        type: FETCH_USER,
+        type: FETCH_USER_SUCCESS,
         user: responseJSON,
         isOtherUser: true
       })
     } else {
-      //TODO: handle error
+      const error = responseJSON.message || 'Failed to fetch user profile'
+      dispatch({ type: USER_ACTION_FAILED, error })
     }
   }
 }
 
 const updateProfile = (newUserInfo, userId, token, images = []) => {
   return async (dispatch) => {
-    dispatch({ type: SAVE_USER_START })
+    dispatch({ type: USER_ACTION_START })
     // console.log('updateProfile:request:', userId, newUserInfo, images)
     let url = `${REACT_APP_API_URL}/users/${userId}`
     let opts = getRequestOptions('PATCH', token, newUserInfo)
@@ -45,7 +47,8 @@ const updateProfile = (newUserInfo, userId, token, images = []) => {
     let responseJSON = await response.json()
     // console.log('updateProfile:response:', response.status, responseJSON)
     if (response.status !== 200) {
-      dispatch({ type: SAVE_USER_FAILED, error: responseJSON.message })
+      const error = responseJSON.message || 'Failed to update user profile'
+      dispatch({ type: USER_ACTION_FAILED, error })
       return
     }
     const imageCount = images.filter(image => image.op !== IMAGE_OP_NONE).length
@@ -65,7 +68,8 @@ const updateProfile = (newUserInfo, userId, token, images = []) => {
     if (response.status === 200) {
       dispatch({ type: SAVE_USER_SUCCESS, user: responseJSON })
     } else {
-      dispatch({ type: SAVE_USER_FAILED, error: responseJSON.message })
+      const error = responseJSON.message || 'Failed to update profile images'
+      dispatch({ type: USER_ACTION_FAILED, error })
     }
   }
 }

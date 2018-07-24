@@ -11,8 +11,8 @@ const timestamp = (event) => moment(event.event_start_time).valueOf()
 
 class Moments extends Component {
   componentDidMount() {
-      console.log('Moments.componentDidMount', this.props)
-      this.props.fetchMyAllEventFeeds(this.props.user.user, this.props.auth.token)
+    console.log('Moments.componentDidMount', this.props)
+    this.props.fetchMyAllEventFeeds(this.props.userWrapper.getId(), this.props.auth.token)
   }
 
   getCurrentEvents() {
@@ -31,6 +31,7 @@ class Moments extends Component {
     ))
   }
   render() {
+    console.log('Moments.render', this.props)
     return (
       <View style={styles.containerStyle}>
         { this.renderActivityFeeds() }
@@ -45,13 +46,12 @@ const styles = {
     flex: 1,
     backgroundColor: 'transparent',
     marginTop: 10,
-    width: CONTENT_WIDTH
+    width: CONTENT_WIDTH,
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user,
     auth: state.auth,
     eventFeeds: state.eventFeeds.eventFeeds,
   }

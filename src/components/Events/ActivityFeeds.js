@@ -14,7 +14,7 @@ import { CONTENT_WIDTH } from '../common/Constants'
 
 class ActivityFeeds extends Component {
   componentWillMount() {
-    this.props.fetchOtherEventFeeds(this.props.user, this.props.token)
+    this.props.fetchOtherEventFeeds(this.props.user.email, this.props.token)
   }
 
   renderActivityFeeds() {

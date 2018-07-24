@@ -42,14 +42,11 @@ const fetchEventFeeds = (token) => {
   }
 }
 
-const fetchMyEventFeeds = (user, hosted, token) => {
-  const url = `${REACT_APP_API_URL}/users/${user.email}/${hosted ? 'hosted' : 'requested'}`
+const fetchMyEventFeeds = (email, hosted, token) => {
+  const url = `${REACT_APP_API_URL}/users/${email}/${hosted ? 'hosted' : 'requested'}`
   // console.log('fetchMyEventFeeds', url)
   return async (dispatch) => {
     const opts = getRequestOptions('GET', token)
-    // console.log('user', user)
-    // console.log('token', token)
-    // console.log('opts', opts)
     const response = await fetch(url, opts) // eslint-disable-line no-undef
     if (response.status === 200) {
       const responseJSON = await response.json()
@@ -64,10 +61,10 @@ const fetchMyEventFeeds = (user, hosted, token) => {
   }
 }
 
-const fetchMyAllEventFeeds = (user, token) => {
-  console.log('fetchMyAllEventFeeds: user', user)
-  console.log('fetchMyAllEventFeeds: token', token)
-  const url = `${REACT_APP_API_URL}/users/${user.email}/all`
+const fetchMyAllEventFeeds = (id, token) => {
+  console.log('fetchMyAllEventFeeds: id', id)
+  // console.log('fetchMyAllEventFeeds: token', token)
+  const url = `${REACT_APP_API_URL}/users/${id}/all`
   console.log('fetchMyAllEventFeeds', url)
   return async (dispatch) => {
     const opts = getRequestOptions('GET', token)
@@ -83,9 +80,8 @@ const fetchMyAllEventFeeds = (user, token) => {
   }
 }
 
-const fetchOtherEventFeeds = (user, token) => {
-  // console.log('fetchOtherEventFeeds: user', user)
-  const url = `${REACT_APP_API_URL}/users/${user.email}/others`
+const fetchOtherEventFeeds = (email, token) => {
+  const url = `${REACT_APP_API_URL}/users/${email}/others`
   return async (dispatch) => {
     const opts = getRequestOptions('GET', token)
     // console.log('opts', opts)
@@ -103,10 +99,10 @@ const fetchOtherEventFeeds = (user, token) => {
   }
 }
 
-const countMyAllEventFeeds = (user, token) => {
-  // console.log('countMyAllEventFeeds: user', user)
+const countMyAllEventFeeds = (id, token) => {
+  // console.log('countMyAllEventFeeds: id', id)
   // console.log('countMyAllEventFeeds: token', token)
-  const url = `${REACT_APP_API_URL}/users/${user.email}/statistics`
+  const url = `${REACT_APP_API_URL}/users/${id}/statistics`
   // console.log('fetchMyAllEventFeeds', url)
   return async (dispatch) => {
     dispatch({ type: FEEDS_ACTION_START })

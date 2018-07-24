@@ -13,7 +13,7 @@ import { fetchMyAllEventFeeds } from '../../actions/actionFeeds'
 
 class MyActivities extends Component {
   componentWillMount() {
-    this.props.fetchMyAllEventFeeds(this.props.user.user, this.props.auth.token)
+    this.props.fetchMyAllEventFeeds(this.props.user.user.email, this.props.auth.token)
   }
 
   renderActivityFeeds() {
