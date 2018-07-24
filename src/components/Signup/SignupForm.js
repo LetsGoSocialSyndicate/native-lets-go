@@ -46,7 +46,7 @@ import {
          placeholder='last name'
         />
       </Item>
-      <Item style={itemStyle}>
+      <Item style={{ ...itemStyle, marginLeft: 48 }}>
        <DatePickerInputFormField
          name={BIRTHDAY_FIELD}
          placeholder='select birthday'
