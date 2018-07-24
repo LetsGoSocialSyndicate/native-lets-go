@@ -82,8 +82,9 @@ class Chat extends Component {
 
     const { containerStyle, chatContainer } = styles
     const chatUser = this.getChatUser()
-    const messages = this.getMessages()
+    const messages = this.getMessages().filter((msg) => msg.type === 'directChat')
     const onSend = (msgs) => this.sendMessages(msgs)
+
     return (
       <Container style={containerStyle}>
         <Container style={chatContainer}>
