@@ -38,7 +38,7 @@ const INITIAL_STATE = {
   //   }
   chatmates: {},
   // object where keys are chatmateIds and
-  // values are arrays of messages: { _id, text, createdAt, user}
+  // values are arrays of messages: { _id, text, createdAt, type, user}
   messages: {},
   error: null,
   loading: false,

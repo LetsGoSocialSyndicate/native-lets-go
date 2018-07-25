@@ -66,6 +66,7 @@ class Conversations extends Component {
       const actualImageStyle = hasUnreadMessages(chat.chatmates, item._id)
           ? { ...imageStyle, borderColor: '#6CC7EF' }
           : imageStyle
+      const avatar = item.avatar || ''
 
       return (
         <ListItem style={listItemStyle} avatar>
@@ -76,7 +77,7 @@ class Conversations extends Component {
             <Button style={buttonStyle} onPress={() => onPress(item._id)}>
               <View style={column1Style}>
                 <Thumbnail
-                  source={{ uri: item.avatar }}
+                  source={{ uri: avatar }}
                   style={actualImageStyle}
                 />
               </View>
@@ -101,7 +102,7 @@ class Conversations extends Component {
       .sort((a, b) => b.lastMessage.timestamp - a.lastMessage.timestamp)
     if (chatmates.length === 0) {
       return (
-        <Text style={ styles.noChatTextStyle }>
+        <Text style={styles.noChatTextStyle}>
           There are no messages or requests to join my activities
         </Text>
       )

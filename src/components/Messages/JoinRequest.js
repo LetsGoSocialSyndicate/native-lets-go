@@ -2,12 +2,10 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import React, { Component } from 'react'
-import { Actions } from 'react-native-router-flux'
 import { Image, View, TouchableOpacity } from 'react-native'
 import { Text, Item } from 'native-base'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-
 import { ImageButton } from '../common'
 import { acceptRequest, rejectRequest } from '../../actions/actionRequest'
 import {
@@ -16,7 +14,9 @@ import {
 
 const acceptButton = require('../../assets/buttons/accept.png')
 const viewRequestButton = require('../../assets/buttons/view_request.png')
+
 const overlayButtonWidth = CONTENT_WIDTH - 50
+
 class JoinRequest extends Component {
   onPressAcceptRequest = () => {
     console.log('Accept request')
@@ -24,7 +24,11 @@ class JoinRequest extends Component {
 
   onProfilePicturePress = () => {
     console.log('this.props.request', this.props.request)
-    //Actions.profile({ origin: 'JoinRequest', otherUserInfo: this.props.request.user, forOtherUser: true })
+    // Actions.profile({
+    //   origin: 'JoinRequest',
+    //   otherUserInfo: this.props.request.user,
+    //   forOtherUser: true
+    // })
   }
 
   onViewRequest = () => {
@@ -37,27 +41,35 @@ class JoinRequest extends Component {
       viewRequestButtonStyle, viewRequestContainerStyle
     } = styles
     console.log('JoinRequest', this.props.request)
+    const request = this.props.request
+    const avatar = request.user.avatar || ''
 
     return (
-      <View style={ outerContainerStyle }>
-        <View style={ containerStyle }>
-          <TouchableOpacity onPress={ this.onProfilePicturePress }>
-            <Image style={ imageStyle } source={{ uri: this.props.request.user.avatar }} />
+      <View style={outerContainerStyle}>
+        <View style={containerStyle}>
+          <TouchableOpacity onPress={this.onProfilePicturePress}>
+            <Image style={imageStyle} source={{ uri: avatar }} />
           </TouchableOpacity>
-          <View style={ rightContainerStyle }>
-            <Text style={ boldTextStyle }>{ this.props.request.user.name }</Text>
-            <Text style={ textStyle }>{ this.props.request.text }</Text>
-            <ImageButton buttonSource={ acceptButton }
-              buttonWidth={ 100 }
-              handleOnPress={ this.onPressAcceptRequest }/>
+          <View style={rightContainerStyle}>
+            <Text style={boldTextStyle}>{request.user.name}</Text>
+            <Text style={textStyle}>{request.text}</Text>
+            <ImageButton
+              buttonSource={acceptButton}
+              buttonWidth={100}
+              handleOnPress={this.onPressAcceptRequest}
+            />
           </View>
         </View>
-        <TouchableOpacity style={ viewRequestContainerStyle }
-          onPress={ this.onViewRequest }>
-          <Image style={ viewRequestButtonStyle }
-            source={ viewRequestButton } />
+        <TouchableOpacity
+          style={viewRequestContainerStyle}
+          onPress={this.onViewRequest}
+        >
+          <Image
+            style={viewRequestButtonStyle}
+            source={viewRequestButton}
+          />
         </TouchableOpacity>
-        { !this.props.isLast ? <Item bordered /> : null }
+        {!this.props.isLast ? <Item bordered /> : null}
       </View>
     )
   }

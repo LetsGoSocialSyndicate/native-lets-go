@@ -77,6 +77,7 @@ class CreateActivityForm extends Component {
           <TextInputFormField
             name={HEADLINE_FIELD}
             placeholder='headline'
+            maxLength={30}
           />
         </Item>
 
@@ -84,6 +85,7 @@ class CreateActivityForm extends Component {
           <TextInputFormField
             name={LOCATION_FIELD}
             placeholder='location'
+            maxLength={30}
           />
         </Item>
 

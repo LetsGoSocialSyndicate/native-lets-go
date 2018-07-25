@@ -7,9 +7,12 @@ import { View } from 'react-native'
 import { Container, Spinner, Tab, Tabs, Text } from 'native-base'
 import { connect } from 'react-redux'
 import { GiftedChat } from 'react-native-gifted-chat'
+import { getChatUser } from './ChatUtils'
 import {
   GET_PREVIOUS_MESSAGES,
-  SEND_MESSAGE
+  SEND_MESSAGE,
+  MESSAGE_TYPE_CHAT,
+  MESSAGE_TYPE_JOIN_REQUEST
 } from './ChatProtocol'
 import {
   CONTENT_WIDTH
@@ -43,18 +46,6 @@ class Chat extends Component {
     }
   }
 
-  getChatUser() {
-    const user = this.props.user
-    const chatUser = {
-      _id: user.id,
-      name: `${user.first_name} ${user.last_name.charAt(0)}`
-    }
-    if (user.images.length > 0) {
-      chatUser.avatar = user.images[0].image_url
-    }
-    return chatUser
-  }
-
   getMessages() {
     return this.props.chat.messages[this.props.chatmateId]
   }
@@ -62,8 +53,7 @@ class Chat extends Component {
   sendMessages(messages) {
     console.log('Chat.sendMessages:', messages)
     messages.forEach(message => {
-      console.log('message', message)
-      const typedMessage = { ...message, type: 'directChat'}
+      const typedMessage = { ...message, type: MESSAGE_TYPE_CHAT }
       this.props.addChatMessageAction(
         this.props.chatmateId,
         false,  // isIncoming
@@ -79,7 +69,6 @@ class Chat extends Component {
   }
 
   renderChatTab(messages, chatUser) {
-    const { requestContainerStyle, messageTextStyle } = styles
     const onSend = (msgs) => this.sendMessages(msgs)
     return (
       <GiftedChat
@@ -90,20 +79,22 @@ class Chat extends Component {
     )
   }
   renderRequestTab(requests) {
-    const { requestContainerStyle, textStyle, messageTextStyle } = styles
+    const { requestContainerStyle, messageTextStyle } = styles
     if (requests && requests.length > 0) {
       return (
-        <View style={ requestContainerStyle }>
-          { requests.map((req, i, array) => {
-            const isLast = i === array.length - 1
-            return ( <JoinRequest key={ req._id } request={ req } isLast={ isLast }/> )
+        <View style={requestContainerStyle}>
+          {requests.map((req, i, array) => {
+             const isLast = i === array.length - 1
+             return (
+               <JoinRequest key={req._id} request={req} isLast={isLast} />
+             )
           })}
         </View>
       )
     }
     return (
-      <View style={ requestContainerStyle }>
-        <Text style={ messageTextStyle }>There are no requests pending</Text>
+      <View style={requestContainerStyle}>
+        <Text style={messageTextStyle}>There are no requests pending</Text>
       </View>
     )
   }
@@ -122,27 +113,39 @@ class Chat extends Component {
       containerStyle, chatContainer, tabsStyle,
       tabStyle, activeTabStyle, tabTextStyle, tabActiveTextStyle
     } = styles
-    const chatUser = this.getChatUser()
-    const messages = this.getMessages().filter((msg) => msg.type === 'directChat')
-    const requests = this.getMessages().filter((msg) => msg.type === 'joinRequest' &&
-      msg.user._id !== this.props.user.id)
+    const chatUser = getChatUser(this.props.user)
+    const messages = this.getMessages().filter(
+      msg => msg.type === MESSAGE_TYPE_CHAT
+    )
+    const requests = this.getMessages().filter(
+      msg => msg.type === MESSAGE_TYPE_JOIN_REQUEST
+             && msg.user._id !== this.props.user.id
+    )
 
 
     return (
       <Container style={containerStyle}>
         <Container style={chatContainer}>
-          <Tabs tabBarUnderlineStyle={{backgroundColor: '#367588'}}>
-            <Tab heading="Direct Chat" style={tabsStyle}
-              tabStyle={ tabStyle } textStyle={ tabTextStyle }
-              activeTabStyle={ activeTabStyle } activeTextStyle={ tabActiveTextStyle }
-              >
-              { this.renderChatTab(messages, chatUser) }
+          <Tabs tabBarUnderlineStyle={{ backgroundColor: '#367588' }}>
+            <Tab
+              heading='Chat'
+              style={tabsStyle}
+              tabStyle={tabStyle}
+              textStyle={tabTextStyle}
+              activeTabStyle={activeTabStyle}
+              activeTextStyle={tabActiveTextStyle}
+            >
+              {this.renderChatTab(messages, chatUser)}
             </Tab>
-            <Tab heading="Requests" style={tabsStyle}
-              tabStyle={ tabStyle } textStyle={ tabTextStyle }
-              activeTabStyle={ activeTabStyle } activeTextStyle={ tabActiveTextStyle }
-              >
-              { this.renderRequestTab(requests) }
+            <Tab
+              heading='Join Requests'
+              style={tabsStyle}
+              tabStyle={tabStyle}
+              textStyle={tabTextStyle}
+              activeTabStyle={activeTabStyle}
+              activeTextStyle={tabActiveTextStyle}
+            >
+              {this.renderRequestTab(requests)}
             </Tab>
           </Tabs>
         </Container>

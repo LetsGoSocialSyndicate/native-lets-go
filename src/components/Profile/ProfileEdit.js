@@ -14,7 +14,7 @@ import { downsizeImage } from '../common/imageUtils'
 import { IMAGE_OP_NONE, IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
 import LoadingButton from '../common/LoadingButton'
 
-const defaultUser = require('../../assets/default.png')
+const defaultUserpic = require('../../assets/default.png')
 const submitButton = require('../../assets/buttons/done.png')
 
 const FIRST_NAME_FIELD = 'firstName'
@@ -28,7 +28,7 @@ const getFileExtension = (filename) => {
 const getUserpic = (user) => {
   return user && 'images' in user && user.images.length > 0
     ? user.images[0].image_url
-    : defaultUser
+    : null
 }
 
 const getUserpicId = (user) => {
@@ -58,7 +58,7 @@ class ProfileEdit extends Component {
 
   getImageSource() {
     const currentImageUrl = this.state.currentImageUrl
-    return currentImageUrl ? { uri: currentImageUrl } : null
+    return currentImageUrl ? { uri: currentImageUrl } : defaultUserpic
   }
 
   getAboutBoxStyle() {

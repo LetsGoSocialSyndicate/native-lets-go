@@ -44,6 +44,10 @@ function eventFeeds(state = initialFeedsState, action) {
     console.log('reducer eventFeeds', state, action)
     const mappedKey = action.payload.reduce((acc, feed) => {
       acc[feed.event_id] = { ...feed }
+      // Cannot handle null when using {uri: user_image_url }
+      if (!acc[feed.event_id].user_image_url) {
+        acc[feed.event_id].user_image_url = ''
+      }
       // if (acc[feed.event_id].images) {
       //   acc[feed.event_id].images = acc[feed.event_id].images.map(image => JSON.parse(image))
       // }
