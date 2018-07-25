@@ -81,19 +81,12 @@ class Chat extends Component {
   renderChatTab(messages, chatUser) {
     const { requestContainerStyle, messageTextStyle } = styles
     const onSend = (msgs) => this.sendMessages(msgs)
-    if (messages && messages.length > 0) {
-      return (
-        <GiftedChat
-          messages={messages}
-          onSend={onSend}
-          user={chatUser}
-        />
-      )
-    }
     return (
-      <View style={ requestContainerStyle }>
-        <Text style={ messageTextStyle }>There are no chat messages</Text>
-      </View>
+      <GiftedChat
+        messages={messages}
+        onSend={onSend}
+        user={chatUser}
+      />
     )
   }
   renderRequestTab(requests) {
