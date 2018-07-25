@@ -15,8 +15,7 @@ import { IMAGE_OP_NONE, IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imag
 import LoadingButton from '../common/LoadingButton'
 
 const defaultUser = require('../../assets/default.png')
-//TODO: change later to real DONE button
-const submitButton = require('../../assets/buttons/submit.png')
+const submitButton = require('../../assets/buttons/done.png')
 
 const FIRST_NAME_FIELD = 'firstName'
 const LAST_NAME_FIELD = 'lastName'

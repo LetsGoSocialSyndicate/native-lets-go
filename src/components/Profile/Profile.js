@@ -12,6 +12,7 @@ import {
 import {
   Container,
   Item,
+  Spinner,
   Text,
   Thumbnail
 } from 'native-base'
@@ -20,84 +21,102 @@ import { CONTENT_HEIGHT } from '../common/Constants'
 import ProfileActivitiesContainer from './ProfileActivitiesContainer'
 import Moments from './Moments'
 
-const getUser = (props) => {
-  return props.otherUserInfo
-    ? props.otherUserInfo
-    : props.user.user
-}
-
-const getUserId = (props) => {
-  return props.otherUserInfo
-    ? props.otherUserInfo.user_id
-    : props.user.user.id
-}
-
-const getUserpic = (user) => {
-  if (user.user_image_url) {
-    return user.user_image_url
+class UserWrapper {
+  constructor(props) {
+    this.forOtherUser = props.forOtherUser
+    // WARNING: this.props.user and this.props.otherUserInfo have different
+    // structure!
+    this.user = props.forOtherUser ? props.otherUserInfo : props.user.user
   }
-  return user && 'images' in user && user.images.length > 0
-    ? user.images[0].image_url
-    : ''
+  isEmpty() {
+    return !this.user
+  }
+  isOtherUser() {
+    return this.forOtherUser
+  }
+  getId() {
+    return this.forOtherUser ? this.user.user_id : this.user.id
+  }
+  getUserpic() {
+    if (this.forOtherUser) {
+      return this.user.user_image_url
+    }
+    return 'images' in this.user && this.user.images.length > 0
+      ? this.user.images[0].image_url
+      : ''
+  }
+  getAbout() {
+    return this.forOtherUser ? this.user.user_about : this.user.about
+  }
+  getFirstName() {
+    return this.user.first_name
+  }
+  getLastName() {
+    return this.user.last_name
+  }
+  getBirthday() {
+    return this.user.birthday
+  }
+  getEmail() {
+    return this.user.email
+  }
 }
 
 const ImageView = ({ imageUrl }) => {
   const { imageStyle } = styles
   const source = imageUrl ? { uri: imageUrl } : null
   return (
-      <View>
-        <Image style={imageStyle} source={source} />
-      </View>
+    <View>
+      <Image style={imageStyle} source={source} />
+    </View>
   )
 }
 
-const EditButton = ({ forOtherUser, userId, style }) => {
-  // const { editButtonStyle } = styles
+class Profile extends Component {
 
-  if (forOtherUser) {
-    //console.log('EditButton:', userId)
+  renderEditButton(user, style) {
+    if (user.isOtherUser()) {
+      return null
+    }
     return (
       <Container style={style}>
         <LGButton
-          onPress={() => Actions.chat({ origin: 'Profile', chatmateId: userId })}
+          onPress={() => Actions.profileEdit({ origin: 'Profile' })}
+          buttonText="edit"
+        />
+      </Container>
+    )
+  }
+  renderMessageButton(user, style) {
+    if (!user.isOtherUser()) {
+      return null
+    }
+    return (
+      <Container style={style}>
+        <LGButton
+          onPress={() => Actions.chat({ origin: 'Profile', chatmateId: user.getId() })}
           buttonText="message"
         />
       </Container>
     )
   }
-  return (
-    <Container style={style}>
-      <LGButton
-        onPress={() => Actions.profileEdit({ origin: 'Profile' })}
-        buttonText="edit"
-      />
-    </Container>
-  )
-}
-const timenow = moment()
-console.log('TIMENOW is ', timenow)
-
-
-class Profile extends Component {
-
-
-    renderEditButton(userId, forOtherUser, style) {
-      if (forOtherUser) return
-      return <EditButton forOtherUser={forOtherUser} style={style} userId={userId} />
-    }
-    renderMessageButton(userId, forOtherUser, style) {
-      if (!forOtherUser) return
-      return <EditButton forOtherUser={forOtherUser} style={style} userId={userId} />
-    }
 
   render() {
-    const { forOtherUser } = this.props
+    console.log('Profile.render:', this.props)
+    const user = new UserWrapper(this.props)
+    if (user.isEmpty()) {
+      return (
+        <Container style={outterContainerStyle}>
+          <Spinner color='red' />
+        </Container>
+      )
+    }
 
-    const user = getUser(this.props) // This will not work properly, will fix it
-    const userId = getUserId(this.props)
-    const firstName = user.first_name.toUpperCase()
-    const lastName = user.last_name.charAt(0).toUpperCase()
-    const age = moment.duration(moment().diff(user.birthday)).years()
+    const userpic = user.getUserpic()
+    const about = user.getAbout()
+    const firstName = user.getFirstName().toUpperCase()
+    const lastName = user.getLastName().charAt(0).toUpperCase()
+    const age = moment.duration(moment().diff(user.getBirthday())).years()
 
     const {
       outterContainerStyle,
@@ -113,7 +132,7 @@ class Profile extends Component {
     return (
       <ScrollView style={outterContainerStyle}>
         <View style={itemsCenterFlex}>
-          <ImageView imageUrl={getUserpic(user)} />
+          <ImageView imageUrl={userpic} />
 
           <Item style={nameItemStyle}>
             <Text style={nameTextStyle}>
@@ -123,13 +142,13 @@ class Profile extends Component {
 
           <TextInput
             style={descriptionTextStyle}
-            value={user.about ? user.about : user.user_about}
+            value={about}
             editable={false}
             multiline
           />
 
-          {this.renderEditButton(userId, forOtherUser, editButtonStyle)}
-          {this.renderMessageButton(userId, forOtherUser, messageButtonStyle)}
+          {this.renderEditButton(user, editButtonStyle)}
+          {this.renderMessageButton(user, messageButtonStyle)}
 
         </View>
         <Item
@@ -138,11 +157,11 @@ class Profile extends Component {
         >
            <Thumbnail
             style={userImageSmall}
-            source={{ uri: user.images[0].image_url }}
+            source={{ uri: userpic }}
            />
         </Item>
-        <ProfileActivitiesContainer />
-        <Moments />
+        <ProfileActivitiesContainer userWrapper={user} />
+        <Moments userWrapper={user} />
       </ScrollView>
     )
   }
@@ -173,6 +192,7 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 50
   },
   imageStyle: {
     marginTop: 40,
@@ -220,5 +240,4 @@ const mapStateToProps = (state) => {
     user: state.user
   }
 }
-
 export default connect(mapStateToProps)(Profile)

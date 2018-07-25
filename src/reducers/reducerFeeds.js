@@ -44,6 +44,9 @@ function eventFeeds(state = initialFeedsState, action) {
     console.log('reducer eventFeeds', state, action)
     const mappedKey = action.payload.reduce((acc, feed) => {
       acc[feed.event_id] = { ...feed }
+      // if (acc[feed.event_id].images) {
+      //   acc[feed.event_id].images = acc[feed.event_id].images.map(image => JSON.parse(image))
+      // }
       return acc
     }, {})
     //console.log(mappedKey);

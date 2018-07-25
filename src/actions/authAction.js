@@ -3,7 +3,7 @@ import { Actions } from 'react-native-router-flux'
 import { getRequestOptions } from './actionUtils'
 
 import {
-  FETCH_USER,
+  FETCH_USER_SUCCESS,
   RESET_USER,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
@@ -17,8 +17,8 @@ import {
   REACT_APP_API_URL
 } from './types'
 
-const doLogin = (dispatch, user, token, isOtherUser) => {
-  dispatch({ type: FETCH_USER, user, isOtherUser })
+const doLogin = (dispatch, user, token) => {
+  dispatch({ type: FETCH_USER_SUCCESS, user, isOtherUser: false })
   dispatch({ type: INITIALIZE_CHAT })
   dispatch({ type: LOGIN_SUCCESS, token })
 }
@@ -34,7 +34,7 @@ const loginSubmit = (fields) => {
       const responseJSON = await response.json()
       // console.log('loginSubmit response:', response.status, responseJSON)
       if (response.status === 200) {
-        doLogin(dispatch, responseJSON.user, responseJSON.token, false)
+        doLogin(dispatch, responseJSON.user, responseJSON.token)
       } else {
         dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
       }
@@ -74,7 +74,7 @@ const verifyAccount = (token, route) => {
     const responseJSON = await response.json()
     // console.log('verifyAccount response:', response.status, responseJSON)
     if (response.status === 200) {
-      doLogin(dispatch, responseJSON.user, responseJSON.token, false)
+      doLogin(dispatch, responseJSON.user, responseJSON.token)
     } else {
       dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
     }
@@ -94,7 +94,7 @@ const verifyCode = (code, email, password = null) => {
       const responseJSON = await response.json()
       // console.log('verifyCode response:', response.status, responseJSON)
       if (response.status === 200) {
-        doLogin(dispatch, responseJSON.user, responseJSON.token, false)
+        doLogin(dispatch, responseJSON.user, responseJSON.token)
       } else {
         dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
       }

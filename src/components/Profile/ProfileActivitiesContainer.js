@@ -7,8 +7,8 @@ import { countMyAllEventFeeds } from '../../actions/actionFeeds'
 
 class ProfileActivitiesContainer extends Component {
   componentDidMount() {
-      console.log('ProfileActivitiesContainer.componentDidMount', this.props)
-      this.props.countMyAllEventFeeds(this.props.user.user, this.props.auth.token)
+    console.log('ProfileActivitiesContainer.componentDidMount', this.props)
+    this.props.countMyAllEventFeeds(this.props.userWrapper.getId(), this.props.auth.token)
   }
   render() {
     console.log('ProfileActivitiesContainer.render', this.props)
@@ -71,7 +71,6 @@ const styles = {
 }
 const mapStateToProps = (state) => {
   return {
-    user: state.user,
     auth: state.auth,
     eventFeeds: state.eventFeeds
   }
