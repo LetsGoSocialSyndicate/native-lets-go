@@ -1,45 +1,56 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
+import moment from 'moment'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { View, Image, ScrollView } from 'react-native'
+import { ScrollView } from 'react-native'
 import { Text } from 'native-base'
 
 import { CONTENT_WIDTH, CONTENT_HEIGHT } from '../common/Constants'
 import MyActivity from './MyActivity'
 import { fetchMyAllEventFeeds } from '../../actions/actionFeeds'
 
+const timestamp = (event) => moment(event.event_start_time).valueOf()
+
 class MyActivities extends Component {
   componentWillMount() {
-    this.props.fetchMyAllEventFeeds(this.props.user.user.email, this.props.auth.token)
+    this.props.fetchMyAllEventFeeds(this.props.user.user.id, this.props.auth.token)
+  }
+
+  getCurrentEvents() {
+    const now = moment()
+    return Object.values(this.props.eventFeeds)
+      .filter(event => {
+        return moment(event.event_start_time) > now
+      })
+      .sort((a, b) => timestamp(b) - timestamp(a))
   }
 
   renderActivityFeeds() {
-    if (Object.values(this.props.eventFeeds).length === 0) {
+    if (Object.values(this.getCurrentEvents()).length === 0) {
       return (
-        <Text style={ styles.textStyle }>
+        <Text style={styles.textStyle}>
           View your upcoming activities here
         </Text>
       )
     }
     return (
-      Object.values(this.props.eventFeeds)
-        .map((event) => {
-          if (event.join_request_rejected_by === null) {
-            return (
-              <MyActivity
-                activity={ event } key={ event.event_id }/>
-            )
-          }
-        })
+      this.getCurrentEvents()
+      .filter(event => event.join_request_rejected_by === null)
+      .map(event => (
+            <MyActivity
+              activity={event}
+              key={event.event_id}
+            />
+      ))
     )
   }
 
   render() {
     return (
-      <ScrollView style={ styles.containerStyle }>
+      <ScrollView style={styles.containerStyle}>
         { this.renderActivityFeeds() }
       </ScrollView>
     )
@@ -67,9 +78,10 @@ const styles = {
 
 const mapStateToProps = (state) => {
   return {
-    ...state.eventFeeds,
+    // ...state.eventFeeds,
     user: state.user,
-    auth: state.auth
+    auth: state.auth,
+    eventFeeds: state.eventFeeds.eventFeeds,
   }
 }
 

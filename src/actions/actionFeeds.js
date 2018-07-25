@@ -163,9 +163,10 @@ const updateEventImages = (userId, eventId, token, images = []) => {
     if (imageCount <= 0) {
       return
     }
-    // dispatch({ type: SAVE_USER_START })
-    // console.log('updateProfile:request:', userId, newUserInfo, images)
-    const url = `${REACT_APP_API_URL}/users/${userId}/${eventId}/images`
+    dispatch({ type: FEEDS_ACTION_START })
+
+    console.log('updateEventImages:', userId, eventId, images)
+    const url = `${REACT_APP_API_URL}/events/${userId}/${eventId}/images`
     // opts = getRequestOptions('PATCH', token, { images })
     const data = new FormData()
     images.forEach((image, index) => addImageToFormData(data, image, index))

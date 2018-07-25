@@ -37,16 +37,16 @@ const getRequestOptionsForMultipart = (method, token, body = null) => {
 
 // Packs into formData image with its attributes.
 // FormData contains two objects: fields and files. But files cannot contain
-// attributes, therefore we store the attributae as a string in counterpart
+// attributes, therefore we store the attributes as a string in counterpart
 // field.
-const addImageToFormData = (formDdata, image, index) => {
+const addImageToFormData = (formData, image, index) => {
   const key = `image_${index}`
-  formDdata.append(key, {
+  formData.append(key, {
    uri: image.image_url,
    name: `${key}.${image.image_ext}`,
    type: 'image/${image.image_ext}'
  })
- formDdata.append(
+ formData.append(
    key,
    JSON.stringify({ ext: image.image_ext, op: image.op, id: image.id })
  )

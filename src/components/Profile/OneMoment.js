@@ -10,6 +10,7 @@ import { showImagePicker } from 'react-native-image-picker'
 import { CONTENT_WIDTH } from '../common/Constants'
 import { getActivityImage, downsizeImage } from '../common/imageUtils'
 import { IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
+import { updateEventImages } from '../../actions/actionFeeds'
 
 const captain = require('../../assets/captain.png')
 const editButton = require('../../assets/buttons/editbutton.png')
@@ -19,7 +20,26 @@ const getFileExtension = (filename) => {
   return filename.split('.').pop().toLowerCase()
 }
 
+// const getEventImage = (event) => {
+//   return event && 'images' in event && event.images.length > 0
+//     ? event.images[0].image_url
+//     : getActivityImage(event_category)
+// }
+//
+// const getEventImageId = (event) => {
+//   return event && 'images' in event && event.images.length > 0
+//     ? event.images[0].id
+//     : null
+// }
+
 class OneMoment extends Component {
+  state = {
+    event: {},
+    currentImageUrl: '',
+    imageExt: '',
+    imageLoading: false,
+  }
+
   getCaptain() {
     const { imageCaptainStyle } = styles
     let source = null
@@ -39,6 +59,19 @@ class OneMoment extends Component {
   hasImages() {
     return this.props.activity.images && this.props.activity.images.length > 0
   }
+
+  // buildImageRequest() {
+  //   // For now returning array of 1 - we allow only 1 profile userpic
+  //   console.log('building request....')
+  //   return [{
+  //      op: this.state.profileImageOp,
+  //      // id: getUserpicId(this.state.user),
+  //      id: getEventImageId(this.state.activity),
+  //      image_url: this.state.currentImageUrl,
+  //      image_ext: this.state.imageExt
+  //   }]
+  // }
+
   selectImage() {
     // TODO: maybe dispatch action to indicate start loading
     //.setState({ ...this.state, imageLoading: true })
@@ -52,20 +85,24 @@ class OneMoment extends Component {
         // })
       } else {
         // Profile userpic was modified - added or updated.
-        const op = this.hasImages() ? IMAGE_OP_UPDATE : IMAGE_OP_ADD
         const imageExt = getFileExtension(response.fileName)
+        const activity = this.props.activity
+        // TODO: We shoudl know which image from the list we editing or adding
+        const imageId = activity.images && activity.images.length > 0
+            ? activity.images[0] : null
         downsizeImage(response.uri, imageExt, response.width, response.height)
         .then(([uri, ext]) => {
+          const imageRequest = [{
+             op: this.hasImages() ? IMAGE_OP_UPDATE : IMAGE_OP_ADD,
+             id: imageId,
+             image_url: uri,
+             image_ext: ext
+          }]
+          this.props.updateEventImages(
+            activity.user_id, activity.event_id, this.props.auth.token, imageRequest)
           // TODO: dispatch action to upload image
           console.log('OneMoment.downsizeImage', uri, ext)
-          // this.setState({
-          //   ...this.state,
-          //   imageLoading: false,
-          //   // currentImageUrl: `data:image/${ext};base64,${response.data}`,
-          //   currentImageUrl: uri,
-          //   imageExt: ext,
-          //   profileImageOp: op,
-          // })
+          console.log('OneMoment.downsizeImage activity', this.props.activity)
         })
       }
     })
@@ -90,9 +127,19 @@ class OneMoment extends Component {
   )
   }
 
+  getEventImage() {
+    const { event_category, images } = this.props.activity
+    console.log('OneMoment.images', images)
+    if (images && images.length > 0) {
+      return { uri: images[0].image_url }
+    } else {
+      return getActivityImage(event_category)
+    }
+  }
   render() {
-  const { event_title, event_category } = this.props.activity
-  const eventImage = getActivityImage(event_category)
+  console.log('OneMoment.render', this.props.activity)
+  const { event_title } = this.props.activity
+  const eventImage = this.getEventImage()
   const onImagePress = () => this.selectImage()
 
   const {
@@ -119,11 +166,9 @@ class OneMoment extends Component {
           {this.getCaptain()}
           <ImageBackground
             source={darkBackgroundImage}
-            style={{ width: CONTENT_WIDTH, height: 70}}
+            style={{ width: CONTENT_WIDTH, height: 70  }}
           >
-          {/* <View style={eventInfoStyle}> */}
             <Text style={eventTitleStyle}>{event_title}</Text>
-          {/* </View> */}
           </ImageBackground>
         </View>
 
@@ -178,8 +223,13 @@ const styles = {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user.user
+    user: state.user.user,
+    auth: state.auth,
   }
 }
 
-export default connect(mapStateToProps)(OneMoment)
+const actions = {
+  updateEventImages
+}
+
+export default connect(mapStateToProps, actions)(OneMoment)

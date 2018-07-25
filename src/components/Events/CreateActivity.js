@@ -7,8 +7,7 @@ import { connect } from 'react-redux'
 import { addNewEvent, setFeedsActionError } from '../../actions/actionFeeds'
 import CreateActivityForm, {
   ACTIVITY_START_TIME_FIELD,
-  ACTIVITY_END_TIME_FIELD,
-  DESCRIPTION_FIELD
+  ACTIVITY_END_TIME_FIELD
 } from './CreateActivityForm'
 import { DATETIME_SHORT_FORMAT, DATETIME_FORMAT } from '../common/Constants'
 
@@ -19,7 +18,7 @@ const formatFullDate = partialDate => {
   let currentYear = Number(moment().format('YYYY'))
   const currentMonth = Number(moment().format('MM'))
   const requestedMonth = Number(fullDate.format('MM'))
-  // This works under assumption that you cannot schedule event more than 1 year ahead
+  // This works with assumption that you cannot schedule event more than 1 year ahead
   if (requestedMonth < currentMonth) {
     currentYear += 1
   }

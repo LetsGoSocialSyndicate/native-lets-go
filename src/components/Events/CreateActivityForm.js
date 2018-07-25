@@ -15,7 +15,7 @@ import {
 import LoadingButton from '../common/LoadingButton'
 import { activityCategoriesKV, getActivityImage } from '../common/imageUtils'
 
-const submitButton = require('../../assets/buttons/submit.png')
+const submitButton = require('../../assets/buttons/done.png')
 const category = require('../../assets/createActivity/category.png')
 const defaultActivity = require('../../assets/createActivity/defaultActivity.png')
 const start = require('../../assets/createActivity/start.png')
