@@ -89,7 +89,7 @@ class OneMoment extends Component {
         const activity = this.props.activity
         // TODO: We shoudl know which image from the list we editing or adding
         const imageId = activity.images && activity.images.length > 0
-            ? activity.images[0] : null
+            ? activity.images[0].id : null
         downsizeImage(response.uri, imageExt, response.width, response.height)
         .then(([uri, ext]) => {
           const imageRequest = [{
@@ -124,7 +124,7 @@ class OneMoment extends Component {
       style={editIconStyle}
       source={editButton}
       />
-  )
+    )
   }
 
   getEventImage() {
