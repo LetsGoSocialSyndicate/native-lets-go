@@ -34,16 +34,17 @@ class ActivityFeed extends Component {
       text: `Request to join '${this.props.activity.event_title}'`,
       _id: uuid()
     }
+    const typedMessage = { ...message, type: 'joinRequest'}
     this.props.addChatMessageAction(
       chatmateId,
       false,  // isIncoming
       false,  // markAsUnread
-      message
+      typedMessage
     )
     this.props.chat.socket.emit(
       SEND_JOIN_REQUEST,
       chatmateId,
-      message
+      typedMessage
     )
   }
   onProfilePicturePress = () => {

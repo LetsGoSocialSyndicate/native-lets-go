@@ -63,16 +63,17 @@ class Chat extends Component {
     console.log('Chat.sendMessages:', messages)
     messages.forEach(message => {
       console.log('message', message)
+      const typedMessage = { ...message, type: 'directChat'}
       this.props.addChatMessageAction(
         this.props.chatmateId,
         false,  // isIncoming
         false,  // markAsUnread
-        message
+        typedMessage
       )
       this.props.chat.socket.emit(
         SEND_MESSAGE,
         this.props.chatmateId,
-        message
+        typedMessage
       )
     })
   }
