@@ -61,10 +61,10 @@ const fetchMyEventFeeds = (email, hosted, token) => {
   }
 }
 
-const fetchMyAllEventFeeds = (id, token) => {
+const fetchMyAllEventFeeds = (id, token, done) => {
   console.log('fetchMyAllEventFeeds: id', id)
   // console.log('fetchMyAllEventFeeds: token', token)
-  const url = `${REACT_APP_API_URL}/users/${id}/all`
+  const url = `${REACT_APP_API_URL}/users/${id}/${done ? 'old' : 'new'}`
   console.log('fetchMyAllEventFeeds', url)
   return async (dispatch) => {
     const opts = getRequestOptions('GET', token)

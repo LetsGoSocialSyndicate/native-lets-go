@@ -16,7 +16,8 @@ const timestamp = (event) => moment(event.event_start_time).valueOf()
 
 class MyActivities extends Component {
   componentWillMount() {
-    this.props.fetchMyAllEventFeeds(this.props.user.user.id, this.props.auth.token)
+    this.props.fetchMyAllEventFeeds(this.props.user.user.id,
+      this.props.auth.token, false)
   }
 
   getCurrentEvents() {
