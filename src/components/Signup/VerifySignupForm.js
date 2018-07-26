@@ -5,7 +5,7 @@ import React from 'react'
 import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { Item, Form } from 'native-base'
-import { Image, TouchableHighlight } from 'react-native'
+import { Image, TouchableOpacity } from 'react-native'
 import { Error, TextInputFormField } from '../common'
 
 export const VERIFICATION_CODE = 'VERIFICATION_CODE'
@@ -28,12 +28,12 @@ const VerifySignupForm = ({ handleSubmit, auth }) => {
       <Error error={auth.error} />
 
       {/* TODO add spinner here!!! */}
-      <TouchableHighlight onPress={handleSubmit}>
+      <TouchableOpacity onPress={handleSubmit}>
         <Image
           source={submitButton}
           style={buttonSubmitStyle}
         />
-      </TouchableHighlight>
+      </TouchableOpacity>
       {/* <LoadingButton loading={auth.loading} onPress={handleSubmit}>
       Verify
       </LoadingButton> */}
