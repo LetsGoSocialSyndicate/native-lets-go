@@ -3,12 +3,13 @@
  */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, ImageBackground, View, TouchableOpacity } from 'react-native'
+import { Image, ImageBackground, View } from 'react-native'
 import { Text, Item } from 'native-base'
 import { showImagePicker } from 'react-native-image-picker'
 
 import { CONTENT_WIDTH } from '../common/Constants'
-import { getActivityImage, downsizeImage } from '../common/imageUtils'
+import { getActivityImage, downsizeImage, getFileExtension } from '../common/imageUtils'
+import LoadingButton from '../common/LoadingButton'
 import { IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
 import { updateEventImages } from '../../actions/actionFeeds'
 
@@ -16,28 +17,18 @@ const captain = require('../../assets/captain.png')
 const editButton = require('../../assets/buttons/editbutton.png')
 const darkBackgroundImage = require('../../assets/assets_5.28-06.png')
 
-const getFileExtension = (filename) => {
-  return filename.split('.').pop().toLowerCase()
-}
-
 class OneMoment extends Component {
   state = {
-    event: {},
-    currentImageUrl: '',
-    imageExt: '',
     imageLoading: false,
   }
 
   getCaptain() {
-    const { imageCaptainStyle } = styles
-    let source = null
-    if (this.props.activity.event_posted_by === this.props.user.id) {
-      source = captain
-    }
+    const source = this.props.activity.event_posted_by === this.props.user.id
+      ? captain : null
     return (
       <View>
         <Image
-          style={imageCaptainStyle}
+          style={styles.imageCaptainStyle}
           source={source}
         />
       </View>
@@ -50,13 +41,13 @@ class OneMoment extends Component {
     }
     return getActivityImage(this.props.activity.event_category)
   }
+
   selectImage() {
-    // TODO: maybe dispatch action to indicate start loading
-    //.setState({ ...this.state, imageLoading: true })
+    this.setState({ ...this.state, imageLoading: true })
     showImagePicker({}, (response) => {
       console.log('OneMoment.selectImage:', response)
       if (response.didCancel) {
-        return
+        this.setState({ ...this.state, imageLoading: false })
       } else {
         // Profile userpic was modified - added or updated.
         const imageExt = getFileExtension(response.fileName)
@@ -73,10 +64,13 @@ class OneMoment extends Component {
              image_ext: ext
           }]
           this.props.updateEventImages(
-            activity.user_id, activity.event_id, this.props.auth.token, imageRequest)
-          // TODO: dispatch action to upload image
-          //console.log('OneMoment.downsizeImage', uri, ext)
-          //console.log('OneMoment.downsizeImage activity', this.props.activity)
+            activity.user_id,
+            activity.event_id,
+            this.props.auth.token,
+            imageRequest
+          ).then(() =>
+            this.setState({ ...this.state, imageLoading: false })
+          )
         })
       }
     })
@@ -86,68 +80,46 @@ class OneMoment extends Component {
     return this.props.activity.images && this.props.activity.images.length > 0
   }
 
-  renderEditIcon(props) {
-    const { editIconStyle } = styles
-    if (props.user.id !== props.activity.user_id) {
-      return (
-        <Image
-          style={{ ...editIconStyle, opacity: 0 }}
-          source={editButton}
-        />
-      )
+  renderEditButton() {
+    if (this.props.user.id !== this.props.activity.user_id) {
+      return null
     }
     return (
-      <Image
-        style={editIconStyle}
+      <LoadingButton
+        loading={this.state.imageLoading}
+        onPress={() => this.selectImage()}
         source={editButton}
+        imageStyle={styles.editIconStyle}
+        spinnerStyle={styles.editIconStyle}
       />
     )
   }
 
   render() {
-    const { event_title } = this.props.activity
+    const eventTitle = this.props.activity.event_title
     const eventImage = this.getEventImage()
-    const onImagePress = () => this.selectImage()
-
-    const {
-      containerStyle,
-      eventTitleStyle,
-      circleImageStyle,
-      fullEventImageStyle,
-      darkBackgroundStyle,
-      infoStyle,
-      col1,
-      col2,
-      col3
-    } = styles
-
     const eventImageStyle = this.hasImages()
-      ? fullEventImageStyle
-      : circleImageStyle
+      ? styles.fullEventImageStyle
+      : styles.circleImageStyle
 
     return (
-      <View style={containerStyle}>
+      <View style={styles.containerStyle}>
         <Item bordered />
-        <Image
-          style={eventImageStyle}
-          source={eventImage}
-        />
+        <Image style={eventImageStyle} source={eventImage} />
         <View>
           <ImageBackground
             source={darkBackgroundImage}
-            style={darkBackgroundStyle}
+            style={styles.darkBackgroundStyle}
           >
-            <View style={infoStyle}>
-              <View style={col1}>
+            <View style={styles.infoStyle}>
+              <View style={styles.col1}>
                 {this.getCaptain()}
               </View>
-              <View style={col2}>
-                <Text style={eventTitleStyle}>{event_title}</Text>
+              <View style={styles.col2}>
+                <Text style={styles.eventTitleStyle}>{eventTitle}</Text>
               </View>
-              <View style={col3}>
-                <TouchableOpacity onPress={onImagePress}>
-                  {this.renderEditIcon(this.props)}
-                </TouchableOpacity>
+              <View style={styles.col3}>
+                {this.renderEditButton()}
               </View>
             </View>
           </ImageBackground>

@@ -6,10 +6,10 @@ import { Image, TouchableOpacity } from 'react-native'
 import { Spinner } from 'native-base'
 
 const LoadingButton = (args) => {
-  const { loading, source, ...rest } = args
+  const { loading, spinnerStyle, source, ...rest } = args
   let { imageStyle } = args
   if (loading) {
-    return <Spinner color='red' />
+    return <Spinner style={spinnerStyle} color='red' />
   }
   if (!imageStyle) {
     imageStyle = styles.imageStyle

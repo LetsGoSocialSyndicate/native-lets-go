@@ -10,7 +10,7 @@ import { Container, Card, Form, Item } from 'native-base'
 import { updateProfile } from '../../actions/userAction'
 import { DATE_FORMAT, CONTENT_HEIGHT } from '../common/Constants'
 import { Input } from '../common'
-import { downsizeImage } from '../common/imageUtils'
+import { downsizeImage, getFileExtension } from '../common/imageUtils'
 import { IMAGE_OP_NONE, IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
 import LoadingButton from '../common/LoadingButton'
 
@@ -20,10 +20,6 @@ const submitButton = require('../../assets/buttons/done.png')
 const FIRST_NAME_FIELD = 'firstName'
 const LAST_NAME_FIELD = 'lastName'
 const BIRTHDAY_FIELD = 'birthday'
-
-const getFileExtension = (filename) => {
-  return filename.split('.').pop().toLowerCase()
-}
 
 const getUserpic = (user) => {
   return user && 'images' in user && user.images.length > 0
@@ -100,10 +96,7 @@ class ProfileEdit extends Component {
     showImagePicker({}, (response) => {
       console.log('Profile.selectImage:', response)
       if (response.didCancel) {
-        this.setState({
-          ...this.state,
-          imageLoading: false
-        })
+        this.setState({ ...this.state, imageLoading: false })
       } else {
         // Profile userpic was modified - added or updated.
         const op = getUserpicId(this.state.user) ? IMAGE_OP_UPDATE : IMAGE_OP_ADD

@@ -112,4 +112,15 @@ const downsizeImage = (uri, format, width, height) => {
     return [response.uri, compressFormat.toLowerCase()]
   })
 }
-export { activityCategories, activityCategoriesKV, getActivityImage, downsizeImage }
+
+const getFileExtension = (filename) => {
+  return filename.split('.').pop().toLowerCase()
+}
+
+export {
+  activityCategories,
+  activityCategoriesKV,
+  getActivityImage,
+  downsizeImage,
+  getFileExtension
+}

@@ -63,11 +63,10 @@ class UserWrapper {
 }
 
 const ImageView = ({ imageUrl }) => {
-  const { imageStyle } = styles
   const source = imageUrl ? { uri: imageUrl } : null
   return (
     <View>
-      <Image style={imageStyle} source={source} />
+      <Image style={styles.imageStyle} source={source} />
     </View>
   )
 }
@@ -106,7 +105,7 @@ class Profile extends Component {
     const user = new UserWrapper(this.props)
     if (user.isEmpty()) {
       return (
-        <Container style={outterContainerStyle}>
+        <Container style={styles.outterContainerStyle}>
           <Spinner color='red' />
         </Container>
       )
@@ -118,49 +117,29 @@ class Profile extends Component {
     const lastName = user.getLastName().charAt(0).toUpperCase()
     const age = moment.duration(moment().diff(user.getBirthday())).years()
 
-    const {
-      outterContainerStyle,
-      nameItemStyle,
-      nameTextStyle,
-      itemsCenterFlex,
-      descriptionTextStyle,
-      editButtonStyle,
-      messageButtonStyle,
-      userImageSmall,
-    } = styles
-
     return (
-      <ScrollView style={outterContainerStyle}>
-        <View style={itemsCenterFlex}>
+      <ScrollView style={styles.outterContainerStyle}>
+        <View style={styles.itemsCenterFlex}>
           <ImageView imageUrl={userpic} />
 
-          <Item style={nameItemStyle}>
-            <Text style={nameTextStyle}>
+          <Item style={styles.nameItemStyle}>
+            <Text style={styles.nameTextStyle}>
               {firstName} {lastName}, {age}
             </Text>
           </Item>
 
           <TextInput
-            style={descriptionTextStyle}
+            style={styles.descriptionTextStyle}
             value={about}
             editable={false}
             multiline
           />
 
-          {this.renderEditButton(user, editButtonStyle)}
-          {this.renderMessageButton(user, messageButtonStyle)}
+          {this.renderEditButton(user, styles.editButtonStyle)}
+          {this.renderMessageButton(user, styles.messageButtonStyle)}
 
         </View>
-        <Item
-          bordered
-          style={{ justifyContent: 'center' }}
-        >
-           <Thumbnail
-            style={userImageSmall}
-            source={{ uri: userpic }}
-           />
-        </Item>
-        <ProfileActivitiesContainer userWrapper={user} />
+        <ProfileActivitiesContainer userWrapper={user} userpic={userpic} />
         <Moments userWrapper={user} />
       </ScrollView>
     )
@@ -225,14 +204,7 @@ const styles = {
     backgroundColor: '#4380B0',
     borderRadius: 15,
     width: 300
-   },
-   userImageSmall: {
-     width: 55,
-     height: 55,
-     borderColor: '#fff',
-     borderWidth: 3,
-     position: 'absolute'
-   },
+   }
 }
 
 const mapStateToProps = (state) => {
