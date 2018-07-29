@@ -15,7 +15,7 @@ import { fetchMyAllEventFeeds } from '../../actions/actionFeeds'
 const timestamp = (event) => moment(event.event_start_time).valueOf()
 
 class MyActivities extends Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchMyAllEventFeeds(this.props.user.user.id,
       this.props.auth.token, false)
   }

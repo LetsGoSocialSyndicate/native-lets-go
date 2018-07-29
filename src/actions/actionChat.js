@@ -7,6 +7,7 @@ import {
   JOIN_CHAT_SUCCESS,
   FETCH_CHAT_MESSAGES_SUCCESS,
   ADD_CHAT_MESSAGE,
+  REMOVE_CHAT_MESSAGE,
   GOTO_CHAT
 } from './types'
 
@@ -42,16 +43,24 @@ const addChatMessage = (chatmateId, isIncoming, markAsUnread, message) => {
   }
 }
 
+const removeChatMessage = (chatmateId, messageId) => {
+  return (dispatch) => {
+    dispatch({ type: REMOVE_CHAT_MESSAGE, chatmateId, messageId })
+  }
+}
+
 const gotoChat = (chatmateId) => {
   return (dispatch) => {
     dispatch({ type: GOTO_CHAT, chatmateId })
   }
 }
+
 export {
   chatActionStart,
   chatActionFailed,
   joinChat,
   fetchChatMessages,
   addChatMessage,
+  removeChatMessage,
   gotoChat
 }

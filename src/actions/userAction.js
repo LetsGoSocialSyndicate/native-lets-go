@@ -23,7 +23,7 @@ const fetchOtherUser = (id, token) => {
     const opts = getRequestOptions('GET', token)
     const response = await fetch(url, opts) // eslint-disable-line no-undef
     const responseJSON = await response.json()
-    // console.log('fetchOtherUser:response:', response.status, responseJSON)
+    console.log('fetchOtherUser:response:', response.status, responseJSON)
     if (response.status === 200) {
       dispatch({
         type: FETCH_USER_SUCCESS,

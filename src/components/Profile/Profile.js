@@ -13,32 +13,42 @@ import {
   Container,
   Item,
   Spinner,
-  Text,
-  Thumbnail
+  Text
 } from 'native-base'
 import { LGButton } from '../common'
 import { CONTENT_HEIGHT } from '../common/Constants'
 import ProfileActivitiesContainer from './ProfileActivitiesContainer'
 import Moments from './Moments'
+import { fetchOtherUser } from '../../actions/userAction'
 
 class UserWrapper {
   constructor(props) {
     this.forOtherUser = props.forOtherUser
-    // WARNING: this.props.user and this.props.otherUserInfo have different
-    // structure!
-    this.user = props.forOtherUser ? props.otherUserInfo : props.user.user
+    this.hasUserInfoFormat = false
+    if (props.forOtherUser) {
+      if (props.otherUserId) {
+        this.user = props.user.otherUser
+      } else if (props.otherUserInfo) {
+        // WARNING: this.props.otherUserInfo has different
+        // structure than other two!
+        this.user = props.otherUserInfo
+        this.hasUserInfoFormat = true
+      }
+    } else {
+      this.user = props.user.user
+    }
   }
   isEmpty() {
-    return !this.user
+    return !this.user || Object.keys(this.user).length === 0
   }
   isOtherUser() {
     return this.forOtherUser
   }
   getId() {
-    return this.forOtherUser ? this.user.user_id : this.user.id
+    return this.hasUserInfoFormat ? this.user.user_id : this.user.id
   }
   getUserpic() {
-    if (this.forOtherUser) {
+    if (this.hasUserInfoFormat) {
       return this.user.user_image_url
     }
     return 'images' in this.user && this.user.images.length > 0
@@ -46,7 +56,7 @@ class UserWrapper {
       : ''
   }
   getAbout() {
-    return this.forOtherUser ? this.user.user_about : this.user.about
+    return this.hasUserInfoFormat ? this.user.user_about : this.user.about
   }
   getFirstName() {
     return this.user.first_name
@@ -72,6 +82,12 @@ const ImageView = ({ imageUrl }) => {
 }
 
 class Profile extends Component {
+
+  componentDidMount() {
+    if (this.props.otherUserId) {
+      this.props.fetchOtherUser(this.props.otherUserId, this.props.auth.token)
+    }
+  }
 
   renderEditButton(user, style) {
     if (user.isOtherUser()) {
@@ -208,8 +224,9 @@ const styles = {
 }
 
 const mapStateToProps = (state) => {
-  return {
-    user: state.user
-  }
+  return { user: state.user, auth: state.auth }
 }
-export default connect(mapStateToProps)(Profile)
+const actions = {
+  fetchOtherUser
+}
+export default connect(mapStateToProps, actions)(Profile)

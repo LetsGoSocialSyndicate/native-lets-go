@@ -13,14 +13,14 @@ import { CONTENT_WIDTH } from '../common/Constants'
 // const filterButton = require('../../assets/buttons/filter.png')
 
 class ActivityFeeds extends Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchOtherEventFeeds(this.props.user.email, this.props.token)
   }
 
   renderActivityFeeds() {
     if (Object.values(this.props.eventFeeds).length === 0) {
       return (
-        <Text style={ styles.textStyle }>
+        <Text style={styles.textStyle}>
           There are no upcoming activities
         </Text>
       )

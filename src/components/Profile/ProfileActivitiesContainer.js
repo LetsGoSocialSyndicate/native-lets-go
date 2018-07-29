@@ -1,4 +1,5 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
+/* eslint-disable radix */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
@@ -41,6 +42,8 @@ class ProfileActivitiesContainer extends Component {
         </View>
       )
     }
+    const acitivityCount =
+      parseInt(statistics.countJoined) + parseInt(statistics.countHosted)
 
     return (
       <View>
@@ -48,7 +51,7 @@ class ProfileActivitiesContainer extends Component {
         <View style={styles.numOfActivitiesStyle}>
           <View style={styles.rowStyle}>
             <View style={styles.activitiesCol1Style}>
-              <Text style={styles.numberStyle}>{statistics.countJoined}</Text>
+              <Text style={styles.numberStyle}>{acitivityCount}</Text>
               <Text style={styles.activitiesStyle}>activities</Text>
             </View>
             <View style={styles.activitiesCol2Style}>

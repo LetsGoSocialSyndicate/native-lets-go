@@ -22,26 +22,32 @@ const requestToJoinButton = require('../../assets/buttons/request_to_join.png')
 class ActivityFeed extends Component {
 
   onPressRequestToJoin = () => {
-    const { user_id, event_id } = this.props.activity
-    this.props.handleRequest(event_id, user_id, this.props.auth.token)
-    const chatmateId = this.props.activity.event_posted_by
+    const { event_id, event_posted_by, event_title } = this.props.activity
+    this.props.handleRequest(event_id, this.props.auth.token)
+    const chatmateId = event_posted_by
     const message = createChatMessage(
       this.props.user,
-      `Request to join '${this.props.activity.event_title}'`
+      `Request to join '${event_title}'`
     )
-    const typedMessage = { ...message, type: MESSAGE_TYPE_JOIN_REQUEST }
+    const typedMessage = {
+      ...message,
+      eventId: event_id,
+      type: MESSAGE_TYPE_JOIN_REQUEST
+    }
     console.log('onPressRequestToJoin', chatmateId, typedMessage)
-    this.props.addChatMessageAction(
-      chatmateId,
-      false,  // isIncoming
-      false,  // markAsUnread
-      typedMessage
-    )
+    // Not needed since we do not show outgoing requests for now.
+    // this.props.addChatMessageAction(
+    //   chatmateId,
+    //   false,  // isIncoming
+    //   false,  // markAsUnread
+    //   typedMessage
+    // )
     this.props.chat.socket.emit(
       SEND_JOIN_REQUEST,
       chatmateId,
       typedMessage
     )
+    Actions.myActivities({ origin: 'ActivityFeed' })
   }
   onProfilePicturePress = () => {
     console.log('this.props.activity', this.props.activity)

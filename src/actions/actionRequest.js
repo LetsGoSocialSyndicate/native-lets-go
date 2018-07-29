@@ -1,48 +1,68 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
 import {
   REQUEST_SUBMIT,
-  HOST_VIEW_REQUEST,
   REACT_APP_API_URL,
   ACCEPT_REQUEST_TO_JOIN,
   REJECT_REQUEST_TO_JOIN
 } from './types'
 import { getRequestOptions } from './actionUtils'
 
-const handleRequest = (e_id, u_id, token) => {
-  // console.log('i am here in the handleRequest')
+const handleRequest = (eventId, token) => {
   return async (dispatch) => {
-    // console.log('this is event id', e_id)
-    // console.log('this is user id', u_id)
-
-    const url = `${REACT_APP_API_URL}/events/request/${e_id}`
+    const url = `${REACT_APP_API_URL}/events/request/${eventId}`
     const opts = getRequestOptions('POST', token)
-    const response = await fetch(url, opts)
-    if (response.status === 200) {
-      const responseJSON = await response.json()
-
-      dispatch({type: REQUEST_SUBMIT, userId: u_id})
+    try {
+      const response = await fetch(url, opts) // eslint-disable-line no-undef
+      // const responseJSON = await response.json()
+      // console.log('handleRequest response:', response.status, responseJSON)
+      if (response.status === 200) {
+        dispatch({ type: REQUEST_SUBMIT })
+      } else {
+        // TODO: handle error
+      }
+    } catch (error) {
+      // TODO: handle error
     }
   }
 }
 
-const hostViewRequest = (history) => {
-  return (dispatch) => {
-    dispatch({ type: HOST_VIEW_REQUEST })
-    if (history) {
-      history.push('/:email/hosted')
+const acceptRequest = (eventId, requestorId, token) => {
+  return async (dispatch) => {
+    const url = `${REACT_APP_API_URL}/events/accept/${eventId}/${requestorId}`
+    const opts = getRequestOptions('PATCH', token)
+    try {
+      const response = await fetch(url, opts) // eslint-disable-line no-undef
+      // const responseJSON = await response.json()
+      // console.log('acceptRequest response:', response.status, responseJSON)
+      if (response.status === 200) {
+        dispatch({ type: ACCEPT_REQUEST_TO_JOIN })
+        // TODO: delete from messages?
+      } else {
+        // TODO: handle error
+      }
+    } catch (error) {
+      // TODO: handle error
     }
   }
 }
 
-const acceptRequest = (e_id, u_id, token) => {
-  return (dispatch) => {
-    dispatch({ type: ACCEPT_REQUEST_TO_JOIN })
-  }
-}
-
-const rejectRequest = (e_id, u_id, token) => {
-  return (dispatch) => {
-    dispatch({ type: REJECT_REQUEST_TO_JOIN })
+const rejectRequest = (eventId, requestorId, token) => {
+  return async (dispatch) => {
+    const url = `${REACT_APP_API_URL}/events/reject/${eventId}/${requestorId}`
+    const opts = getRequestOptions('PATCH', token)
+    try {
+      const response = await fetch(url, opts) // eslint-disable-line no-undef
+      // const responseJSON = await response.json()
+      // console.log('acceptRequest response:', response.status, responseJSON)
+      if (response.status === 200) {
+        dispatch({ type: REJECT_REQUEST_TO_JOIN })
+        // TODO: delete from messages?
+      } else {
+        // TODO: handle error
+      }
+    } catch (error) {
+      // TODO: handle error
+    }
   }
 }
 

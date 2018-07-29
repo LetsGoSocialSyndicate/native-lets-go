@@ -12,6 +12,7 @@ import {
   JOIN_CHAT_SUCCESS,
   FETCH_CHAT_MESSAGES_SUCCESS,
   ADD_CHAT_MESSAGE,
+  REMOVE_CHAT_MESSAGE,
   GOTO_CHAT,
   REACT_APP_API_URL
 } from '../actions/types'
@@ -35,10 +36,11 @@ const INITIAL_STATE = {
   //     timestamp,   // (millis since epoch) of last sent/received messages
   //     snippet,     // possibly shortened last message
   //     isIncoming,  // whether this message is incoming or outgoing
+  //     id,          // message id
   //   }
   chatmates: {},
   // object where keys are chatmateIds and
-  // values are arrays of messages: { _id, text, createdAt, type, user}
+  // values are arrays of messages: { _id, text, createdAt, type, eventId, user}
   messages: {},
   error: null,
   loading: false,
@@ -85,6 +87,16 @@ const hasUnreadMessages = chatmates => {
   return chatmatesWithUnreadMessages.length > 0
 }
 
+const buildLastMessage = (lastMessageTimestamp, isIncoming, message) => {
+  return {
+    timestamp: lastMessageTimestamp,
+    snippet: trimMessage(message.text),
+    isIncoming,
+    type: message.type,
+    id: message.id
+  }
+}
+
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case INITIALIZE_CHAT: { // type
@@ -126,12 +138,11 @@ export default (state = INITIAL_STATE, action) => {
           messagesFetched: false,
           unreadCount: 0,
           partial: false,
-          lastMessage: {
-            timestamp: timestamp(chatmate.lastMessage.createdAt),
-            snippet: trimMessage(chatmate.lastMessage.text),
-            type: chatmate.lastMessage.type,
-            isIncoming: chatmate.lastMessage.isIncoming,
-          }
+          lastMessage: buildLastMessage(
+            timestamp(chatmate.lastMessage.createdAt),
+            chatmate.lastMessage.isIncoming,
+            chatmate.lastMessage
+          )
         }
       })
       return {
@@ -166,12 +177,9 @@ export default (state = INITIAL_STATE, action) => {
       if (messages[chatmateId].length > 0) {
         const latestMessage = messages[chatmateId][0]
         const isIncoming = latestMessage.user._id === chatmateId
-        lastMessage = {
-          timestamp: timestamp(latestMessage.createdAt),
-          snippet: trimMessage(latestMessage.text),
-          isIncoming,
-          type: latestMessage.type
-        }
+        lastMessage = buildLastMessage(
+          timestamp(latestMessage.createdAt), isIncoming, latestMessage
+        )
       }
 
       // Mark the chatmate that he got previous messages from server
@@ -210,24 +218,18 @@ export default (state = INITIAL_STATE, action) => {
           messagesFetched: false,
           partial,
           unreadCount: action.markAsUnread ? 1 : 0,
-          lastMessage: {
-            timestamp: lastMessageTimestamp,
-            snippet: trimMessage(action.message.text),
-            isIncoming: action.isIncoming,
-            type: action.message.type
-          }
+          lastMessage: buildLastMessage(
+            lastMessageTimestamp, action.isIncoming, action.message
+          )
         }
       } else {
         // For existing messages, update last message and unread count.
         const chatmate = chatmates[action.chatmateId]
         let lastMessage = chatmate.lastMessage
         if (!lastMessage || lastMessageTimestamp > lastMessage.timestamp) {
-          lastMessage = {
-            timestamp: lastMessageTimestamp,
-            snippet: trimMessage(action.message.text),
-            isIncoming: action.isIncoming,
-            type: action.message.type
-          }
+          lastMessage = buildLastMessage(
+            lastMessageTimestamp, action.isIncoming, action.message
+          )
         }
         const unreadCount = action.markAsUnread
           ? chatmate.unreadCount + 1 : chatmate.unreadCount
@@ -252,6 +254,49 @@ export default (state = INITIAL_STATE, action) => {
         chatmates,
         messages,
         hasUnread: hasUnreadMessages(chatmates)
+      }
+    }
+    case REMOVE_CHAT_MESSAGE: { // type, chatmateId, messageId
+      console.log('messages reducer:', action, state)
+
+      // Remove message with matching id
+      const messages = { ...state.messages }
+      if (action.chatmateId in messages) {
+        messages[action.chatmateId] = messages[action.chatmateId].filter(
+          message => message._id !== action.messageId
+        )
+      }
+
+      // Update last message of the chatmate (in case the removed message is
+      // the last one)
+      let chatmates = state.chatmates
+      if (action.chatmateId in state.chatmates) {
+        const chatmate = state.chatmates[action.chatmateId]
+        if (chatmate.lastMessage && chatmate.lastMessage.id === action.messageId) {
+          let lastMessage = chatmate.lastMessage
+          if (messages[action.chatmateId].length > 0) {
+            const latestMessage = messages[action.chatmateId][0]
+            const isIncoming = latestMessage.user._id === action.chatmateId
+            lastMessage = buildLastMessage(
+              timestamp(latestMessage.createdAt), isIncoming, latestMessage
+            )
+          } else {
+            lastMessage = null
+          }
+          chatmates = {
+            ...state.chatmates,
+            chatmateId: { ...chatmate, lastMessage }
+          }
+        }
+      }
+
+      // NOTE: Not updating unread state, hopefully REMOVE_CHAT_MESSAGE
+      // will come only from chat window so shoud be no undread messages.
+
+      return {
+        ...state,
+        messages,
+        chatmates
       }
     }
     case GOTO_CHAT: { // type, chatmateId

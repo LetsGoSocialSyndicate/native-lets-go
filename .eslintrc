@@ -3,5 +3,5 @@
   "rules": {
     "arrow-body-style": 0,
     "semi": ["error", "never"]
-    }
+  }
 }
