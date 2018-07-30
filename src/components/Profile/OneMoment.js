@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, ImageBackground, View } from 'react-native'
+import { FlatList, Image, ImageBackground, View } from 'react-native'
 import { Text, Item } from 'native-base'
 import { showImagePicker } from 'react-native-image-picker'
 
@@ -17,12 +17,26 @@ const captain = require('../../assets/captain.png')
 const editButton = require('../../assets/buttons/editbutton.png')
 const darkBackgroundImage = require('../../assets/assets_5.28-06.png')
 
+// This has to be defined once in order to be used in onViewableItemsChanged()
+// 80 - means the image has to be at least 80% visible on the screen in order to
+// be included in viewableItems.
+const viewabilityConfig = { itemVisiblePercentThreshold: 80 }
+
 class OneMoment extends Component {
   state = {
     imageLoading: false,
+    imageIndex: -1,  // i.e. start with invalid index
   }
 
-  getCaptain() {
+  onViewableItemsChanged = ({ viewableItems }) => {
+    if (viewableItems.length === 1) {
+      this.setState({ ...this.state, imageIndex: viewableItems[0].index })
+    } else {
+      this.setState({ ...this.state, imageIndex: -1 })
+    }
+  }
+
+  getCaptain = () => {
     const source = this.props.activity.event_posted_by === this.props.user.id
       ? captain : null
     return (
@@ -35,14 +49,14 @@ class OneMoment extends Component {
     )
   }
 
-  getEventImage() {
-    if (this.hasImages()) {
-      return { uri: this.props.activity.images[0].image_url }
-    }
-    return getActivityImage(this.props.activity.event_category)
+  isReadOnly = () => {
+    return this.props.user.id !== this.props.activity.user_id
   }
 
-  selectImage() {
+  selectImage = () => {
+    if (this.state.imageIndex === -1) {
+      return
+    }
     this.setState({ ...this.state, imageLoading: true })
     showImagePicker({}, (response) => {
       console.log('OneMoment.selectImage:', response)
@@ -52,13 +66,16 @@ class OneMoment extends Component {
         // Profile userpic was modified - added or updated.
         const imageExt = getFileExtension(response.fileName)
         const activity = this.props.activity
-        // TODO: We shoudl know which image from the list we editing or adding
-        const imageId = activity.images && activity.images.length > 0
-            ? activity.images[0].id : null
+        const images = activity.images || []
+        // For now last image is always placeholder.
+        const op = this.state.imageIndex < images.length
+          ? IMAGE_OP_UPDATE : IMAGE_OP_ADD
+        const imageId = this.state.imageIndex < images.length
+          ? activity.images[this.state.imageIndex].id : null
         downsizeImage(response.uri, imageExt, response.width, response.height)
         .then(([uri, ext]) => {
           const imageRequest = [{
-             op: this.hasImages() ? IMAGE_OP_UPDATE : IMAGE_OP_ADD,
+             op,
              id: imageId,
              image_url: uri,
              image_ext: ext
@@ -76,12 +93,8 @@ class OneMoment extends Component {
     })
   }
 
-  hasImages() {
-    return this.props.activity.images && this.props.activity.images.length > 0
-  }
-
-  renderEditButton() {
-    if (this.props.user.id !== this.props.activity.user_id) {
+  renderEditButton = () => {
+    if (this.isReadOnly()) {
       return null
     }
     return (
@@ -95,17 +108,45 @@ class OneMoment extends Component {
     )
   }
 
+  renderItem = ({ item }) => {
+    return (
+       <View style={styles.containerStyle}>
+         <Image style={item.style} source={item.source} />
+       </View>
+     )
+  }
+
   render() {
     const eventTitle = this.props.activity.event_title
-    const eventImage = this.getEventImage()
-    const eventImageStyle = this.hasImages()
-      ? styles.fullEventImageStyle
-      : styles.circleImageStyle
+    const images = this.props.activity.images || []
+    const imageItems = images.map(image => {
+      return {
+        source: { uri: image.image_url },
+        style: styles.fullEventImageStyle
+      }
+    })
+    // TODO: For now in writable mode, always put in the end push the activity
+    // icon. Maybe later change UI to add it only if no images present. However
+    // this woudl require to define way how to add image when there are existing
+    if (images.length === 0 || !this.isReadOnly()) {
+      imageItems.push({
+        source: getActivityImage(this.props.activity.event_category),
+        style: styles.circleImageStyle
+      })
+    }
 
     return (
       <View style={styles.containerStyle}>
         <Item bordered />
-        <Image style={eventImageStyle} source={eventImage} />
+        <FlatList
+           horizontal
+           showsHorizontalScrollIndicator={false}
+           onViewableItemsChanged={this.onViewableItemsChanged}
+           viewabilityConfig={viewabilityConfig}
+           data={imageItems}
+           renderItem={this.renderItem}
+           keyExtractor={(item, index) => index.toString()}
+        />
         <View>
           <ImageBackground
             source={darkBackgroundImage}

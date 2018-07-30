@@ -1,5 +1,4 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
-import moment from 'moment'
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import { Text } from 'native-base'
@@ -8,24 +7,15 @@ import OneMoment from './OneMoment'
 import { CONTENT_WIDTH } from '../common/Constants'
 import { fetchMyAllEventFeeds } from '../../actions/actionFeeds'
 
-const timestamp = (event) => moment(event.event_start_time).valueOf()
-
 class Moments extends Component {
   componentDidMount() {
     this.props.fetchMyAllEventFeeds(this.props.userWrapper.getId(),
       this.props.auth.token, true)
   }
 
-  getCurrentEvents() {
-    const now = moment()
-    return Object.values(this.props.eventFeeds)
-      .filter(event =>
-        moment(event.event_start_time) < now)
-        .sort((a, b) => timestamp(b) - timestamp(a))
-  }
-
   renderActivityFeeds() {
-    if (Object.values(this.getCurrentEvents()).length === 0) {
+    const eventFeeds = Object.values(this.props.eventFeeds)
+    if (eventFeeds.length === 0) {
       return (
         <Text style={styles.textStyle}>
           Join or create activities to grow your Moments
@@ -33,11 +23,8 @@ class Moments extends Component {
       )
     }
     return (
-      this.getCurrentEvents().map(event => (
-        <OneMoment
-          key={event.event_id}
-          activity={event}
-        />
+      eventFeeds.map(event => (
+        <OneMoment key={event.event_id} activity={event} />
       ))
     )
   }

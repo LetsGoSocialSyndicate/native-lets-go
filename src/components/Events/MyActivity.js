@@ -1,13 +1,14 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
+ /* eslint-disable camelcase */
+ import moment from 'moment'
 import React, { Component } from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { View, Image } from 'react-native'
 import { Text, Item } from 'native-base'
-
 import { getActivityImage } from '../common/imageUtils'
+
 const requestSent = require('../../assets/request-sent.png')
 const requestAccepted = require('../../assets/request-accepted.png')
 const captained = require('../../assets/captain.png')
@@ -21,20 +22,14 @@ class MyActivity extends Component {
     const { eventStatusImageStyle } = styles
     if (id === event_posted_by) {
       // hosting
-      return (
-        <Image style={ eventStatusImageStyle } source={ captained } />
-      )
-    }
-    else if (id === join_requested_by) {
+      return <Image style={eventStatusImageStyle} source={captained} />
+    } else if (id === join_requested_by) {
       // participating
       if (join_request_accepted_by === null &&
           join_request_rejected_by === null) {
-        return (
-          <Image style={ eventStatusImageStyle } source={ requestSent } />
-        )
-      }
-      else if (join_request_accepted_by !== null) {
-
+        return <Image style={eventStatusImageStyle} source={requestSent} />
+      } else if (join_request_accepted_by !== null) {
+        return <Image style={eventStatusImageStyle} source={requestAccepted} />
       }
     }
   }
@@ -44,26 +39,22 @@ class MyActivity extends Component {
       event_start_time, user_image_url,
       event_location, event_title, event_category
     } = this.props.activity
-    const eventDate = {
-      date: new Date(event_start_time).toDateString().substr(4,7),
-      time: (event_start_time).substr(11,5)
-    }
-    const { containerStyle, eventImageStyle,
-      crewImageStyle, crewContainer,
-      eventInfoStyle, textStyle, eventTitleStyle
-    } = styles
+    const eventDateTime = moment(event_start_time)
+    const eventDate = eventDateTime.format('MMM DD')
+    const eventTime = eventDateTime.format('HH:mm')
     const eventImage = getActivityImage(event_category)
     return (
       <View>
-        <View style={ containerStyle }>
-          <Image style={ eventImageStyle } source={ eventImage } />
-          <View style={ eventInfoStyle }>
-            <Text style={ eventTitleStyle }>{ event_title }</Text>
-            <Text style={ textStyle }>{ `on ${eventDate.date} at ${eventDate.time}` }</Text>
-            <Text style={ textStyle }>{ event_location }</Text>
-            <View style={ crewContainer }>
-              <Text style={ textStyle }>Crew: </Text>
-              <Image style={ crewImageStyle } source={{ uri: user_image_url }} />
+        <View style={styles.containerStyle}>
+          <Image style={styles.eventImageStyle} source={eventImage} />
+          <View style={styles.eventInfoStyle}>
+            <Text style={styles.eventTitleStyle}>{event_title}</Text>
+            <Text style={styles.textStyle}>{`on ${eventDate} at ${eventTime}`}</Text>
+            <Text style={styles.textStyle}>{event_location}</Text>
+            <View style={styles.crewContainer}>
+              {/* TODO: Add all crew, maybe server resposne should already contani this */}
+              <Text style={styles.textStyle}>Crew: </Text>
+              <Image style={styles.crewImageStyle} source={{ uri: user_image_url }} />
             </View>
           </View>
           <View>
@@ -71,7 +62,7 @@ class MyActivity extends Component {
           </View>
         </View>
         <Item bordered>
-          <Text></Text>
+          <Text />
         </Item>
       </View>
     )
@@ -133,5 +124,4 @@ const styles = {
 const mapStateToProps = (state) => {
   return { ...state.user }
 }
-
 export default connect(mapStateToProps)(MyActivity)
