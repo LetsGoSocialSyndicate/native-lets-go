@@ -66,6 +66,7 @@ export default (state = INITIAL_STATE, action) => {
     return {
       ...state,
       isUserLoggedIn: false,
+      loading: false,
       token: null
     }
   default:

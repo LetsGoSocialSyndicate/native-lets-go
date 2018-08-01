@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>lets_go_the_app.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>armv7</string>
+				<string>arm64</string>
+			</array>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>D33383829AED9BDEF2B7261E03327BF611407569</string>
+				<key>dateExpires</key>
+				<string>7/31/19</string>
+				<key>type</key>
+				<string>iOS Development</string>
+			</dict>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>6J33RU6PF7.com.socializingsyndicatecorporation.letsgotheapp</string>
+				<key>aps-environment</key>
+				<string>development</string>
+				<key>com.apple.developer.default-data-protection</key>
+				<string>NSFileProtectionComplete</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>6J33RU6PF7</string>
+				<key>get-task-allow</key>
+				<true/>
+			</dict>
+			<key>name</key>
+			<string>lets_go_the_app.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>942d573a-5c34-40fe-9c02-6ea6559c51e8</string>
+				<key>name</key>
+				<string>iOS Team Provisioning Profile: com.socializingsyndicatecorporation.letsgotheapp</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>6J33RU6PF7</string>
+				<key>name</key>
+				<string>Socializing Syndicate Corporation</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

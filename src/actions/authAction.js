@@ -1,4 +1,5 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
+import * as Keychain from 'react-native-keychain'
 import { Actions } from 'react-native-router-flux'
 import { getRequestOptions } from './actionUtils'
 
@@ -17,7 +18,11 @@ import {
   REACT_APP_API_URL
 } from './types'
 
-const doLogin = (dispatch, user, token) => {
+const doLogin = async (dispatch, user, token, storeToken = true) => {
+  // console.log('doLogin:', user, token, storeToken)
+  if (storeToken) {
+    await Keychain.setGenericPassword(user.id, token)
+  }
   dispatch({ type: FETCH_USER_SUCCESS, user, isOtherUser: false })
   dispatch({ type: INITIALIZE_CHAT })
   dispatch({ type: LOGIN_SUCCESS, token })
@@ -34,12 +39,52 @@ const loginSubmit = (fields) => {
       const responseJSON = await response.json()
       // console.log('loginSubmit response:', response.status, responseJSON)
       if (response.status === 200) {
-        doLogin(dispatch, responseJSON.user, responseJSON.token)
+        await doLogin(dispatch, responseJSON.user, responseJSON.token)
       } else {
         dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
       }
     } catch (error) {
       dispatch({ type: LOGIN_FAILED, error: error.message })
+    }
+  }
+}
+
+const autoLogin = () => {
+  return async (dispatch) => {
+    dispatch({ type: AUTH_STARTED })
+    try {
+      // Retreive the credentials
+      const credentials = await Keychain.getGenericPassword()
+      if (credentials) {
+        let url = `${REACT_APP_API_URL}/login/refresh`
+        let opts = getRequestOptions('GET', credentials.password)
+        let response = await fetch(url, opts) // eslint-disable-line no-undef
+        let responseJSON = await response.json()
+        // console.log('autoLogin:refresh:response:', response.status, responseJSON)
+        if (response.status !== 200) {
+          console.log('autoLogin refresh failed:', responseJSON)
+          dispatch({ type: LOGOUT })
+          return
+        }
+        const token = responseJSON.token
+        url = `${REACT_APP_API_URL}/users/${credentials.username}`
+        opts = getRequestOptions('GET', token)
+        response = await fetch(url, opts) // eslint-disable-line no-undef
+        responseJSON = await response.json()
+        // console.log('autoLogin:user:response:', response.status, responseJSON)
+        if (response.status === 200) {
+          await doLogin(dispatch, responseJSON, token, false)
+        } else {
+          console.log('autoLogin user failed:', responseJSON)
+          dispatch({ type: LOGOUT })
+        }
+      } else {
+        console.log('autoLogin failed: no cached token')
+        dispatch({ type: LOGOUT })
+      }
+    } catch (error) {
+      console.log('autoLogin failed: Keychain error')
+      dispatch({ type: LOGOUT })
     }
   }
 }
@@ -74,7 +119,7 @@ const verifyAccount = (token, route) => {
     const responseJSON = await response.json()
     // console.log('verifyAccount response:', response.status, responseJSON)
     if (response.status === 200) {
-      doLogin(dispatch, responseJSON.user, responseJSON.token)
+      await doLogin(dispatch, responseJSON.user, responseJSON.token)
     } else {
       dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
     }
@@ -94,7 +139,7 @@ const verifyCode = (code, email, password = null) => {
       const responseJSON = await response.json()
       // console.log('verifyCode response:', response.status, responseJSON)
       if (response.status === 200) {
-        doLogin(dispatch, responseJSON.user, responseJSON.token)
+        await doLogin(dispatch, responseJSON.user, responseJSON.token)
       } else {
         dispatch({ type: LOGIN_FAILED, error: responseJSON.message })
       }
@@ -127,7 +172,8 @@ const sendCodeForPassword = (email) => {
 }
 
 const logout = () => {
-  return (dispatch) => {
+  return async (dispatch) => {
+    await Keychain.resetGenericPassword()
     dispatch({ type: LOGOUT })
     dispatch({ type: RESET_USER })
     dispatch({ type: RESET_CHAT })
@@ -149,6 +195,7 @@ const resetAuthError = () => {
 
 export {
   loginSubmit,
+  autoLogin,
   signupSubmit,
   verifyAccount,
   verifyCode,

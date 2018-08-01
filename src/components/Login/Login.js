@@ -1,10 +1,10 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
-import React from 'react'
+import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import { Image } from 'react-native'
-import { Container } from 'native-base'
-import { loginSubmit } from '../../actions/authAction'
+import { Container, Spinner } from 'native-base'
+import { loginSubmit, autoLogin } from '../../actions/authAction'
 import LoginForm from './LoginForm'
 import { LGButton } from '../common'
 import { CONTENT_HEIGHT } from '../common/Constants'
@@ -16,43 +16,52 @@ const onSubmit = (action, fields) => {
 
 const loginTitleImage = require('../../assets/loginIcons/loginTitle.png')
 
-const Login = ({ loginAction }) => {
-  const action = (fields) => onSubmit(loginAction, fields)
-  const {
-    buttonsContainer,
-    titleStyle,
-    containerStyle,
-    titleContainerStyle
-  } = styles
+class Login extends Component {
+  componentDidMount() {
+    this.props.autoLogin()
+  }
 
-  return (
-    <Container style={containerStyle}>
-      <Container style={titleContainerStyle}>
-        <Image
-          source={loginTitleImage}
-          style={titleStyle}
-        />
+  render() {
+    if (this.props.auth.loading) {
+      return (
+        <Container>
+          <Spinner color='red' />
+        </Container>
+      )
+    }
+
+    const action = (fields) => onSubmit(this.props.loginSubmit, fields)
+
+    return (
+      <Container style={styles.containerStyle}>
+        <Container style={styles.titleContainerStyle}>
+          <Image
+            source={loginTitleImage}
+            style={styles.titleStyle}
+          />
+        </Container>
+
+        <LoginForm onSubmit={action} />
+
+        <Container style={styles.buttonsContainer}>
+          <LGButton
+            onPress={() => {
+              Actions.forgotPassword({ origin: 'Login' })
+            }}
+            buttonText="forgot password?"
+          />
+          <LGButton
+            onPress={() => {
+              Actions.signup({ origin: 'Login' })
+            }}
+            buttonText="signup"
+          />
+        </Container>
       </Container>
-
-      <LoginForm onSubmit={action} />
-
-      <Container style={buttonsContainer}>
-        <LGButton
-          onPress={() => {
-            Actions.forgotPassword({ origin: 'Login' })
-          }}
-          buttonText="forgot password?"
-        />
-        <LGButton
-          onPress={() => {
-            Actions.signup({ origin: 'Login' })
-          }}
-          buttonText="signup"
-        />
-      </Container>
-    </Container>
-  )
+    )
+  }
 }
+
 const styles = {
   containerStyle: {
     backgroundColor: 'transparent',
@@ -77,8 +86,10 @@ const styles = {
   }
 }
 
-
-const actions = {
-  loginAction: loginSubmit,
+const mapStateToProps = (state) => {
+  return { auth: state.auth }
 }
-export default connect(null, actions)(Login)
+const actions = {
+  autoLogin, loginSubmit
+}
+export default connect(mapStateToProps, actions)(Login)

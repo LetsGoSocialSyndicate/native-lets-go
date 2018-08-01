@@ -5,8 +5,9 @@ import moment from 'moment'
 import React from 'react'
 import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
+import { ScrollView } from 'react-native'
 import { Form, Item } from 'native-base'
-import { DATE_FORMAT } from '../common/Constants'
+import { DATE_FORMAT, CONTENT_HEIGHT } from '../common/Constants'
 import {
   DatePickerInputFormField,
   Error,
@@ -33,83 +34,89 @@ import {
    errorItemStyle,
   } = styles
   return (
-    <Form style={formStyle}>
-      <Item style={itemStyle}>
-        <TextInputFormField
-        name={FIRST_NAME_FIELD}
-        placeholder='first name'
-        />
-      </Item>
+    <ScrollView style={styles.outterContainerStyle}>
+      <Form style={formStyle}>
+        <Item style={itemStyle}>
+          <TextInputFormField
+          name={FIRST_NAME_FIELD}
+          placeholder='first name'
+          />
+        </Item>
 
-      <Item style={itemStyle}>
-        <TextInputFormField
-         name={LAST_NAME_FIELD}
-         placeholder='last name'
-        />
-      </Item>
-      <Item style={{ ...itemStyle, marginLeft: 48 }}>
-       <DatePickerInputFormField
-         name={BIRTHDAY_FIELD}
-         placeholder='select birthday'
-         maxDate={moment().utc().subtract(18, 'years').format(DATE_FORMAT)}
-       />
-      </Item>
-      <Item style={itemStyle}>
-        <PickerSelectInputFormFieldGender
-          name={GENDER_FIELD}
-          placeholder={{ label: 'select gender', value: null }}
-          items={[
-            { label: 'male',
-              value: 'male',
-              key: 'male'
-            },
-            { label: 'female',
-              value: 'female',
-              key: 'female'
-            }]}
-          hideIcon
-          hideDoneBar
-        />
-      </Item>
-      <Item style={itemStyle}>
-         <TextInputFormField
-           name={EMAIL_FIELD}
-           placeholder='university email'
+        <Item style={itemStyle}>
+          <TextInputFormField
+           name={LAST_NAME_FIELD}
+           placeholder='last name'
+          />
+        </Item>
+        <Item style={{ ...itemStyle, marginLeft: 48 }}>
+         <DatePickerInputFormField
+           name={BIRTHDAY_FIELD}
+           placeholder='select birthday'
+           maxDate={moment().utc().subtract(18, 'years').format(DATE_FORMAT)}
          />
-      </Item>
-      <Item style={itemStyle}>
-         <TextInputFormField
-           name={PASSWORD_FIELD}
-           secureTextEntry
-           placeholder='password'
-         />
-      </Item>
-      <Item style={itemStyle}>
-         <TextInputFormField
-           name={PASSWORD2_FIELD}
-           secureTextEntry
-           placeholder='confirm password'
-         />
-      </Item>
+        </Item>
+        <Item style={itemStyle}>
+          <PickerSelectInputFormFieldGender
+            name={GENDER_FIELD}
+            placeholder={{ label: 'select gender', value: null }}
+            items={[
+              { label: 'male',
+                value: 'male',
+                key: 'male'
+              },
+              { label: 'female',
+                value: 'female',
+                key: 'female'
+              }]}
+            hideIcon
+            hideDoneBar
+          />
+        </Item>
+        <Item style={itemStyle}>
+           <TextInputFormField
+             name={EMAIL_FIELD}
+             placeholder='university email'
+           />
+        </Item>
+        <Item style={itemStyle}>
+           <TextInputFormField
+             name={PASSWORD_FIELD}
+             secureTextEntry
+             placeholder='password'
+           />
+        </Item>
+        <Item style={itemStyle}>
+           <TextInputFormField
+             name={PASSWORD2_FIELD}
+             secureTextEntry
+             placeholder='confirm password'
+           />
+        </Item>
 
-      <Item style={errorItemStyle}>
-        <Error
-          error={auth.error}
-        />
-      </Item>
+        <Item style={errorItemStyle}>
+          <Error
+            error={auth.error}
+          />
+        </Item>
 
-      <LoadingButton
-        loading={auth.loading}
-        onPress={handleSubmit}
-        style={buttonSubmitStyle}
-        transparent
-        source={submitButton}
-      />
-    </Form>
+        <LoadingButton
+          loading={auth.loading}
+          onPress={handleSubmit}
+          style={buttonSubmitStyle}
+          transparent
+          source={submitButton}
+        />
+      </Form>
+    </ScrollView>
    )
  }
 
  const styles = {
+   outterContainerStyle: {
+     backgroundColor: 'transparent',
+     height: CONTENT_HEIGHT,
+   },
    buttonSubmitStyle: {
      width: 150,
      height: 80,

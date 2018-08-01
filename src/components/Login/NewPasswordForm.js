@@ -50,8 +50,8 @@ const NewPasswordForm = ({ handleSubmit, auth }) => {
          transparent
          loading={auth.loading}
          onPress={handleSubmit}
+         source={submitButton}
        >
-         <Image source={submitButton} style={buttonSubmitImageStyle} />
        </LoadingButton>
      </Form>
     )
@@ -70,7 +70,7 @@ const NewPasswordForm = ({ handleSubmit, auth }) => {
       width: 150,
       height: 50,
       alignSelf: 'center',
-      marginTop: 10
+      marginTop: 35
     },
     buttonSubmitImageStyle: {
       width: 150,
