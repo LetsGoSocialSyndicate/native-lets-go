@@ -11,6 +11,7 @@ const handleRequest = (eventId, token) => {
   return async (dispatch) => {
     const url = `${REACT_APP_API_URL}/events/request/${eventId}`
     const opts = getRequestOptions('POST', token)
+    console.log('handleRequest url:', url)
     try {
       const response = await fetch(url, opts) // eslint-disable-line no-undef
       // const responseJSON = await response.json()

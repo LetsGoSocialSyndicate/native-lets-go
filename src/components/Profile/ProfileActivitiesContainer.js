@@ -1,29 +1,32 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
 /* eslint-disable radix */
+import { Item, Spinner, Text, Thumbnail } from 'native-base'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { View } from 'react-native'
-import { Item, Text, Spinner, Thumbnail } from 'native-base'
+import { connect } from 'react-redux'
+
 import { countMyAllEventFeeds } from '../../actions/actionFeeds'
+import { getUserpicSource } from '../common/imageUtils'
 
 class ProfileActivitiesContainer extends Component {
   componentDidMount() {
     console.log('ProfileActivitiesContainer.componentDidMount', this.props)
     this.props.countMyAllEventFeeds(this.props.userWrapper.getId(), this.props.auth.token)
   }
-  getThumbnail(isReady) {
+
+  getThumbnail = isReady => {
     if (!isReady) {
       return <Spinner style={styles.userImageSmall} color='red' />
     }
     return (
       <Thumbnail
        style={styles.userImageSmall}
-       source={{ uri: this.props.userpic }}
+       source={getUserpicSource(this.props.userpic)}
       />
     )
   }
 
-  getHeader(isReady) {
+  getHeader = isReady => {
     return (
       <Item bordered style={{ justifyContent: 'center' }} >
         {this.getThumbnail(isReady)}
@@ -32,7 +35,7 @@ class ProfileActivitiesContainer extends Component {
   }
 
   render() {
-    console.log('ProfileActivitiesContainer.render', this.props)
+    // console.log('ProfileActivitiesContainer.render', this.props)
     const statistics = this.props.eventFeeds.statistics
     if (!statistics || this.props.eventFeeds.isLoading) {
       return (

@@ -2,52 +2,27 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 /* eslint-disable camelcase */
-import React, { Component } from 'react'
-import { Actions } from 'react-native-router-flux'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { Image, View, TouchableOpacity } from 'react-native'
-import { Text } from 'native-base'
 import moment from 'moment'
-import { ImageButton } from '../common'
-import { SEND_JOIN_REQUEST, MESSAGE_TYPE_JOIN_REQUEST } from '../Messages/ChatProtocol'
-import { getActivityImage } from '../common/imageUtils'
-import { handleRequest } from '../../actions/actionRequest'
-import { addChatMessage } from '../../actions/actionChat'
-import { CONTENT_WIDTH } from '../common/Constants'
-import { createChatMessage } from '../Messages/ChatUtils'
+import { Text } from 'native-base'
+import React, { Component } from 'react'
+import { Image, TouchableOpacity, View } from 'react-native'
+import { Actions } from 'react-native-router-flux'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
-const requestToJoinButton = require('../../assets/buttons/request_to_join.png')
+import { addChatMessage } from '../../actions/actionChat'
+import { handleRequest } from '../../actions/actionRequest'
+import { renderJoinRequestButtonOrIcon } from '../common/ActivityUtils'
+import { CONTENT_WIDTH } from '../common/Constants'
+import { getActivityImage, getUserpicSource } from '../common/imageUtils'
+import { sendJoinRequest } from '../Messages/ChatUtils'
 
 class ActivityFeed extends Component {
-
   onPressRequestToJoin = () => {
-    const { event_id, event_posted_by, event_title } = this.props.activity
-    this.props.handleRequest(event_id, this.props.auth.token)
-    const chatmateId = event_posted_by
-    const message = createChatMessage(
-      this.props.user,
-      `Request to join '${event_title}'`
-    )
-    const typedMessage = {
-      ...message,
-      eventId: event_id,
-      type: MESSAGE_TYPE_JOIN_REQUEST
-    }
-    console.log('onPressRequestToJoin', chatmateId, typedMessage)
-    // Not needed since we do not show outgoing requests for now.
-    // this.props.addChatMessageAction(
-    //   chatmateId,
-    //   false,  // isIncoming
-    //   false,  // markAsUnread
-    //   typedMessage
-    // )
-    this.props.chat.socket.emit(
-      SEND_JOIN_REQUEST,
-      chatmateId,
-      typedMessage
-    )
-    Actions.myActivities({ origin: 'ActivityFeed' })
+    // Navigate to myActivities only after handleRequest is complete.
+    this.props.handleRequest(this.props.activity.event_id, this.props.auth.token)
+      .then(() => Actions.myActivities({ origin: 'ActivityFeed' }))
+    sendJoinRequest(this.props.activity, this.props.user, this.props.chat.socket)
   }
   onProfilePicturePress = () => {
     console.log('this.props.activity', this.props.activity)
@@ -63,50 +38,45 @@ class ActivityFeed extends Component {
       activity: this.props.activity
     })
   }
-  getAvatar() {
+  getAvatar = () => {
     return this.props.user.images && this.props.user.images.length > 0
       ? this.props.user.images[0].image_url
       : ''
   }
+
   render() {
+    // console.log('ActivityFeed.render', this.props)
     const {
       event_start_time,
       user_image_url, first_name, last_name, birthday,
       event_location, event_title, event_category
     } = this.props.activity
-    const eventDate = {
-      date: new Date(event_start_time).toDateString().substr(4, 7),
-      time: (event_start_time).substr(11, 5)
-    }
-    const {
-      containerStyle, textStyle, textHeaderStyle,
-      eventInfoStyle, eventSectionStyle,
-      profileImageStyle, organizerSectionStyle,
-      eventTitleStyle, eventImageStyle
-    } = styles
+    const eventDateTime = moment(event_start_time).format('[on] MMM DD [at] hh:mma')
     const age = moment.duration(moment().diff(birthday)).years()
     const eventImage = getActivityImage(event_category)
+
     return (
-      <View style={containerStyle}>
-        <View style={organizerSectionStyle}>
+      <View style={styles.containerStyle}>
+        <View style={styles.organizerSectionStyle}>
           <TouchableOpacity onPress={this.onProfilePicturePress}>
-            <Image style={profileImageStyle} source={{ uri: user_image_url }} />
+            <Image style={styles.profileImageStyle} source={getUserpicSource(user_image_url)} />
           </TouchableOpacity>
-          <View style={eventInfoStyle}>
-            <Text style={textHeaderStyle}>{first_name} {last_name}, {age}</Text>
-            <Text style={textStyle}>{`on ${eventDate.date} at ${eventDate.time}`}</Text>
-            <Text style={textStyle}>{event_location}</Text>
+          <View style={styles.eventInfoStyle}>
+            <Text style={styles.textHeaderStyle}>{first_name} {last_name}, {age}</Text>
+            <Text style={styles.textStyle}>{eventDateTime}</Text>
+            <Text style={styles.textStyle}>{event_location}</Text>
           </View>
         </View>
-        <View style={eventSectionStyle}>
-          <Text style={eventTitleStyle}>{event_title}</Text>
+        <View style={styles.eventSectionStyle}>
+          <Text style={styles.eventTitleStyle}>{event_title}</Text>
           <TouchableOpacity onPress={this.onActivityPicturePress}>
-            <Image style={eventImageStyle} source={eventImage} />
+            <Image style={styles.eventImageStyle} source={eventImage} />
           </TouchableOpacity>
-          <ImageButton
-            buttonSource={requestToJoinButton}
-            handleOnPress={this.onPressRequestToJoin}
-          />
+          {renderJoinRequestButtonOrIcon(
+            this.props.activity,
+            this.props.user,
+            this.onPressRequestToJoin
+          )}
         </View>
       </View>
     )
@@ -165,7 +135,7 @@ const styles = {
     color: '#FFF',
     letterSpacing: 2,
     fontSize: 12,
-  }
+  },
 }
 
 const mapStateToProps = (state) => {

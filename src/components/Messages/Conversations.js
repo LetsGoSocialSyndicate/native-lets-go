@@ -3,13 +3,15 @@
  */
  /* eslint-disable no-underscore-dangle */
 import moment from 'moment'
-import React, { Component } from 'react'
 import { Button, Container, List, ListItem, Spinner, Thumbnail } from 'native-base'
+import React, { Component } from 'react'
+import { ImageBackground, Text, View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
-import { View, ImageBackground, Text } from 'react-native'
+
 import { gotoChat } from '../../actions/actionChat'
 import { CONTENT_WIDTH, DATETIME_SHORT_FORMAT } from '../common/Constants'
+import { getUserpicSource } from '../common/imageUtils'
 
 const darkBackgroundImage = require('../../assets/assets_5.28-06.png')
 
@@ -77,7 +79,7 @@ class Conversations extends Component {
             <Button style={buttonStyle} onPress={() => onPress(item._id)}>
               <View style={column1Style}>
                 <Thumbnail
-                  source={{ uri: avatar }}
+                  source={getUserpicSource(avatar)}
                   style={actualImageStyle}
                 />
               </View>

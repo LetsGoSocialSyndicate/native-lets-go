@@ -1,33 +1,33 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
 import moment from 'moment'
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Actions } from 'react-native-router-flux'
-import { showImagePicker } from 'react-native-image-picker'
-import DatePicker from 'react-native-datepicker'
-import { TextInput, View } from 'react-native'
 import { Container, Card, Form, Item } from 'native-base'
-import { updateProfile } from '../../actions/userAction'
-import { DATE_FORMAT, CONTENT_HEIGHT } from '../common/Constants'
-import { Input } from '../common'
-import { downsizeImage, getFileExtension } from '../common/imageUtils'
+import React, { Component } from 'react'
+import { TextInput, View } from 'react-native'
+import DatePicker from 'react-native-datepicker'
+import { showImagePicker } from 'react-native-image-picker'
+import { Actions } from 'react-native-router-flux'
+import { connect } from 'react-redux'
+
 import { IMAGE_OP_NONE, IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
+import { updateProfile } from '../../actions/userAction'
+import { Input } from '../common'
+import { DATE_FORMAT, CONTENT_HEIGHT } from '../common/Constants'
+import { downsizeImage, getFileExtension, getUserpicSource } from '../common/imageUtils'
 import LoadingButton from '../common/LoadingButton'
 
-const defaultUserpic = require('../../assets/default.png')
 const submitButton = require('../../assets/buttons/done.png')
 
 const FIRST_NAME_FIELD = 'firstName'
 const LAST_NAME_FIELD = 'lastName'
 const BIRTHDAY_FIELD = 'birthday'
 
-const getUserpic = (user) => {
+const getUserpic = user => {
   return user && 'images' in user && user.images.length > 0
     ? user.images[0].image_url
     : null
 }
 
-const getUserpicId = (user) => {
+const getUserpicId = user => {
   return user && 'images' in user && user.images.length > 0
     ? user.images[0].id
     : null
@@ -48,40 +48,35 @@ class ProfileEdit extends Component {
     this.setState({ user, currentImageUrl: getUserpic(user) })
   }
 
-  getUser() {
+  getUser = () => {
     return this.props.user.user
   }
 
-  getImageSource() {
-    const currentImageUrl = this.state.currentImageUrl
-    return currentImageUrl ? { uri: currentImageUrl } : defaultUserpic
-  }
-
-  getAboutBoxStyle() {
+  getAboutBoxStyle = () => {
     return { ...styles.descriptionTextStyle, height: this.state.aboutBoxHeight }
   }
 
-  updateAboutBoxHeight(height) {
+  updateAboutBoxHeight = height => {
       this.setState({ ...this.state, aboutBoxHeight: height + 40 })
   }
 
-  saveAbout(about) {
+  saveAbout = about => {
     this.setState({ ...this.state, user: { ...this.state.user, about } })
   }
 
-  saveFirstName(first_name) {  // eslint-disable-line camelcase
+  saveFirstName = first_name => {  // eslint-disable-line camelcase
     this.setState({ ...this.state, user: { ...this.state.user, first_name } })
   }
 
-  saveLastName(last_name) { // eslint-disable-line camelcase
+  saveLastName = last_name => { // eslint-disable-line camelcase
     this.setState({ ...this.state, user: { ...this.state.user, last_name } })
   }
 
-  saveBirthday(birthday) {
+  saveBirthday = birthday => {
     this.setState({ ...this.state, user: { ...this.state.user, birthday } })
   }
 
-  buildImageRequest() {
+  buildImageRequest = () => {
     // For now returning array of 1 - we allow only 1 profile userpic
     return [{
        op: this.state.profileImageOp,
@@ -91,7 +86,7 @@ class ProfileEdit extends Component {
     }]
   }
 
-  selectImage() {
+  selectImage = () => {
     this.setState({ ...this.state, imageLoading: true })
     showImagePicker({}, (response) => {
       console.log('Profile.selectImage:', response)
@@ -116,7 +111,7 @@ class ProfileEdit extends Component {
     })
   }
 
-  constructSubmitButton() {
+  constructSubmitButton = () => {
     const originalUser = this.getUser()
     const onSave = () => {
       let imageRequest = []
@@ -185,7 +180,7 @@ render() {
         <LoadingButton
           loading={this.state.imageLoading}
           onPress={onImagePress}
-          source={this.getImageSource()}
+          source={getUserpicSource(this.state.currentImageUrl)}
           imageStyle={imageStyle}
         />
 

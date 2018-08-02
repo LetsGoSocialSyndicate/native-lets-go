@@ -1,25 +1,17 @@
 /* Copyright 2018, Socializing Syndicate Corp. */
 import moment from 'moment'
+import { Container, Item, Spinner, Text } from 'native-base'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { Image, TextInput, ScrollView, View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import {
-  Image,
-  TextInput,
-  View,
-  ScrollView
-} from 'react-native'
-import {
-  Container,
-  Item,
-  Spinner,
-  Text
-} from 'native-base'
+import { connect } from 'react-redux'
+
+import { fetchOtherUser } from '../../actions/userAction'
 import { LGButton } from '../common'
 import { CONTENT_HEIGHT } from '../common/Constants'
-import ProfileActivitiesContainer from './ProfileActivitiesContainer'
+import { getUserpicSource } from '../common/imageUtils'
 import Moments from './Moments'
-import { fetchOtherUser } from '../../actions/userAction'
+import ProfileActivitiesContainer from './ProfileActivitiesContainer'
 
 class UserWrapper {
   constructor(props) {
@@ -38,16 +30,16 @@ class UserWrapper {
       this.user = props.user.user
     }
   }
-  isEmpty() {
+  isEmpty = () => {
     return !this.user || Object.keys(this.user).length === 0
   }
-  isOtherUser() {
+  isOtherUser = () => {
     return this.forOtherUser
   }
-  getId() {
+  getId = () => {
     return this.hasUserInfoFormat ? this.user.user_id : this.user.id
   }
-  getUserpic() {
+  getUserpic = () => {
     if (this.hasUserInfoFormat) {
       return this.user.user_image_url
     }
@@ -55,41 +47,39 @@ class UserWrapper {
       ? this.user.images[0].image_url
       : ''
   }
-  getAbout() {
+  getAbout = () => {
     return this.hasUserInfoFormat ? this.user.user_about : this.user.about
   }
-  getFirstName() {
+  getFirstName = () => {
     return this.user.first_name
   }
-  getLastName() {
+  getLastName = () => {
     return this.user.last_name
   }
-  getBirthday() {
+  getBirthday = () => {
     return this.user.birthday
   }
-  getEmail() {
+  getEmail = () => {
     return this.user.email
   }
 }
 
 const ImageView = ({ imageUrl }) => {
-  const source = imageUrl ? { uri: imageUrl } : null
   return (
     <View>
-      <Image style={styles.imageStyle} source={source} />
+      <Image style={styles.imageStyle} source={getUserpicSource(imageUrl)} />
     </View>
   )
 }
 
 class Profile extends Component {
-
   componentDidMount() {
     if (this.props.otherUserId) {
       this.props.fetchOtherUser(this.props.otherUserId, this.props.auth.token)
     }
   }
 
-  renderEditButton(user, style) {
+  renderEditButton = (user, style) => {
     if (user.isOtherUser()) {
       return null
     }
@@ -102,7 +92,7 @@ class Profile extends Component {
       </Container>
     )
   }
-  renderMessageButton(user, style) {
+  renderMessageButton = (user, style) => {
     if (!user.isOtherUser()) {
       return null
     }
@@ -117,7 +107,7 @@ class Profile extends Component {
   }
 
   render() {
-    console.log('Profile.render:', this.props)
+    // console.log('Profile.render:', this.props)
     const user = new UserWrapper(this.props)
     if (user.isEmpty()) {
       return (

@@ -2,19 +2,28 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
  /* eslint-disable camelcase */
- import moment from 'moment'
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { View, Image } from 'react-native'
+import moment from 'moment'
 import { Text, Item } from 'native-base'
-import { getActivityImage } from '../common/imageUtils'
+import React, { Component } from 'react'
+import { View, Image, TouchableOpacity } from 'react-native'
+import { Actions } from 'react-native-router-flux'
+import { connect } from 'react-redux'
+
+import { getActivityImage, getUserpicSource } from '../common/imageUtils'
 
 const requestSent = require('../../assets/request-sent.png')
 const requestAccepted = require('../../assets/request-accepted.png')
 const captained = require('../../assets/captain.png')
 
 class MyActivity extends Component {
-  renderStatus() {
+  onActivityPicturePress = () => {
+    Actions.viewActivity({
+      origin: 'ActivityFeed',
+      activity: this.props.activity
+    })
+  }
+
+  renderStatus = () => {
     const { id } = this.props.user
     const { event_posted_by, join_requested_by,
       join_request_accepted_by, join_request_rejected_by
@@ -35,26 +44,27 @@ class MyActivity extends Component {
   }
 
   render() {
+    // console.log('MyActivity.render', this.props)
     const {
       event_start_time, user_image_url,
       event_location, event_title, event_category
     } = this.props.activity
-    const eventDateTime = moment(event_start_time)
-    const eventDate = eventDateTime.format('MMM DD')
-    const eventTime = eventDateTime.format('HH:mm')
+    const eventDateTime = moment(event_start_time).format('[on] MMM DD [at] hh:mma')
     const eventImage = getActivityImage(event_category)
     return (
       <View>
         <View style={styles.containerStyle}>
-          <Image style={styles.eventImageStyle} source={eventImage} />
+          <TouchableOpacity onPress={this.onActivityPicturePress}>
+            <Image style={styles.eventImageStyle} source={eventImage} />
+          </TouchableOpacity>
           <View style={styles.eventInfoStyle}>
             <Text style={styles.eventTitleStyle}>{event_title}</Text>
-            <Text style={styles.textStyle}>{`on ${eventDate} at ${eventTime}`}</Text>
+            <Text style={styles.textStyle}>{eventDateTime}</Text>
             <Text style={styles.textStyle}>{event_location}</Text>
             <View style={styles.crewContainer}>
               {/* TODO: Add all crew, maybe server resposne should already contani this */}
               <Text style={styles.textStyle}>Crew: </Text>
-              <Image style={styles.crewImageStyle} source={{ uri: user_image_url }} />
+              <Image style={styles.crewImageStyle} source={getUserpicSource(user_image_url)} />
             </View>
           </View>
           <View>

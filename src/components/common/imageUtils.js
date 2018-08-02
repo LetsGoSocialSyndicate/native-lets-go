@@ -23,6 +23,7 @@ const videoGameWhite = require('../../assets/activities/VideoGameWhite.png')
 const weightsWhite = require('../../assets/activities/WeightsWhite.png')
 const yogaWhite = require('../../assets/activities/YogaWhite.png')
 const defaultImage = require('../../assets/activities/gallery_hero.jpg')
+const defaultUserpic = require('../../assets/default.png')
 
 const activityCategories = [
   'Beer',
@@ -117,10 +118,15 @@ const getFileExtension = (filename) => {
   return filename.split('.').pop().toLowerCase()
 }
 
+const getUserpicSource = (url) => {
+  return url ? { uri: url } : defaultUserpic
+}
+
 export {
   activityCategories,
   activityCategoriesKV,
   getActivityImage,
   downsizeImage,
-  getFileExtension
+  getFileExtension,
+  getUserpicSource
 }

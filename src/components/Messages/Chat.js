@@ -2,25 +2,22 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
  /* eslint-disable no-underscore-dangle */
+ import { Container, Spinner, Tab, Tabs, Text } from 'native-base'
 import React, { Component } from 'react'
 import { View } from 'react-native'
-import { Container, Spinner, Tab, Tabs, Text } from 'native-base'
-import { connect } from 'react-redux'
 import { GiftedChat } from 'react-native-gifted-chat'
-import { getChatUser } from './ChatUtils'
+import { connect } from 'react-redux'
+
+import { addChatMessage, chatActionStart } from '../../actions/actionChat'
+import { CONTENT_WIDTH } from '../common/Constants'
 import {
   GET_PREVIOUS_MESSAGES,
   SEND_MESSAGE,
   MESSAGE_TYPE_CHAT,
-  MESSAGE_TYPE_JOIN_REQUEST
+  MESSAGE_TYPE_JOIN_REQUEST,
+  MESSAGE_TYPE_JOIN_REJECT
 } from './ChatProtocol'
-import {
-  CONTENT_WIDTH
-} from '../common/Constants'
-import {
-  chatActionStart,
-  addChatMessage
-} from '../../actions/actionChat'
+import { getChatUser } from './ChatUtils'
 import JoinRequest from './JoinRequest'
 
 const hasMessagesFetched = (chatmates, chatmateId) => {
@@ -30,11 +27,10 @@ const hasMessagesFetched = (chatmates, chatmateId) => {
 const tabsWidth = CONTENT_WIDTH - 20
 
 class Chat extends Component {
-
   componentDidMount() {
-    console.log(
-      'Chat::componentDidMount START', this.props.chatmateId, this.props.chat
-    )
+    // console.log(
+    //   'Chat::componentDidMount START', this.props.chatmateId, this.props.chat
+    // )
     const chat = this.props.chat
     const user = this.props.user
     const chatmateId = this.props.chatmateId
@@ -46,12 +42,12 @@ class Chat extends Component {
     }
   }
 
-  getMessages() {
+  getMessages = () => {
     return this.props.chat.messages[this.props.chatmateId]
   }
 
-  sendMessages(messages) {
-    console.log('Chat.sendMessages:', messages)
+  sendMessages = messages => {
+    // console.log('Chat.sendMessages:', messages)
     messages.forEach(message => {
       const typedMessage = { ...message, type: MESSAGE_TYPE_CHAT }
       this.props.addChatMessageAction(
@@ -68,7 +64,7 @@ class Chat extends Component {
     })
   }
 
-  renderChatTab(messages, chatUser) {
+  renderChatTab = (messages, chatUser) => {
     const onSend = (msgs) => this.sendMessages(msgs)
     return (
       <GiftedChat
@@ -78,7 +74,8 @@ class Chat extends Component {
       />
     )
   }
-  renderRequestTab(requests) {
+  
+  renderRequestTab = requests => {
     const { requestContainerStyle, messageTextStyle } = styles
     if (requests && requests.length > 0) {
       return (
@@ -118,7 +115,8 @@ class Chat extends Component {
       msg => msg.type === MESSAGE_TYPE_CHAT
     )
     const requests = this.getMessages().filter(
-      msg => msg.type === MESSAGE_TYPE_JOIN_REQUEST
+      msg => (msg.type === MESSAGE_TYPE_JOIN_REQUEST
+             || msg.type === MESSAGE_TYPE_JOIN_REJECT)
              && msg.user._id !== this.props.user.id
     )
 

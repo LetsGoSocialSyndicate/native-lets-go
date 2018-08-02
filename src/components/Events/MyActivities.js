@@ -2,34 +2,32 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
 import moment from 'moment'
-import React, { Component } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { ScrollView } from 'react-native'
 import { Text } from 'native-base'
+import React, { Component } from 'react'
+import { ScrollView } from 'react-native'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
-import { CONTENT_WIDTH, CONTENT_HEIGHT } from '../common/Constants'
-import MyActivity from './MyActivity'
 import { fetchMyAllEventFeeds } from '../../actions/actionFeeds'
-
-const timestamp = (event) => moment(event.event_start_time).valueOf()
+import { CONTENT_HEIGHT, CONTENT_WIDTH } from '../common/Constants'
+import MyActivity from './MyActivity'
 
 class MyActivities extends Component {
   componentDidMount() {
+    // console.log('MyActivities.componentDidMount', this.props)
     this.props.fetchMyAllEventFeeds(this.props.user.user.id,
       this.props.auth.token, false)
   }
 
-  getCurrentEvents() {
+  getCurrentEvents = () => {
     const now = moment()
     return Object.values(this.props.eventFeeds)
       .filter(event => {
         return moment(event.event_start_time) > now
       })
-      .sort((a, b) => timestamp(b) - timestamp(a))
   }
 
-  renderActivityFeeds() {
+  renderActivityFeeds = () => {
     if (Object.values(this.getCurrentEvents()).length === 0) {
       return (
         <Text style={styles.textStyle}>
@@ -50,6 +48,7 @@ class MyActivities extends Component {
   }
 
   render() {
+    // console.log('MyActivities.render', this.props)
     return (
       <ScrollView style={styles.containerStyle}>
         { this.renderActivityFeeds() }

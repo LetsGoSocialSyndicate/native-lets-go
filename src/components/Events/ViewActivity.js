@@ -1,67 +1,68 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
+/* eslint-disable camelcase */
+import moment from 'moment'
+import { Text } from 'native-base'
 import React, { Component } from 'react'
 import { Image, View } from 'react-native'
-import { Text, Textarea } from 'native-base'
-import moment from 'moment'
-import { bindActionCreators } from 'redux'
+import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 import { handleRequest } from '../../actions/actionRequest'
+import { renderJoinRequestButtonOrIcon } from '../common/ActivityUtils'
 import { CONTENT_WIDTH } from '../common/Constants'
-import { getActivityImage } from '../common/imageUtils'
-import { ImageButton } from '../common'
-const requestToJoinButton = require('../../assets/buttons/request_to_join.png')
+import { getActivityImage, getUserpicSource } from '../common/imageUtils'
+import { sendJoinRequest } from '../Messages/ChatUtils'
 
 class ViewActivity extends Component {
   onPressRequestToJoin = () => {
-    const { user_id, event_id } = this.props.activity
-    this.props.handleRequest(event_id, user_id, this.props.auth.token)
+    this.props.handleRequest(this.props.activity.event_id, this.props.auth.token)
+      .then(() => Actions.myActivities({ origin: 'ActivityFeed' }))
+    sendJoinRequest(this.props.activity, this.props.user, this.props.chat.socket)
   }
+
   render() {
     const {
       event_start_time, event_end_time,
       user_image_url, first_name, last_name, birthday,
       event_location, event_title, event_category, event_description
     } = this.props.activity
-    const eventDate = {
-      start_date: new Date(event_start_time).toDateString().substr(4,7),
-      start_time: (event_start_time).substr(11,5),
-      end_date: new Date(event_end_time).toDateString().substr(4,7),
-      end_time: (event_end_time).substr(11,5)
-    }
-    const {
-      containerStyle, textStyle, textHeaderStyle,
-      captainSectionStyle, descriptionTextStyle,
-      eventInfoStyle, profileImageStyle,
-      eventSectionStyle, crewImageStyle,
-      eventTitleStyle, eventImageStyle
-    } = styles
+    const startTime = moment(event_start_time).format('[starts on] MMM DD [at] hh:mma')
+    const endTime = moment(event_end_time).format('[ends on] MMM DD [at] hh:mma')
     const age = moment.duration(moment().diff(birthday)).years()
     const eventImage = getActivityImage(event_category)
 
     return (
-      <View style={ containerStyle }>
-        <View style={ captainSectionStyle }>
-          <Image style={ profileImageStyle } source={{ uri: user_image_url }} />
-          <View style={ eventInfoStyle }>
-            <Text style={ textHeaderStyle }>{ first_name } { last_name }, {age}</Text>
-            <Text style={ textStyle }>{ `starts on ${eventDate.start_date} at ${eventDate.start_time}` }</Text>
-            <Text style={ textStyle }>{ `ends on ${eventDate.end_date} at ${eventDate.end_time}` }</Text>
-            <Text style={ textStyle }>{ event_location }</Text>
+      <View style={styles.containerStyle}>
+        <View style={styles.captainSectionStyle}>
+          <Image style={styles.profileImageStyle} source={getUserpicSource(user_image_url)} />
+          <View style={styles.eventInfoStyle}>
+            <Text style={styles.textHeaderStyle}>{first_name} {last_name}, {age}</Text>
+            <Text style={styles.textStyle}>{startTime}</Text>
+            <Text style={styles.textStyle}>{endTime}</Text>
+            <Text style={styles.textStyle}>{event_location}</Text>
           </View>
         </View>
-        <Text style={ eventTitleStyle }>{ event_title }</Text>
-        <View style={ eventSectionStyle }>
-          <Image style={ eventImageStyle } source={ eventImage } />
-          <Text style={ textStyle }>Crew: </Text>
-          <Image style={ crewImageStyle } source={{ uri: user_image_url }} />
+        <Text style={styles.eventTitleStyle}>{event_title}</Text>
+        <View style={styles.eventSectionStyle}>
+          <Image style={styles.eventImageStyle} source={eventImage} />
+          <Text style={styles.textStyle}>Crew: </Text>
+          <Image style={styles.crewImageStyle} source={getUserpicSource(user_image_url)} />
         </View>
-        <Text style={ descriptionTextStyle }
-          multiline rowSpan={5}>{ event_description }</Text>
-        <ImageButton buttonSource={ requestToJoinButton }
-          handleOnPress={ this.onPressRequestToJoin }/>
+        <Text
+          style={styles.descriptionTextStyle}
+          multiline
+          rowSpan={5}
+        >
+          {event_description}
+        </Text>
+        {renderJoinRequestButtonOrIcon(
+          this.props.activity,
+          this.props.user,
+          this.onPressRequestToJoin
+        )}
       </View>
     )
   }
@@ -139,11 +140,11 @@ const styles = {
 }
 
 const mapStateToProps = (state) => {
-  return { auth: state.auth }
+  return { auth: state.auth, user: state.user.user, chat: state.chat }
 }
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  handleRequest
+  handleRequest,
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewActivity)
