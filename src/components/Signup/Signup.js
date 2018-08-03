@@ -1,9 +1,11 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
+import moment from 'moment'
 import React from 'react'
 import { connect } from 'react-redux'
 import { signupSubmit, setSignupError } from '../../actions/authAction'
+import { DATE_FORMAT } from '../common/Constants'
 import SignupForm, {
   PASSWORD_FIELD,
   PASSWORD2_FIELD
@@ -11,7 +13,11 @@ import SignupForm, {
 
 const validate = (fields) => {
   let error = null
-  if (fields[PASSWORD_FIELD] !== fields[PASSWORD2_FIELD]) {
+  const minAge = moment().utc().subtract(18, 'years').format(DATE_FORMAT)
+  const isbefore = moment(fields.birthday).isBefore(minAge)
+  if (!isbefore) {
+    error = 'Your age must be 18+'
+  } else if (fields[PASSWORD_FIELD] !== fields[PASSWORD2_FIELD]) {
     error = 'Password does not match'
   }
   return error

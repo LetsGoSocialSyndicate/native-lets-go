@@ -106,6 +106,7 @@ const renderDateTimePickerInput = (props) => {
        onDateChange={input.onChange}
        date={input.value}
        mode='datetime'
+       minuteInterval={15}
        format={DATETIME_SHORT_FORMAT}
        confirmBtnText='Confirm'
        cancelBtnText='Cancel'
@@ -115,7 +116,7 @@ const renderDateTimePickerInput = (props) => {
           dateText: {
             paddingLeft: 20,
             color: '#27608b',
-            fontSize: 20,
+            fontSize: 14,
           },
           dateInput: {
             borderWidth: 0
@@ -181,8 +182,10 @@ const TextInputFormField = ({
   label,
   multiline,
   name,
+  maxLength,
   numberOfLne,
   placeholder,
+  autoCorrect,
   secureTextEntry }) => {
   const {
     inputStyle,
@@ -198,7 +201,8 @@ const TextInputFormField = ({
         secureTextEntry={secureTextEntry}
         placeholder={placeholder}
         placeholderTextColor='hsla(0, 2%, 96%, 0.6)'
-        autoCorrect={false}
+        autoCorrect={autoCorrect}
+        maxLength={maxLength}
         autoCapitalize='none'
         style={inputStyle}
         multiline={multiline}
@@ -285,7 +289,13 @@ const DatePickerInputFormField = ({ name, label, placeholder, minDate, maxDate }
   )
 }
 
-const DateTimePickerInputFormField = ({ name, label, placeholder, minDate, maxDate }) => {
+const DateTimePickerInputFormField = ({
+  name,
+  label,
+  placeholder,
+  minDate,
+  maxDate
+}) => {
   const { labelStyle, containerStyle } = styles
   return (
     <View style={containerStyle}>

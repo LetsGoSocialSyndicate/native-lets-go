@@ -22,7 +22,9 @@ const studyWhite = require('../../assets/activities/StudyWhite.png')
 const videoGameWhite = require('../../assets/activities/VideoGameWhite.png')
 const weightsWhite = require('../../assets/activities/WeightsWhite.png')
 const yogaWhite = require('../../assets/activities/YogaWhite.png')
-const defaultImage = require('../../assets/activities/gallery_hero.jpg')
+const other = require('../../assets/createActivity/defaultActivity.png')
+
+const defaultImage = require('../../assets/createActivity/defaultActivity.png')
 const defaultUserpic = require('../../assets/default.png')
 
 const activityCategories = [
@@ -44,7 +46,8 @@ const activityCategories = [
   'Study',
   'Video Game',
   'Weights',
-  'Yoga'
+  'Yoga',
+  'Other'
 ]
 
 const activityCategoriesKV = activityCategories.map(item => {
@@ -91,6 +94,8 @@ const getActivityImage = (category) => {
       return weightsWhite
     case 'Yoga':
       return yogaWhite
+    case 'Other':
+      return other
     default:
       return defaultImage
   }

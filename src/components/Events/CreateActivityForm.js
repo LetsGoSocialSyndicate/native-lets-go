@@ -32,7 +32,6 @@ export const DESCRIPTION_FIELD = 'description'
 
 const TODAY = new Date()
 const TODAY_PLUS_3 = new Date(TODAY.getTime() + (1000 * 60 * 60 * 72))
-//const TODAY_PLUS_3_END = new Date(TODAY.getTime() + (1000 * 60 * 60 * 84))
 
 class CreateActivityForm extends Component {
   state = {
@@ -76,16 +75,18 @@ class CreateActivityForm extends Component {
         <Item style={itemStyle}>
           <TextInputFormField
             name={HEADLINE_FIELD}
+            autoCorrect
             placeholder='headline'
-            maxLength={30}
+            maxLength={40}
           />
         </Item>
 
         <Item style={itemStyle}>
           <TextInputFormField
             name={LOCATION_FIELD}
+            autoCorrect
             placeholder='location'
-            maxLength={30}
+            maxLength={25}
           />
         </Item>
 
@@ -127,7 +128,7 @@ class CreateActivityForm extends Component {
         autoCapitalize='none'
         style={descriptionTextStyle}
         multiline
-        maxLength={200}
+        maxLength={140}
       />
 
       <Item style={outterStile}>
@@ -160,7 +161,6 @@ class CreateActivityForm extends Component {
             <DateTimePickerInputFormField
               name={ACTIVITY_END_TIME_FIELD}
               minDate={TODAY}
-              //maxDate={TODAY_PLUS_3_END}
               placeholder='select...'
             />
           </Item>

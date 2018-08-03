@@ -1,13 +1,12 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
-import moment from 'moment'
 import React from 'react'
 import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { ScrollView } from 'react-native'
 import { Form, Item } from 'native-base'
-import { DATE_FORMAT, CONTENT_HEIGHT } from '../common/Constants'
+import { CONTENT_HEIGHT } from '../common/Constants'
 import {
   DatePickerInputFormField,
   Error,
@@ -53,7 +52,6 @@ import {
          <DatePickerInputFormField
            name={BIRTHDAY_FIELD}
            placeholder='select birthday'
-           maxDate={moment().utc().subtract(18, 'years').format(DATE_FORMAT)}
          />
         </Item>
         <Item style={itemStyle}>

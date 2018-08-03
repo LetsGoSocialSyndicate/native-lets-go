@@ -13,6 +13,17 @@ import { DATETIME_SHORT_FORMAT, DATETIME_FORMAT } from '../common/Constants'
 
 const COMBINED_DATETIME_FORMAT = `YYYY ${DATETIME_SHORT_FORMAT}`
 
+// const timeConvertor = (TIME_FORMAT) => {
+//   let ampm = null
+//   hour <= 11 ? ampm = 'am' : ampm = 'pm'
+//   if (hour > 12) {
+//     hour -= 12
+//   }
+//   if (hour === 0) {
+//     hour = 12
+//   }
+// }
+
 const formatFullDate = partialDate => {
   const fullDate = moment(`${moment().format('YYYY')} ${partialDate}`, COMBINED_DATETIME_FORMAT)
   let currentYear = Number(moment().format('YYYY'))
