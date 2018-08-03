@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
-import { Image } from 'react-native'
+import { Image, ScrollView } from 'react-native'
 import { Container, Spinner } from 'native-base'
 import { loginSubmit, autoLogin } from '../../actions/authAction'
 import LoginForm from './LoginForm'
@@ -33,7 +33,7 @@ class Login extends Component {
     const action = (fields) => onSubmit(this.props.loginSubmit, fields)
 
     return (
-      <Container style={styles.containerStyle}>
+      <ScrollView style={styles.outterContainerStyle}>
         <Container style={styles.titleContainerStyle}>
           <Image
             source={loginTitleImage}
@@ -57,15 +57,25 @@ class Login extends Component {
             buttonText="signup"
           />
         </Container>
-      </Container>
+      </ScrollView>
     )
   }
 }
 
 const styles = {
-  containerStyle: {
+  outterContainerStyle: {
     backgroundColor: 'transparent',
-    height: CONTENT_HEIGHT
+    height: CONTENT_HEIGHT,
+  },
+  titleContainerStyle: {
+    marginTop: 80,
+    marginBottom: -620,
+    backgroundColor: 'transparent',
+  },
+  titleStyle: {
+    width: null,
+    resizeMode: 'contain',
+    height: 40,
   },
   buttonsContainer: {
     backgroundColor: 'transparent',
@@ -73,16 +83,6 @@ const styles = {
     marginRight: 80,
     marginBottom: 70,
     marginTop: 60
-  },
-  titleStyle: {
-    width: null,
-    resizeMode: 'contain',
-    height: 40,
-  },
-  titleContainerStyle: {
-    marginTop: 80,
-    marginBottom: 60,
-    backgroundColor: 'transparent',
   }
 }
 

@@ -19,7 +19,7 @@ import { createChatMessage } from '../Messages/ChatUtils'
 const acceptButton = require('../../assets/buttons/accept.png')
 const viewRequestButton = require('../../assets/buttons/view_request.png')
 // TODO: replace with real reject button
-const rejectButton = require('../../assets/buttons/submit.png')
+const rejectButton = require('../../assets/Decline3.png')
 
 const overlayButtonWidth = CONTENT_WIDTH - 50
 
@@ -143,7 +143,9 @@ class JoinRequest extends Component {
           <View style={styles.rightContainerStyle}>
             <Text style={boldTextStyle}>{request.user.name}</Text>
             <Text style={textStyle}>{request.text}</Text>
-            {this.renderButtons()}
+            <View style={styles.buttonContainerStyle}>
+              {this.renderButtons()}
+            </View>
           </View>
         </View>
         {this.renderViewRequestOverlay()}
@@ -156,16 +158,22 @@ class JoinRequest extends Component {
 const styles = {
   outerContainerStyle: {
     flexDirection: 'column',
-    marginLeft: -20
+    marginLeft: -20,
+    // borderWidth: 2,
+    // borderColor: 'blue'
   },
   containerStyle: {
     flexDirection: 'row',
     marginLeft: 20,
     marginBottom: 0,
     marginTop: 10,
+    // borderWidth: 2,
+    // borderColor: 'red'
   },
   rightContainerStyle: {
     marginLeft: 20,
+    // borderWidth: 2,
+    // borderColor: 'green'
   },
   textStyle: {
     color: 'white',
@@ -192,12 +200,17 @@ const styles = {
   viewRequestContainerStyle: {
     position: 'absolute',
     top: 0,
-    left: 0
+    left: 0,
+    // borderWidth: 2,
+    // borderColor: 'magenta'
   },
   viewRequestButtonStyle: {
     resizeMode: 'contain',
     width: overlayButtonWidth,
     marginLeft: 20
+  },
+  buttonContainerStyle: {
+    flexDirection: 'row'
   }
 }
 

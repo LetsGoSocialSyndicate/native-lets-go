@@ -44,14 +44,12 @@ const LoginForm = ({ handleSubmit, auth }) => {
     <Form style={formStyle}>
       <Item style={itemStyle}>
         <Image source={userpicIcon} style={iconStyle} />
-        {/* <Icon active name='user' type='Entypo' /> */}
         <TextInputFormField
           name={EMAIL_FIELD}
           placeholder='email'
         />
       </Item>
       <Item style={itemStyle}>
-        {/* <Icon active name='lock' /> */}
         <Image source={passwordIcon} style={iconStyle} />
         <TextInputFormField
           name={PASSWORD_FIELD}
@@ -81,7 +79,7 @@ const styles = {
     marginTop: 35,
   },
   formStyle: {
-    height: 240,
+    // height: 240,
   },
   itemStyle: {
     marginLeft: 50,

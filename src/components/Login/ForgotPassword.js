@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Text } from 'react-native'
+import { Text, ScrollView } from 'react-native'
 import { Form, H1 } from 'native-base'
 import { sendCodeForPassword } from '../../actions/authAction'
 import ForgotPasswordForm, { EMAIL_FIELD } from './ForgotPasswordForm'
@@ -13,14 +13,16 @@ const ForgotPassword = ({ sendCodeAction }) => {
    h1Style
   } = styles
   return (
-    <Form style={formStyle}>
-      <H1 style={h1Style}>FORGOT PASSWORD?</H1>
-        <Text style={forgotTextStyle}>
-          Well, let's fix that! Enter your university email address
-          and we'll send you a code to reset!
-        </Text>
-        <ForgotPasswordForm onSubmit={action} />
-    </Form>
+    <ScrollView>
+      <Form style={formStyle}>
+        <H1 style={h1Style}>FORGOT PASSWORD?</H1>
+          <Text style={forgotTextStyle}>
+            Well, let's fix that! Enter your university email address
+            and we'll send you a code to reset!
+          </Text>
+          <ForgotPasswordForm onSubmit={action} />
+      </Form>
+    </ScrollView>
   )
 }
 
