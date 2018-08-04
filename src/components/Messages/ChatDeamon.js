@@ -10,6 +10,7 @@ import {
   JOIN,
   CHATMATES,
   PREVIOUS_MESSAGES,
+  GET_PREVIOUS_MESSAGES,
   MESSAGE
 } from './ChatProtocol'
 
@@ -19,6 +20,8 @@ import {
   addChatMessage,
   fetchChatMessages
 } from '../../actions/actionChat'
+
+const KEEP_ALIVE_INTERVAL_MILLIS = 60000 // 1 Minute
 
 class ChatDeamon extends Component {
 
@@ -31,7 +34,7 @@ class ChatDeamon extends Component {
     this.initialize()
   }
 
-  initialize() {
+  initialize = () => {
     const chat = this.props.chat
     const user = this.props.user
     // console.log('ChatDeamon::initialize START', chat)
@@ -53,15 +56,38 @@ class ChatDeamon extends Component {
         chatmates => this.receiveChatmates(chatmates)
       )
       this.props.chatActionStartAction()
-      chat.socket.emit(JOIN, user.id)
+      this.keepAlive(chat, user.id, true)
     }
   }
-  receiveChatmates(chatmates) {
-    console.log('ChatDeamon::receiveChatmates', chatmates)
-    this.props.joinChatAction(chatmates)
+
+  keepAlive = (chat, userId, forceRefresh = true) => {
+    // First time allow force refresh, but on recurring invokations do not.
+    chat.socket.emit(JOIN, userId, forceRefresh)
+    setTimeout(
+      () => this.keepAlive(chat, userId, false), KEEP_ALIVE_INTERVAL_MILLIS
+    )
   }
 
-  receiveMessage(message) {
+  receiveChatmates = chatmates => {
+    console.log('ChatDeamon::receiveChatmates', chatmates)
+    this.props.joinChatAction(chatmates)
+    // If current scene is chat, then we need to either:
+    //   1. refresh it with updated messages if the chatmate is in the list
+    //   2. if chatmate is not in the list, need to navigate away
+    if (Actions.currentScene === 'chat') {
+      const chat = this.props.chat
+      const matchedChatmates =
+        chatmates.filter(chatmate => chatmate._id === chat.lastChatmateId)
+      if (matchedChatmates.length > 0) {
+        const user = this.props.user
+        chat.socket.emit(GET_PREVIOUS_MESSAGES, user.id, chat.lastChatmateId)
+      } else {
+        Actions.conversations()
+      }
+    }
+  }
+
+  receiveMessage = message => {
     console.log('ChatDeamon::receiveMessage:', Actions.currentScene, message)
     const markAsUnread =
       Actions.currentScene !== 'chat' ||
@@ -71,7 +97,7 @@ class ChatDeamon extends Component {
     )
   }
 
-  receivePreviousMessages(chatmate, messages) {
+  receivePreviousMessages = (chatmate, messages) => {
     console.log('ChatDeamon.receivePreviousMessages:', chatmate, messages)
     this.props.fetchChatMessagesAction(chatmate, messages)
   }
