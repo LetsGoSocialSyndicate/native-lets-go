@@ -12,9 +12,11 @@ import { bindActionCreators } from 'redux'
 
 import { addChatMessage } from '../../actions/actionChat'
 import { handleRequest } from '../../actions/actionRequest'
-import { renderJoinRequestButtonOrIcon } from '../common/ActivityUtils'
+import { formatRelativeEventDateTime, renderJoinRequestButtonOrIcon } from '../common/ActivityUtils'
 import { CONTENT_WIDTH } from '../common/Constants'
-import { getActivityImage, getUserpicSource } from '../common/imageUtils'
+import { getActivityImage, getUserpicSource } from '../common/ImageUtils'
+import LoadingButton from '../common/LoadingButton'
+import { getNickname } from '../common/UserUtils.js'
 import { sendJoinRequest } from '../Messages/ChatUtils'
 
 class ActivityFeed extends Component {
@@ -25,7 +27,7 @@ class ActivityFeed extends Component {
     sendJoinRequest(this.props.activity, this.props.user, this.props.chat.socket)
   }
   onProfilePicturePress = () => {
-    console.log('this.props.activity', this.props.activity)
+    // console.log('this.props.activity', this.props.activity)
     Actions.profile({
       origin: 'ActivityFeed',
       otherUserInfo: this.props.activity,
@@ -47,22 +49,24 @@ class ActivityFeed extends Component {
   render() {
     // console.log('ActivityFeed.render', this.props)
     const {
-      event_start_time,
-      user_image_url, first_name, last_name, birthday,
+      event_start_time, user_image_url, birthday,
       event_location, event_title, event_category
     } = this.props.activity
-    const eventDateTime = moment(event_start_time).format('[on] MMM DD [at] hh:mma')
+    const eventDateTime = formatRelativeEventDateTime(event_start_time)
     const age = moment.duration(moment().diff(birthday)).years()
     const eventImage = getActivityImage(event_category)
+    const nickname = getNickname(this.props.activity)
 
     return (
       <View style={styles.containerStyle}>
         <View style={styles.organizerSectionStyle}>
-          <TouchableOpacity onPress={this.onProfilePicturePress}>
-            <Image style={styles.profileImageStyle} source={getUserpicSource(user_image_url)} />
-          </TouchableOpacity>
+          <LoadingButton
+            onPress={this.onProfilePicturePress}
+            imageStyle={styles.profileImageStyle}
+            source={getUserpicSource(user_image_url)}
+          />
           <View style={styles.eventInfoStyle}>
-            <Text style={styles.textHeaderStyle}>{first_name} {last_name}, {age}</Text>
+            <Text style={styles.textHeaderStyle}>{nickname}, {age}</Text>
             <Text style={styles.textStyle}>{eventDateTime}</Text>
             <Text style={styles.textStyle}>{event_location}</Text>
           </View>
@@ -130,6 +134,10 @@ const styles = {
     color: '#FFF',
     letterSpacing: 2,
     fontSize: 18,
+    marginBottom: 5,
+    paddingLeft: 30,
+    paddingRight: 30,
+    textAlign: 'center',
   },
   textStyle: {
     color: '#FFF',

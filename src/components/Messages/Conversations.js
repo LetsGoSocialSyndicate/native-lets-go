@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 
 import { gotoChat } from '../../actions/actionChat'
 import { CONTENT_WIDTH, DATETIME_SHORT_FORMAT } from '../common/Constants'
-import { getUserpicSource } from '../common/imageUtils'
+import { getUserpicSource } from '../common/ImageUtils'
 
 const darkBackgroundImage = require('../../assets/assets_5.28-06.png')
 

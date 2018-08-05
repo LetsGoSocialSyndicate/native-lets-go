@@ -3,9 +3,10 @@ import React, { Component } from 'react'
 import { View } from 'react-native'
 import { Text } from 'native-base'
 import { connect } from 'react-redux'
-import OneMoment from './OneMoment'
-import { CONTENT_WIDTH } from '../common/Constants'
+
 import { fetchMyAllEventFeeds } from '../../actions/actionFeeds'
+import { CONTENT_WIDTH } from '../common/Constants'
+import OneMoment from './OneMoment'
 
 class Moments extends Component {
   componentDidMount() {

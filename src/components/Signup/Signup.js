@@ -4,8 +4,9 @@
 import moment from 'moment'
 import React from 'react'
 import { connect } from 'react-redux'
+import { ScrollView } from 'react-native'
 import { signupSubmit, setSignupError } from '../../actions/authAction'
-import { DATE_FORMAT } from '../common/Constants'
+import { CONTENT_HEIGHT, DATE_FORMAT } from '../common/Constants'
 import SignupForm, {
   PASSWORD_FIELD,
   PASSWORD2_FIELD
@@ -35,7 +36,18 @@ const onSubmit = (action, errorAction, fields) => {
 
 const Signup = ({ signupAction, errorAction }) => {
   const action = (fields) => onSubmit(signupAction, errorAction, fields)
-  return (<SignupForm onSubmit={action} />)
+  return (
+    <ScrollView style={styles.outterContainerStyle}>
+      <SignupForm onSubmit={action} />
+    </ScrollView>
+  )
+}
+
+const styles = {
+  outterContainerStyle: {
+    backgroundColor: 'transparent',
+    height: CONTENT_HEIGHT,
+  }
 }
 
 const actions = {

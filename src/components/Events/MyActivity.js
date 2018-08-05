@@ -2,14 +2,15 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
  /* eslint-disable camelcase */
-import moment from 'moment'
 import { Text, Item } from 'native-base'
 import React, { Component } from 'react'
 import { View, Image, TouchableOpacity } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 
-import { getActivityImage, getUserpicSource } from '../common/imageUtils'
+import { formatRelativeEventDateTime } from '../common/ActivityUtils'
+import { getActivityImage, getUserpicSource } from '../common/ImageUtils'
+import LoadingButton from '../common/LoadingButton'
 
 const requestSent = require('../../assets/request-sent.png')
 const requestAccepted = require('../../assets/request-accepted.png')
@@ -20,6 +21,18 @@ class MyActivity extends Component {
     Actions.viewActivity({
       origin: 'ActivityFeed',
       activity: this.props.activity
+    })
+  }
+
+  // TODO: Need to pass user properties or id
+  onProfilePicturePress = () => {
+    // console.log('this.props.activity', this.props.activity)
+    // TODO: Need to fetch user correspoinding to this crew member, and
+    // show spinner while loading
+    Actions.profile({
+      origin: 'MyActivity',
+      otherUserInfo: this.props.activity,
+      forOtherUser: true
     })
   }
 
@@ -49,7 +62,7 @@ class MyActivity extends Component {
       event_start_time, user_image_url,
       event_location, event_title, event_category
     } = this.props.activity
-    const eventDateTime = moment(event_start_time).format('[on] MMM DD [at] hh:mma')
+    const eventDateTime = formatRelativeEventDateTime(event_start_time)
     const eventImage = getActivityImage(event_category)
     return (
       <View>
@@ -64,7 +77,11 @@ class MyActivity extends Component {
             <View style={styles.crewContainer}>
               {/* TODO: Add all crew, maybe server resposne should already contani this */}
               <Text style={styles.textStyle}>Crew: </Text>
-              <Image style={styles.crewImageStyle} source={getUserpicSource(user_image_url)} />
+              <LoadingButton
+                onPress={this.onProfilePicturePress}
+                imageStyle={styles.crewImageStyle}
+                source={getUserpicSource(user_image_url)}
+              />
             </View>
           </View>
           <View>

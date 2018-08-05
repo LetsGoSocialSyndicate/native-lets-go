@@ -13,7 +13,7 @@ import {
   GenericTextInputFormField
 } from '../common'
 import LoadingButton from '../common/LoadingButton'
-import { activityCategoriesKV, getActivityImage } from '../common/imageUtils'
+import { activityCategoriesKV, getActivityImage } from '../common/ImageUtils'
 
 const submitButton = require('../../assets/buttons/done.png')
 const category = require('../../assets/createActivity/category.png')

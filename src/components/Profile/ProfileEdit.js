@@ -12,7 +12,7 @@ import { IMAGE_OP_NONE, IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imag
 import { updateProfile } from '../../actions/userAction'
 import { Input } from '../common'
 import { DATE_FORMAT, CONTENT_HEIGHT } from '../common/Constants'
-import { downsizeImage, getFileExtension, getUserpicSource } from '../common/imageUtils'
+import { downsizeImage, getFileExtension, getUserpicSource } from '../common/ImageUtils'
 import LoadingButton from '../common/LoadingButton'
 
 const submitButton = require('../../assets/buttons/done.png')

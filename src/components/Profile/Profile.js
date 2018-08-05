@@ -9,7 +9,8 @@ import { connect } from 'react-redux'
 import { fetchOtherUser } from '../../actions/userAction'
 import { LGButton } from '../common'
 import { CONTENT_HEIGHT } from '../common/Constants'
-import { getUserpicSource } from '../common/imageUtils'
+import { getUserpicSource } from '../common/ImageUtils'
+import { getNickname } from '../common/UserUtils.js'
 import Moments from './Moments'
 import ProfileActivitiesContainer from './ProfileActivitiesContainer'
 
@@ -55,6 +56,10 @@ class UserWrapper {
   }
   getLastName = () => {
     return this.user.last_name
+  }
+  getNickname = () => {
+    // In both cases user has first_name and last_name
+    return getNickname(this.user)
   }
   getBirthday = () => {
     return this.user.birthday
@@ -119,8 +124,7 @@ class Profile extends Component {
 
     const userpic = user.getUserpic()
     const about = user.getAbout()
-    const firstName = user.getFirstName().toUpperCase()
-    const lastName = user.getLastName().charAt(0).toUpperCase()
+    const nickname = user.getNickname().toUpperCase()
     const age = moment.duration(moment().diff(user.getBirthday())).years()
 
     return (
@@ -129,9 +133,7 @@ class Profile extends Component {
           <ImageView imageUrl={userpic} />
 
           <Item style={styles.nameItemStyle}>
-            <Text style={styles.nameTextStyle}>
-              {firstName} {lastName}, {age}
-            </Text>
+            <Text style={styles.nameTextStyle}>{nickname}, {age}</Text>
           </Item>
 
           <TextInput

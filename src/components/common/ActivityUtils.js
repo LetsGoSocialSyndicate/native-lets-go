@@ -1,6 +1,8 @@
 /*
  * Copyright 2018, Socializing Syndicate Corp.
  */
+ /* eslint-disable no-else-return */
+ import moment from 'moment'
  import React from 'react'
  import { Image } from 'react-native'
  import { Text } from 'native-base'
@@ -28,6 +30,23 @@
   )
 }
 
+const formatRelativeEventDateTime = dateTime => {
+  const dateTimeMoment = moment(dateTime)
+  const daysDiff = dateTimeMoment.diff(moment(), 'days')
+  if (daysDiff === 0) {
+    return dateTimeMoment.format('[Today at] hh:mma')
+  } else if (daysDiff === 1) {
+    return dateTimeMoment.format('[Tomorrow at] hh:mma')
+  } else {
+    return dateTimeMoment.format('[on] MMM DD [at] hh:mma')
+  }
+}
+
+const formatEventDateTime = (dateTime, prefix) => {
+  const actualPrefix = prefix ? `${prefix} ` : ''
+  return moment(dateTime).format(`[${actualPrefix}on] MMM DD [at] hh:mma`)
+}
+
 const styles = {
   eventStatusImageStyle: {
     marginLeft: 20,
@@ -36,4 +55,8 @@ const styles = {
   }
 }
 
-export { renderJoinRequestButtonOrIcon }
+export {
+  renderJoinRequestButtonOrIcon,
+  formatEventDateTime,
+  formatRelativeEventDateTime
+}

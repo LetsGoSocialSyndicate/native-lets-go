@@ -6,7 +6,7 @@ import { View } from 'react-native'
 import { connect } from 'react-redux'
 
 import { countMyAllEventFeeds } from '../../actions/actionFeeds'
-import { getUserpicSource } from '../common/imageUtils'
+import { getUserpicSource } from '../common/ImageUtils'
 
 class ProfileActivitiesContainer extends Component {
   componentDidMount() {

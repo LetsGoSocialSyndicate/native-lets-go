@@ -12,14 +12,19 @@ import { removeChatMessage } from '../../actions/actionChat'
 import { acceptRequest, rejectRequest } from '../../actions/actionRequest'
 import { ImageButton } from '../common'
 import { CONTENT_WIDTH } from '../common/Constants'
-import { getUserpicSource } from '../common/imageUtils'
-import { DELETE_MESSAGE, MESSAGE_TYPE_JOIN_REJECT, SEND_MESSAGE } from './ChatProtocol'
+import { getUserpicSource } from '../common/ImageUtils'
+import {
+  DELETE_MESSAGE,
+  SEND_MESSAGE,
+  MESSAGE_TYPE_JOIN_REQUEST,
+  MESSAGE_TYPE_JOIN_REJECT
+} from './ChatProtocol'
 import { createChatMessage } from '../Messages/ChatUtils'
 
-const acceptButton = require('../../assets/buttons/accept.png')
 const viewRequestButton = require('../../assets/buttons/view_request.png')
-// TODO: replace with real reject button
-const rejectButton = require('../../assets/Decline3.png')
+// TODO: replace with real accept/decline button
+const rejectButton = require('../../assets/decline.png')
+const acceptButton = require('../../assets/accept.png')
 
 const overlayButtonWidth = CONTENT_WIDTH - 50
 
@@ -84,9 +89,12 @@ class JoinRequest extends Component {
     return this.showPreviewOverlay() ? { ...style, opacity } : style
   }
 
+  isJoinRequest = () => {
+    return this.props.request.type === MESSAGE_TYPE_JOIN_REQUEST
+  }
+
   showPreviewOverlay = () => {
-    return !this.state.timerStarted
-      && this.props.request.type !== MESSAGE_TYPE_JOIN_REJECT
+    return !this.state.timerStarted && this.isJoinRequest()
   }
 
   renderViewRequestOverlay = () => {
@@ -107,7 +115,7 @@ class JoinRequest extends Component {
   }
 
   renderButtons = () => {
-    if (this.showPreviewOverlay()) {
+    if (this.showPreviewOverlay() || !this.isJoinRequest()) {
       return null
     }
     return (
@@ -127,7 +135,7 @@ class JoinRequest extends Component {
   }
 
   render() {
-    console.log('JoinRequest', this.props.request)
+    // console.log('JoinRequest', this.props.request)
     const request = this.props.request
     const avatar = request.user.avatar || ''
     const imageStyle = this.getOpacityStyle(styles.imageStyle, 0.05)

@@ -11,9 +11,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { handleRequest } from '../../actions/actionRequest'
-import { renderJoinRequestButtonOrIcon } from '../common/ActivityUtils'
+import { formatEventDateTime, renderJoinRequestButtonOrIcon } from '../common/ActivityUtils'
 import { CONTENT_WIDTH } from '../common/Constants'
-import { getActivityImage, getUserpicSource } from '../common/imageUtils'
+import { getActivityImage, getUserpicSource } from '../common/ImageUtils'
+import { getNickname } from '../common/UserUtils.js'
 import { sendJoinRequest } from '../Messages/ChatUtils'
 
 class ViewActivity extends Component {
@@ -25,21 +26,21 @@ class ViewActivity extends Component {
 
   render() {
     const {
-      event_start_time, event_end_time,
-      user_image_url, first_name, last_name, birthday,
+      event_start_time, event_end_time, user_image_url, birthday,
       event_location, event_title, event_category, event_description
     } = this.props.activity
-    const startTime = moment(event_start_time).format('[starts on] MMM DD [at] hh:mma')
-    const endTime = moment(event_end_time).format('[ends on] MMM DD [at] hh:mma')
+    const startTime = formatEventDateTime(event_start_time, 'starts')
+    const endTime = formatEventDateTime(event_end_time, 'ends')
     const age = moment.duration(moment().diff(birthday)).years()
     const eventImage = getActivityImage(event_category)
+    const nickname = getNickname(this.props.activity)
 
     return (
       <View style={styles.containerStyle}>
         <View style={styles.captainSectionStyle}>
           <Image style={styles.profileImageStyle} source={getUserpicSource(user_image_url)} />
           <View style={styles.eventInfoStyle}>
-            <Text style={styles.textHeaderStyle}>{first_name} {last_name}, {age}</Text>
+            <Text style={styles.textHeaderStyle}>{nickname}, {age}</Text>
             <Text style={styles.textStyle}>{startTime}</Text>
             <Text style={styles.textStyle}>{endTime}</Text>
             <Text style={styles.textStyle}>{event_location}</Text>

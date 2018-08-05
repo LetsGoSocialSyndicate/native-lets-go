@@ -8,7 +8,7 @@ import { Text, Item } from 'native-base'
 import { showImagePicker } from 'react-native-image-picker'
 
 import { CONTENT_WIDTH } from '../common/Constants'
-import { getActivityImage, downsizeImage, getFileExtension } from '../common/imageUtils'
+import { getActivityImage, downsizeImage, getFileExtension } from '../common/ImageUtils'
 import LoadingButton from '../common/LoadingButton'
 import { IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
 import { updateEventImages } from '../../actions/actionFeeds'

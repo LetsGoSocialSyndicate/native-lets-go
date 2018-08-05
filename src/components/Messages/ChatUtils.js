@@ -6,13 +6,11 @@
  import uuid from 'uuid'
 
  import { DATETIME_FORMAT } from '../common/Constants'
+ import { getNickname } from '../common/UserUtils.js'
  import { MESSAGE_TYPE_JOIN_REQUEST, SEND_JOIN_REQUEST } from './ChatProtocol'
 
 export const getChatUser = user => {
-   const chatUser = {
-     _id: user.id,
-     name: `${user.first_name} ${user.last_name.charAt(0)}`
-   }
+   const chatUser = { _id: user.id, name: getNickname(user) }
    if (user.images.length > 0) {
      chatUser.avatar = user.images[0].image_url
    }
