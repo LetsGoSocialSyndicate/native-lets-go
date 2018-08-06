@@ -5,29 +5,53 @@
  import moment from 'moment'
  import React from 'react'
  import { Image } from 'react-native'
- import { Text } from 'native-base'
  import { ImageButton } from '../common'
 
  const requestToJoinButton = require('../../assets/buttons/request_to_join.png')
- const requestSent = require('../../assets/request-sent.png')
- const requestAccepted = require('../../assets/request-accepted.png')
+ const requestSent = require('../../assets/oneActivity/sent.png')
+ const requestAccepted = require('../../assets/oneActivity/accepted.png')
+ const requestDeclined = require('../../assets/oneActivity/declined.png')
 
- const renderJoinRequestButtonOrIcon = (activity, user, onPressRequestToJoin) => {
-  if (activity.join_requested_by === user.id) {
-    if (activity.join_request_rejected_by) {
-      // TODO: Rejected Icon
-      return <Text>Rejected</Text>
-    }
-    const source = activity.join_request_accepted_by
-      ? requestAccepted : requestSent
-    return <Image style={styles.eventStatusImageStyle} source={source} />
+//  const renderJoinRequestButtonOrIcon = (activity, user, onPressRequestToJoin) => {
+//   if (activity.join_requested_by === user.id) {
+//     if (activity.join_request_rejected_by) {
+//       return <Image style={styles.eventStatusImageStyle} source={requestDeclined} />
+//     }
+//     const source = activity.join_request_accepted_by
+//       ? requestAccepted : requestSent
+//     return <Image style={styles.eventStatusImageStyle} source={source} />
+//   }
+//   return (
+//     <ImageButton
+//       buttonSource={requestToJoinButton}
+//       handleOnPress={onPressRequestToJoin}
+//     />
+//   )
+// }
+const renderStatusIcons = (activity, user) => {
+ if (activity.join_requested_by === user.id) {
+   if (activity.join_request_rejected_by) {
+     return <Image style={styles.eventStatusImageStyle} source={requestDeclined} />
+   }
+   const source = activity.join_request_accepted_by
+     ? requestAccepted : requestSent
+   return <Image style={styles.eventStatusImageStyle} source={source} />
+ } else {
+   return null
+ }
+}
+
+const renderJoinRequest = (activity, onPressRequestToJoin) => {
+  if (activity.join_requested_by === null) {
+    return (
+      <ImageButton
+        buttonSource={requestToJoinButton}
+        handleOnPress={onPressRequestToJoin}
+      />
+    )
+  } else {
+    return null
   }
-  return (
-    <ImageButton
-      buttonSource={requestToJoinButton}
-      handleOnPress={onPressRequestToJoin}
-    />
-  )
 }
 
 const formatRelativeEventDateTime = dateTime => {
@@ -47,6 +71,10 @@ const formatEventDateTime = (dateTime, prefix) => {
   return moment(dateTime).format(`[${actualPrefix}on] MMM DD [at] hh:mma`)
 }
 
+const formatCoarseEventDate = (dateTime) => {
+  return moment(dateTime).format('MMMM YYYY')
+}
+
 const styles = {
   eventStatusImageStyle: {
     marginLeft: 20,
@@ -56,7 +84,10 @@ const styles = {
 }
 
 export {
-  renderJoinRequestButtonOrIcon,
+  // renderJoinRequestButtonOrIcon,
+  renderStatusIcons,
+  renderJoinRequest,
+  formatCoarseEventDate,
   formatEventDateTime,
   formatRelativeEventDateTime
 }

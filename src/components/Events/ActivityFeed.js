@@ -12,7 +12,7 @@ import { bindActionCreators } from 'redux'
 
 import { addChatMessage } from '../../actions/actionChat'
 import { handleRequest } from '../../actions/actionRequest'
-import { formatRelativeEventDateTime, renderJoinRequestButtonOrIcon } from '../common/ActivityUtils'
+import { formatRelativeEventDateTime, renderStatusIcons, renderJoinRequest } from '../common/ActivityUtils'
 import { CONTENT_WIDTH } from '../common/Constants'
 import { getActivityImage, getUserpicSource } from '../common/ImageUtils'
 import LoadingButton from '../common/LoadingButton'
@@ -49,8 +49,12 @@ class ActivityFeed extends Component {
   render() {
     // console.log('ActivityFeed.render', this.props)
     const {
-      event_start_time, user_image_url, birthday,
-      event_location, event_title, event_category
+      event_start_time,
+      user_image_url,
+      birthday,
+      event_location,
+      event_title,
+      event_category
     } = this.props.activity
     const eventDateTime = formatRelativeEventDateTime(event_start_time)
     const age = moment.duration(moment().diff(birthday)).years()
@@ -61,8 +65,8 @@ class ActivityFeed extends Component {
       <View style={styles.containerStyle}>
         <View style={styles.organizerSectionStyle}>
           <LoadingButton
-            onPress={this.onProfilePicturePress}
             imageStyle={styles.profileImageStyle}
+            onPress={this.onProfilePicturePress}
             source={getUserpicSource(user_image_url)}
           />
           <View style={styles.eventInfoStyle}>
@@ -71,17 +75,19 @@ class ActivityFeed extends Component {
             <Text style={styles.textStyle}>{event_location}</Text>
           </View>
         </View>
+
+        <Text style={styles.eventTitleStyle}>{event_title}</Text>
+
         <View style={styles.eventSectionStyle}>
-          <Text style={styles.eventTitleStyle}>{event_title}</Text>
           <TouchableOpacity onPress={this.onActivityPicturePress}>
             <Image style={styles.eventImageStyle} source={eventImage} />
           </TouchableOpacity>
-          {renderJoinRequestButtonOrIcon(
-            this.props.activity,
-            this.props.user,
-            this.onPressRequestToJoin
-          )}
+
+          <View style={styles.statusIconContainerStyle}>
+            {renderStatusIcons(this.props.activity, this.props.user)}
+          </View>
         </View>
+        {renderJoinRequest(this.props.activity, this.onPressRequestToJoin)}
       </View>
     )
   }
@@ -95,17 +101,6 @@ const styles = {
   organizerSectionStyle: {
     flexDirection: 'row'
   },
-  eventSectionStyle: {
-    marginTop: 10,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  eventInfoStyle: {
-    marginTop: 20,
-    marginLeft: 10,
-    flexDirection: 'column'
-  },
   profileImageStyle: {
     marginTop: 10,
     marginLeft: 10,
@@ -115,14 +110,10 @@ const styles = {
     borderColor: 'white',
     borderWidth: 4
   },
-  eventImageStyle: {
-    marginTop: 10,
+  eventInfoStyle: {
+    marginTop: 20,
     marginLeft: 10,
-    height: 100,
-    borderRadius: 50,
-    width: 100,
-    borderColor: 'white',
-    borderWidth: 4
+    flexDirection: 'column'
   },
   textHeaderStyle: {
     color: '#FFF',
@@ -130,19 +121,39 @@ const styles = {
     fontSize: 14,
     fontWeight: 'bold'
   },
-  eventTitleStyle: {
-    color: '#FFF',
-    letterSpacing: 2,
-    fontSize: 18,
-    marginBottom: 5,
-    paddingLeft: 30,
-    paddingRight: 30,
-    textAlign: 'center',
-  },
   textStyle: {
     color: '#FFF',
     letterSpacing: 2,
     fontSize: 12,
+  },
+  eventTitleStyle: {
+    color: '#FFF',
+    letterSpacing: 2,
+    fontSize: 18,
+    paddingTop: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+    textAlign: 'center',
+  },
+  eventSectionStyle: {
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  eventImageStyle: {
+    marginTop: 10,
+    marginLeft: 10,
+    height: 100,
+    borderRadius: 50,
+    width: 100,
+    borderColor: 'white',
+    borderWidth: 4,
+  },
+  statusIconContainerStyle: {
+    marginTop: 30,
+    marginRight: 30,
+    marginLeft: 40,
+    width: 60
   },
 }
 

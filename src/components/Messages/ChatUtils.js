@@ -30,7 +30,7 @@ export const sendJoinRequest = (activity, user, socket) => {
   const chatmateId = activity.event_posted_by
   const message = createChatMessage(
     user,
-    `Request to join '${activity.event_title}'`
+    `Request to join: \n'${activity.event_title}'`
   )
   const typedMessage = {
     ...message,

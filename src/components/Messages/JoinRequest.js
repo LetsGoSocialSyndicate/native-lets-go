@@ -2,6 +2,7 @@
  * Copyright 2018, Socializing Syndicate Corp.
  */
  /* eslint-disable no-underscore-dangle */
+ /* eslint-disable no-else-return */
 import React, { Component } from 'react'
 import { Item, Text } from 'native-base'
 import { Image, TouchableOpacity, View } from 'react-native'
@@ -22,9 +23,8 @@ import {
 import { createChatMessage } from '../Messages/ChatUtils'
 
 const viewRequestButton = require('../../assets/buttons/view_request.png')
-// TODO: replace with real accept/decline button
-const rejectButton = require('../../assets/decline.png')
-const acceptButton = require('../../assets/accept.png')
+const declineButton = require('../../assets/chatJoinReq/decline.png')
+const acceptButton = require('../../assets/chatJoinReq/accept.png')
 
 const overlayButtonWidth = CONTENT_WIDTH - 50
 
@@ -56,7 +56,7 @@ class JoinRequest extends Component {
       this.props.chat.socket.emit(DELETE_MESSAGE, request._id)
       const message = createChatMessage(
         this.props.user,
-        `${request.text} rejected`
+        request.text
       )
       const typedMessage = {
         ...message,
@@ -69,12 +69,12 @@ class JoinRequest extends Component {
 
   onProfilePicturePress = () => {
     console.log('this.props.request', this.props.request)
-    if (this.state.timerStarted) {
-    Actions.profile({
-      origin: 'JoinRequest',
-      otherUserId: this.props.request.user._id,
-      forOtherUser: true
-    })
+    if (!this.showPreviewOverlay()) {
+      Actions.profile({
+        origin: 'JoinRequest',
+        otherUserId: this.props.request.user._id,
+        forOtherUser: true
+      })
     }
   }
 
@@ -93,10 +93,30 @@ class JoinRequest extends Component {
     return this.props.request.type === MESSAGE_TYPE_JOIN_REQUEST
   }
 
+  isRejectMessage = () => {
+    return this.props.request.type === MESSAGE_TYPE_JOIN_REJECT
+  }
+
   showPreviewOverlay = () => {
     return !this.state.timerStarted && this.isJoinRequest()
   }
 
+  renderText = () => {
+    if (this.isJoinRequest()) {
+      const textStyle = this.getOpacityStyle(styles.textStyle, 0.1)
+      return (
+        <Text style={textStyle}>{this.props.request.text}</Text>
+      )
+    } else {
+      // TODO check separately accept vs reject
+      return (
+        <View>
+          <Text style={styles.textStyle}>{this.props.request.text}</Text>
+          <Text style={styles.declineStyle}>Declined</Text>
+        </View>
+      )
+    }
+  }
   renderViewRequestOverlay = () => {
     if (!this.showPreviewOverlay()) {
       return null
@@ -119,15 +139,17 @@ class JoinRequest extends Component {
       return null
     }
     return (
-      <View>
+      <View style={styles.buttonContainerStyle}>
         <ImageButton
           buttonSource={acceptButton}
-          buttonWidth={100}
+          buttonWidth={120}
+          buttonHeight={40}
           handleOnPress={this.onPressAcceptRequest}
         />
         <ImageButton
-          buttonSource={rejectButton}
-          buttonWidth={100}
+          buttonSource={declineButton}
+          buttonWidth={120}
+          buttonHeight={40}
           handleOnPress={this.onPressRejectRequest}
         />
       </View>
@@ -140,24 +162,29 @@ class JoinRequest extends Component {
     const avatar = request.user.avatar || ''
     const imageStyle = this.getOpacityStyle(styles.imageStyle, 0.05)
     const boldTextStyle = this.getOpacityStyle(styles.boldTextStyle, 0.1)
-    const textStyle = this.getOpacityStyle(styles.textStyle, 0.1)
 
     return (
-      <View style={styles.outerContainerStyle}>
-        <View style={styles.containerStyle}>
-          <TouchableOpacity onPress={this.onProfilePicturePress}>
-            <Image style={imageStyle} source={getUserpicSource(avatar)} />
-          </TouchableOpacity>
-          <View style={styles.rightContainerStyle}>
-            <Text style={boldTextStyle}>{request.user.name}</Text>
-            <Text style={textStyle}>{request.text}</Text>
-            <View style={styles.buttonContainerStyle}>
-              {this.renderButtons()}
+      <View>
+        <View style={styles.outerContainerStyle}>
+          <View style={styles.containerStyle}>
+            <TouchableOpacity onPress={this.onProfilePicturePress}>
+              <Image style={imageStyle} source={getUserpicSource(avatar)} />
+            </TouchableOpacity>
+            <View style={styles.rightContainerStyle}>
+              <Text style={boldTextStyle}>{request.user.name}</Text>
+              {this.renderText()}
             </View>
+
           </View>
+
         </View>
+
+          {this.renderButtons()}
+
+
         {this.renderViewRequestOverlay()}
-        {!this.props.isLast ? <Item bordered /> : null}
+        {/* {!this.props.isLast ? <Item bordered /> : null} */}
+        <Item bordered />
       </View>
     )
   }
@@ -167,6 +194,7 @@ const styles = {
   outerContainerStyle: {
     flexDirection: 'column',
     marginLeft: -20,
+    marginBottom: 20,
     // borderWidth: 2,
     // borderColor: 'blue'
   },
@@ -180,6 +208,8 @@ const styles = {
   },
   rightContainerStyle: {
     marginLeft: 20,
+    marginRight: 50,
+    //paddingRight: 50,
     // borderWidth: 2,
     // borderColor: 'green'
   },
@@ -187,7 +217,7 @@ const styles = {
     color: 'white',
     letterSpacing: 2,
     fontSize: 12,
-    width: 250
+    paddingRight: 50,
   },
   boldTextStyle: {
     color: 'white',
@@ -215,10 +245,18 @@ const styles = {
   viewRequestButtonStyle: {
     resizeMode: 'contain',
     width: overlayButtonWidth,
-    marginLeft: 20
   },
   buttonContainerStyle: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    // borderWidth: 2,
+    // borderColor: 'orange',
+    alignSelf: 'center',
+    marginTop: 10,
+    marginBottom: 10
+  },
+  declineStyle: {
+    color: '#1B5187',
+    fontWeight: 'bold'
   }
 }
 

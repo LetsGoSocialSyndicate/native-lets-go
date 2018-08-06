@@ -12,9 +12,9 @@ import { formatRelativeEventDateTime } from '../common/ActivityUtils'
 import { getActivityImage, getUserpicSource } from '../common/ImageUtils'
 import LoadingButton from '../common/LoadingButton'
 
-const requestSent = require('../../assets/request-sent.png')
-const requestAccepted = require('../../assets/request-accepted.png')
-const captained = require('../../assets/captain.png')
+const requestSent = require('../../assets/oneActivity/sent.png')
+const requestAccepted = require('../../assets/oneActivity/accepted.png')
+const captained = require('../../assets/oneActivity/captained.png')
 
 class MyActivity extends Component {
   onActivityPicturePress = () => {

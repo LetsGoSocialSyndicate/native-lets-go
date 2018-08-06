@@ -7,13 +7,14 @@ import { FlatList, Image, ImageBackground, View } from 'react-native'
 import { Text, Item } from 'native-base'
 import { showImagePicker } from 'react-native-image-picker'
 
+import { updateEventImages } from '../../actions/actionFeeds'
+import { IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
+import { formatCoarseEventDate } from '../common/ActivityUtils'
 import { CONTENT_WIDTH } from '../common/Constants'
 import { getActivityImage, downsizeImage, getFileExtension } from '../common/ImageUtils'
 import LoadingButton from '../common/LoadingButton'
-import { IMAGE_OP_UPDATE, IMAGE_OP_ADD } from '../../actions/imageOp'
-import { updateEventImages } from '../../actions/actionFeeds'
 
-const captain = require('../../assets/captain.png')
+const captain = require('../../assets/oneActivity/captained.png')
 const editButton = require('../../assets/buttons/editbutton.png')
 const darkBackgroundImage = require('../../assets/assets_5.28-06.png')
 
@@ -117,7 +118,9 @@ class OneMoment extends Component {
   }
 
   render() {
+    console.log('OneMoment.render:', this.props.activity)
     const eventTitle = this.props.activity.event_title
+    const eventDate = formatCoarseEventDate(this.props.activity.event_start_time)
     const images = this.props.activity.images || []
     const imageItems = images.map(image => {
       return {
@@ -158,6 +161,7 @@ class OneMoment extends Component {
               </View>
               <View style={styles.col2}>
                 <Text style={styles.eventTitleStyle}>{eventTitle}</Text>
+                <Text style={styles.eventDateStyle}>{eventDate}</Text>
               </View>
               <View style={styles.col3}>
                 {this.renderEditButton()}
@@ -207,6 +211,10 @@ const styles = {
     width: 40,
   },
   eventTitleStyle: {
+    color: '#fff',
+    fontSize: 20
+  },
+  eventDateStyle: {
     color: '#fff',
     fontSize: 20
   },

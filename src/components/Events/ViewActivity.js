@@ -5,14 +5,14 @@
 import moment from 'moment'
 import { Text } from 'native-base'
 import React, { Component } from 'react'
-import { Image, View } from 'react-native'
+import { Image, ScrollView, View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { handleRequest } from '../../actions/actionRequest'
-import { formatEventDateTime, renderJoinRequestButtonOrIcon } from '../common/ActivityUtils'
-import { CONTENT_WIDTH } from '../common/Constants'
+import { formatEventDateTime, renderStatusIcons, renderJoinRequest } from '../common/ActivityUtils'
+import { CONTENT_WIDTH, CONTENT_HEIGHT } from '../common/Constants'
 import { getActivityImage, getUserpicSource } from '../common/ImageUtils'
 import { getNickname } from '../common/UserUtils.js'
 import { sendJoinRequest } from '../Messages/ChatUtils'
@@ -26,8 +26,14 @@ class ViewActivity extends Component {
 
   render() {
     const {
-      event_start_time, event_end_time, user_image_url, birthday,
-      event_location, event_title, event_category, event_description
+      event_start_time,
+      event_end_time,
+      user_image_url,
+      birthday,
+      event_location,
+      event_title,
+      event_category,
+      event_description
     } = this.props.activity
     const startTime = formatEventDateTime(event_start_time, 'starts')
     const endTime = formatEventDateTime(event_end_time, 'ends')
@@ -36,7 +42,9 @@ class ViewActivity extends Component {
     const nickname = getNickname(this.props.activity)
 
     return (
+    <ScrollView style={styles.outterContainerStyle}>
       <View style={styles.containerStyle}>
+
         <View style={styles.captainSectionStyle}>
           <Image style={styles.profileImageStyle} source={getUserpicSource(user_image_url)} />
           <View style={styles.eventInfoStyle}>
@@ -46,12 +54,15 @@ class ViewActivity extends Component {
             <Text style={styles.textStyle}>{event_location}</Text>
           </View>
         </View>
+
         <Text style={styles.eventTitleStyle}>{event_title}</Text>
+
         <View style={styles.eventSectionStyle}>
           <Image style={styles.eventImageStyle} source={eventImage} />
           <Text style={styles.textStyle}>Crew: </Text>
           <Image style={styles.crewImageStyle} source={getUserpicSource(user_image_url)} />
         </View>
+
         <Text
           style={styles.descriptionTextStyle}
           multiline
@@ -59,29 +70,36 @@ class ViewActivity extends Component {
         >
           {event_description}
         </Text>
-        {renderJoinRequestButtonOrIcon(
-          this.props.activity,
-          this.props.user,
-          this.onPressRequestToJoin
-        )}
+
+        <View style={styles.statusIconContainerStyle}>
+          {renderStatusIcons(this.props.activity, this.props.user)}
+        </View>
+        {renderJoinRequest(this.props.activity, this.onPressRequestToJoin)}
       </View>
+    </ScrollView>
     )
   }
 }
 
 const styles = {
+  outterContainerStyle: {
+    backgroundColor: 'transparent',
+    height: CONTENT_HEIGHT,
+  },
   containerStyle: {
     width: CONTENT_WIDTH,
     backgroundColor: 'transparent',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 40
+    marginTop: 40,
+    paddingLeft: 30,
+    paddingRight: 30,
   },
   captainSectionStyle: {
     flexDirection: 'row',
     marginTop: 10,
-    marginBottom: 20
+    marginBottom: 20,
+    marginRight: 80
   },
   eventInfoStyle: {
     marginTop: 10,
@@ -125,7 +143,8 @@ const styles = {
     color: '#FFF',
     letterSpacing: 2,
     fontSize: 22,
-    marginBottom: 20
+    marginBottom: 20,
+    textAlign: 'center'
   },
   textStyle: {
     color: '#FFF',
@@ -136,8 +155,13 @@ const styles = {
     color: '#FFF',
     letterSpacing: 2,
     fontSize: 20,
-    marginTop: 30
-  }
+    marginTop: 30,
+    textAlign: 'center'
+  },
+  statusIconContainerStyle: {
+    marginTop: 30,
+    alignItems: 'center'
+  },
 }
 
 const mapStateToProps = (state) => {
