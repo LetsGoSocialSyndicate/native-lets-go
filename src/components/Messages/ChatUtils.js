@@ -5,7 +5,6 @@
  import moment from 'moment'
  import uuid from 'uuid'
 
- import { DATETIME_FORMAT } from '../common/Constants'
  import { getNickname } from '../common/UserUtils.js'
  import { MESSAGE_TYPE_JOIN_REQUEST, SEND_JOIN_REQUEST } from './ChatProtocol'
 
@@ -20,7 +19,7 @@ export const getChatUser = user => {
  export const createChatMessage = (user, text) => {
    return {
     user: getChatUser(user),
-    createdAt: moment().format(DATETIME_FORMAT),
+    createdAt: moment().format(),
     text,
     _id: uuid()
   }
