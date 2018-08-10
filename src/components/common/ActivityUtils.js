@@ -54,9 +54,13 @@ const renderJoinRequest = (activity, onPressRequestToJoin) => {
   }
 }
 
+const getDaysDiff = dateTime => {
+  return moment(dateTime).startOf('day').diff(moment().startOf('day'), 'days')
+}
+
 const formatRelativeEventDateTime = dateTime => {
   const dateTimeMoment = moment(dateTime)
-  const daysDiff = dateTimeMoment.diff(moment(), 'days')
+  const daysDiff = getDaysDiff(dateTime)
   if (daysDiff === 0) {
     return dateTimeMoment.format('[Today at] hh:mma')
   } else if (daysDiff === 1) {
