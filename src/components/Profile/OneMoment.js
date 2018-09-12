@@ -220,7 +220,7 @@ const styles = {
   },
   darkBackgroundStyle: {
     width: CONTENT_WIDTH,
-    height: 70,
+    height: 90,
     paddingTop: 10,
     paddingLeft: 20
   },
